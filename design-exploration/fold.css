@@ -1,0 +1,46 @@
+.fold .desktop-dim{background:linear-gradient(90deg,#15221d87,#14251c40)}
+.fold .surface{position:absolute;top:27px;left:clamp(14px,12%,150px);width:360px;max-width:calc(100% - 28px);max-height:calc(100% - 50px);display:flex;flex-direction:column;background:#20291f;border:1px solid #adbf9155;border-radius:13px;box-shadow:0 18px 50px #09160d55;overflow:hidden}
+.fold .surface:has(.fold-layout.is-branch){width:720px}
+.fold .surface:has(.fold-results){width:510px}
+.fold .surface-head{padding:15px 18px 9px}
+.fold .mode-strip{padding:2px 18px 12px;gap:7px;font-size:9px}
+.fold .surface-foot{flex-shrink:0;gap:10px;padding:12px 18px;font-size:9px}
+.fold .fold-layout{display:flex;min-height:0;overflow:auto;padding:0 11px 0;scrollbar-width:thin;scrollbar-color:#627450 transparent}
+.fold .fold-spine{min-width:0;flex:1;padding:0 0 8px}
+.fold .fold-layout.is-branch .fold-spine{flex:0 0 220px;border-right:1px solid #b8d59420;padding-right:11px}
+.fold .fold-section-label{display:block;font:8px ui-monospace,SFMono-Regular,monospace;letter-spacing:.1em;color:#96a88a;padding:10px 8px 8px}
+.fold .fold-family{display:flex;align-items:center;width:100%;gap:12px;padding:9px 9px;min-height:53px;background:transparent;text-align:left;border:1px solid transparent;border-radius:8px;color:#e9eedf}
+.fold .fold-family:hover{background:#ffffff08}
+.fold .fold-family.is-selected{background:#cceaa516;border-color:#cceaa547}
+.fold .fold-family.is-muted{opacity:.25}
+.fold .fold-family .app-icon{width:33px;height:33px;border-radius:8px}
+.fold .fold-family-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.fold .fold-family-text strong{font-size:12px;font-weight:500;color:#eef5e6;overflow-wrap:anywhere}
+.fold .fold-family-text small{font-size:9px;color:#94a588}
+.fold .fold-family kbd{font-size:14px;min-width:28px;min-height:28px}
+.fold .fold-chevron{font:19px sans-serif;color:#91a57b;margin:0 1px}
+.fold .fold-spine-note{font:9px/1.5 ui-monospace,SFMono-Regular,monospace;color:#839577;padding:5px 8px 1px;margin:8px 0 0}
+.fold .fold-detail{min-width:0;flex:1;padding:0 0 0 14px;align-self:stretch}
+.fold .fold-detail-heading{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:0 7px 16px;border-bottom:1px solid #b8d59418;margin-bottom:10px}
+.fold .fold-detail-heading .fold-section-label{padding-left:0}
+.fold .fold-detail-heading strong{font-size:20px;font-weight:450;letter-spacing:-.4px;color:#f0f7e8;display:block;line-height:1.2}
+.fold .fold-back{background:transparent;color:#abbc9d;font-size:9px;white-space:nowrap;padding:6px 0;align-self:flex-end}
+.fold .fold-back:hover{color:#dcf99e}
+.fold .fold-window-list{display:flex;flex-direction:column;gap:7px}
+.fold .fold-detail .target{padding:14px 9px;gap:10px;min-height:72px;align-items:flex-start;border:1px solid #d1e5b919;border-radius:8px;background:#ffffff03}
+.fold .fold-detail .target:hover,.fold .fold-detail .target.arrow-selected{background:#d8efb311;border-color:#d6f09555}
+.fold .fold-detail .target .app-icon{display:none}
+.fold .fold-detail .target kbd{order:-1;min-width:41px;min-height:31px;font-size:14px;padding:6px}
+.fold .fold-detail .target-title{font-size:13px;line-height:1.4}
+.fold .fold-detail .target-meta{font-size:10px;line-height:1.5}
+.fold .fold-detail .target .focused-dot{left:4px;top:5px}
+.fold .fold-detail-note{font:9px/1.7 ui-monospace,SFMono-Regular,monospace;color:#8c9f7e;margin:14px 8px 20px}
+.fold .fold-detail-note kbd{font-size:9px;min-width:17px;min-height:18px;padding:2px 4px;background:#3a4b2e;color:#b8d69a;vertical-align:baseline;margin-right:3px}
+.fold .fold-results{min-height:0;overflow:auto;padding:0 12px 12px;scrollbar-width:thin;scrollbar-color:#627450 transparent}
+.fold .fold-results .target{padding:10px 9px;min-height:56px;gap:10px}
+.fold .fold-results .target-title{font-size:12px;line-height:1.4}
+.fold .fold-results .target-meta{font-size:10px}
+.fold .fold-results .target kbd{font-size:13px}
+.fold .product-search{flex-shrink:0}
+@media(max-width:1050px){.fold .surface{left:18px}.fold .surface:has(.fold-layout.is-branch){width:calc(100% - 36px)}.fold .fold-layout.is-branch .fold-spine{flex-basis:196px}.fold .fold-family{gap:9px}.fold .fold-family .app-icon{width:29px;height:29px}.fold .fold-family-text strong{font-size:11px}}
+@media(max-width:650px){.fold .surface{left:11px;top:12px;max-width:calc(100% - 22px);max-height:calc(100% - 24px)}.fold .surface:has(.fold-layout.is-branch){width:calc(100% - 22px)}.fold .fold-layout.is-branch .fold-spine{flex-basis:81px;padding-right:7px}.fold .fold-layout.is-branch .fold-family{position:relative;justify-content:center;padding:8px 4px 22px;min-height:63px}.fold .fold-layout.is-branch .fold-family-text,.fold .fold-layout.is-branch .fold-chevron,.fold .fold-layout.is-branch .fold-spine>.fold-section-label,.fold .fold-layout.is-branch .fold-spine-note{display:none}.fold .fold-layout.is-branch .fold-family kbd{position:absolute;bottom:4px;min-width:20px;min-height:19px;font-size:10px;padding:2px 4px}.fold .fold-detail{padding-left:8px}.fold .fold-detail-heading{padding:1px 2px 12px;align-items:flex-start;flex-direction:column;gap:4px}.fold .fold-detail-heading strong{font-size:17px}.fold .fold-back{align-self:flex-start;padding:2px 0}.fold .fold-detail .target{padding:10px 7px;gap:7px;min-height:74px}.fold .fold-detail .target kbd{min-width:32px;min-height:27px;font-size:11px;padding:4px}.fold .fold-detail .target-title{font-size:11px}.fold .fold-detail .target-meta{font-size:9px}.fold .fold-detail-note{font-size:8px;margin:12px 2px}.fold .mode-strip{font-size:8px;padding-left:15px}.fold .surface-head{padding-left:15px}.fold .surface-foot{font-size:8px;gap:8px;padding:12px 15px}}

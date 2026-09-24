@@ -1,0 +1,10 @@
+{
+  "manifest_version": 2,
+  "name": "Tabnax Companion",
+  "version": "0.1.0",
+  "description": "Select non-private browser tabs from the native Tabnax switcher.",
+  "permissions": ["tabs", "nativeMessaging"],
+  "background": {"scripts": ["background.js"], "persistent": true},
+  "browser_specific_settings": {"gecko": {"id": "tabnax@tabnax.local", "strict_min_version": "115.0", "data_collection_permissions": {"required": ["none"]}}},
+  "incognito": "not_allowed"
+}

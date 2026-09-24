@@ -1,0 +1,475 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tabnax proposed native settings, version 1",
+  "description": "Structural contract only. Native key availability, reserved shortcuts, prefix-free allocation and capability validation remain semantic checks. Not the browser localStorage schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "activation",
+    "selection",
+    "windows",
+    "appearance",
+    "startup",
+    "position",
+    "browserTabs"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trigger",
+        "behavior"
+      ],
+      "properties": {
+        "trigger": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "keyCode",
+            "modifiers",
+            "side"
+          ],
+          "properties": {
+            "keyCode": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Symbolic key token resolved and validated by the native adapter."
+            },
+            "modifiers": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 4,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "control",
+                  "option",
+                  "command",
+                  "shift"
+                ]
+              }
+            },
+            "side": {
+              "enum": [
+                "either",
+                "left",
+                "right"
+              ]
+            }
+          }
+        },
+        "behavior": {
+          "enum": [
+            "latch",
+            "hold"
+          ]
+        }
+      }
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "handPreset",
+        "orderedKeys",
+        "interpretation",
+        "baseLayoutID",
+        "policy",
+        "maxAddressLength"
+      ],
+      "properties": {
+        "handPreset": {
+          "enum": [
+            "right",
+            "left",
+            "both",
+            "custom"
+          ]
+        },
+        "orderedKeys": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Ordered symbolic key tokens. Display glyph and physical mapping are resolved from baseLayoutID. Normalize before uniqueness validation."
+        },
+        "interpretation": {
+          "enum": [
+            "physical",
+            "characters"
+          ]
+        },
+        "baseLayoutID": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policy": {
+          "enum": [
+            "stable",
+            "mnemonic",
+            "pairs"
+          ]
+        },
+        "maxAddressLength": {
+          "const": 4,
+          "description": "Internal leaf bound for stable/mnemonic and each Fold stage; a full Fold address can contain eight keys. Pair policy uses exactly two."
+        },
+        "baseHandPreset": {
+          "enum": [
+            "right",
+            "left",
+            "both"
+          ],
+          "description": "Reference preset for restoring a custom alphabet. Missing values migrate from handPreset or an exact orderedKeys match, otherwise right. Migration never changes the saved key order."
+        }
+      }
+    },
+    "windows": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "includeMinimized",
+        "includeHiddenApps"
+      ],
+      "properties": {
+        "includeMinimized": {
+          "type": "boolean"
+        },
+        "includeHiddenApps": {
+          "type": "boolean"
+        }
+      }
+    },
+    "appearance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "labelPalette",
+        "labelScale",
+        "strongOutlines"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "system",
+            "light",
+            "dark"
+          ]
+        },
+        "labelPalette": {
+          "enum": [
+            "graphite",
+            "tabnax",
+            "sage",
+            "iris"
+          ]
+        },
+        "labelScale": {
+          "enum": [
+            "standard",
+            "large",
+            "extra"
+          ]
+        },
+        "strongOutlines": {
+          "type": "boolean"
+        },
+        "colorOverrides": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "properties": {
+            "graphite": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "light": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "keyBg": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "selection": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    }
+                  }
+                },
+                "dark": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "keyBg": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "selection": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    }
+                  }
+                }
+              }
+            },
+            "tabnax": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "light": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "keyBg": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "selection": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    }
+                  }
+                },
+                "dark": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "keyBg": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "selection": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    }
+                  }
+                }
+              }
+            },
+            "sage": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "light": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "keyBg": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "selection": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    }
+                  }
+                },
+                "dark": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "keyBg": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "selection": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    }
+                  }
+                }
+              }
+            },
+            "iris": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "light": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "keyBg": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "selection": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    }
+                  }
+                },
+                "dark": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "keyBg": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "selection": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "startup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "launchAtLoginRequested"
+      ],
+      "properties": {
+        "launchAtLoginRequested": {
+          "type": "boolean"
+        }
+      }
+    },
+    "position": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "display",
+        "anchor",
+        "inset"
+      ],
+      "properties": {
+        "display": {
+          "enum": [
+            "focused",
+            "pointer",
+            "main"
+          ]
+        },
+        "anchor": {
+          "enum": [
+            "top-left",
+            "top-center",
+            "top-right",
+            "middle-left",
+            "middle-center",
+            "middle-right",
+            "bottom-left",
+            "bottom-center",
+            "bottom-right"
+          ]
+        },
+        "inset": {
+          "type": "integer",
+          "minimum": 12,
+          "maximum": 64,
+          "multipleOf": 4
+        }
+      },
+      "description": "Shore placement, retained from the earlier proposal. Other modes use modePositions overrides or their documented defaults."
+    },
+    "browserTabs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "range",
+        "defaultScope"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "range": {
+          "enum": [
+            "all",
+            "browser",
+            "window"
+          ]
+        },
+        "defaultScope": {
+          "enum": [
+            "windows",
+            "tabs"
+          ]
+        },
+        "selection": {
+          "enum": [
+            "automatic",
+            "selected"
+          ],
+          "default": "automatic"
+        },
+        "selectedBrowsers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "arc",
+              "zen",
+              "safari",
+              "chrome",
+              "firefox",
+              "edge",
+              "brave"
+            ]
+          },
+          "default": [
+            "arc",
+            "zen",
+            "safari",
+            "chrome",
+            "firefox",
+            "edge",
+            "brave"
+          ]
+        }
+      }
+    },
+    "displayMode": {
+      "enum": [
+        "shore",
+        "beacons",
+        "canopy",
+        "lattice",
+        "fold",
+        "relay"
+      ],
+      "default": "shore"
+    },
+    "modePositions": {
+      "type": "object",
+      "additionalProperties": false,
+      "default": {},
+      "description": "Optional per-mode placement overrides. Defaults: Beacons bottom-center, Canopy top-center, Lattice/Fold middle-center, Relay middle-right; focused display and 24 pt inset. Shore always uses position.",
+      "properties": {
+        "beacons": {
+          "$ref": "#/properties/position"
+        },
+        "canopy": {
+          "$ref": "#/properties/position"
+        },
+        "lattice": {
+          "$ref": "#/properties/position"
+        },
+        "fold": {
+          "$ref": "#/properties/position"
+        },
+        "relay": {
+          "$ref": "#/properties/position"
+        }
+      }
+    }
+  }
+}

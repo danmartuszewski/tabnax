@@ -1,0 +1,49 @@
+.relay .surface{position:absolute;inset:0}
+.relay .surface-head{position:absolute;top:14px;left:18px;background:#202b20;border:1px solid #879b6b55;border-radius:9px;padding:11px 15px;gap:28px;z-index:3}
+.relay .mode-strip{position:absolute;top:20px;right:18px;background:#202b20e8;border-radius:6px;padding:9px 12px;z-index:3}
+.relay .product-search{position:absolute;top:14px;right:18px;width:350px;z-index:4;margin:0}
+.relay .surface-foot{position:absolute;bottom:13px;right:18px;left:18px;padding:10px 13px;border:1px solid #879b6b33;border-radius:7px;background:#202b20eb;z-index:3}
+.relay .relay-content{position:absolute;inset:0;pointer-events:none;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:16px;padding:72px 18px 65px}
+.relay .relay-pair{position:relative;left:clamp(0px,var(--relay-x),calc(100% - 580px));align-self:center;width:580px;display:flex;align-items:center;gap:0;pointer-events:auto}
+.relay .relay-current{width:203px;display:flex;align-items:flex-start;gap:10px;border:1px solid #dbe9c929;border-radius:10px;background:#202b20e8;padding:14px;color:#bac9ae}
+.relay .relay-current .app-icon{width:28px;height:28px;border-radius:7px;margin-top:18px}
+.relay .relay-current-text{display:flex;flex-direction:column;gap:7px;min-width:0}
+.relay .relay-current-text small{font:8px ui-monospace,monospace;letter-spacing:.13em;color:#8c9e7f}
+.relay .relay-current-text strong{font-size:11px;line-height:1.5;font-weight:450;overflow-wrap:anywhere;color:#c5d0bc}
+.relay .relay-current-text>span{font-size:9px;color:#8fa280;display:flex;align-items:center;gap:8px}
+.relay .relay-current-address{font:10px ui-monospace,monospace;padding:2px 5px;border:1px solid #72875c66;border-radius:3px;color:#aac097}
+.relay .relay-thread{width:43px;flex-shrink:0;display:flex;align-items:center;color:#d9f68c;font:18px ui-monospace,monospace;margin-top:-13px}
+.relay .relay-thread i{height:1px;background:#d9f68c77;flex:1}
+.relay .relay-return{width:334px;padding:16px;border:1px solid #cfed8773;border-radius:13px;background:#202b20;box-shadow:0 12px 35px #10210e4d}
+.relay .relay-return-label{display:flex;align-items:center;justify-content:space-between;font:8px ui-monospace,monospace;letter-spacing:.13em;color:#d9f68c;margin-bottom:12px;gap:12px}
+.relay .relay-return-label>span:last-child:not(:first-child){font-size:7px;letter-spacing:.08em;color:#8c9f7a}
+.relay .relay-return-target .target{padding:4px 0 10px;gap:12px;align-items:center}
+.relay .relay-return-target .app-icon{width:40px;height:40px;border-radius:10px}
+.relay .relay-return-target .target-title{font-size:15px;line-height:1.35;font-weight:450}
+.relay .relay-return-target .target-meta{font-size:10px;line-height:1.5}
+.relay .relay-return-target .target kbd{font-size:15px;min-width:29px;min-height:29px}
+.relay .relay-return-action{width:100%;margin-top:9px;padding:10px 12px;border-radius:6px;background:#d9f68c;color:#283918;display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:550}
+.relay .relay-return-action:hover{background:#e8ffaa}
+.relay .relay-return-action kbd{color:#293d15;background:#c7e776;border:1px solid #64812d35;box-shadow:none;font:11px ui-monospace,monospace;min-height:24px;letter-spacing:0}
+.relay .relay-empty-pair strong{display:block;font-size:16px;font-weight:450;line-height:1.4;color:#f1f7e7}
+.relay .relay-empty-pair p{font-size:11px;line-height:1.7;color:#a6b799;margin:10px 0 2px}
+.relay .relay-shelf{position:relative;background:#202b20;border:1px solid #879b6b55;border-radius:11px;padding:12px 13px;pointer-events:auto}
+.relay .relay-shelf-label{display:flex;align-items:center;justify-content:space-between;font:8px ui-monospace,monospace;letter-spacing:.13em;color:#acbe99;gap:15px;margin:0 2px 10px}
+.relay .relay-shelf-label>span:last-child{color:#7e9270;font-size:8px;letter-spacing:.06em}
+.relay .relay-shelf-targets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.relay .relay-shelf .target{padding:9px 10px;gap:10px;border:1px solid #ffffff12;border-radius:7px;min-height:59px}
+.relay .relay-shelf .target-title{font-size:11px;line-height:1.3}
+.relay .relay-shelf .target-meta{font-size:9px;line-height:1.4}
+.relay .relay-shelf .app-icon{width:27px;height:27px;border-radius:7px}
+.relay .relay-shelf kbd{font-size:13px;min-height:27px;min-width:27px}
+.relay .relay-shelf-empty{font-size:12px;color:#97ab87;margin:8px}
+.relay .relay-index{position:absolute;top:86px;left:18px;right:18px;bottom:65px;border:1px solid #879b6b55;border-radius:11px;background:#202b20;padding:17px;display:flex;flex-direction:column}
+.relay .relay-index-label{font:9px/1.5 ui-monospace,monospace;letter-spacing:.09em;color:#a6b995;margin-bottom:15px}
+.relay .relay-index-targets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:8px;overflow:auto;min-height:0;scrollbar-width:thin;scrollbar-color:#566449 transparent}
+.relay .relay-index .target{padding:13px;border:1px solid #ffffff12;min-height:71px}
+.relay .relay-index .target.arrow-selected{border-color:#d9f68c80;background:#d9f68c14}
+.relay .relay-index .empty-results{grid-column:1/-1}
+@media(min-width:1500px){.relay .relay-pair{width:624px;left:clamp(0px,var(--relay-x),calc(100% - 624px))}.relay .relay-current{width:220px}.relay .relay-return{width:361px;padding:18px}.relay .relay-return-target .target-title{font-size:17px}.relay .relay-shelf .target{min-height:64px;padding:11px}.relay .relay-shelf .target-title{font-size:12px}}
+@media(max-width:1150px){.relay .relay-pair{left:clamp(0px,var(--relay-x),calc(100% - 550px));width:550px}.relay .relay-current{width:187px}.relay .relay-return{width:320px}.relay .relay-shelf .target{padding:8px;gap:8px}.relay .relay-shelf .target-title{font-size:10px}}
+@media(max-width:800px){.relay .relay-content{padding-top:101px}.relay .relay-pair{left:0;width:100%}.relay .relay-current{width:36%;min-width:0;padding:12px}.relay .relay-return{width:calc(64% - 32px);padding:14px}.relay .relay-thread{width:32px}.relay .relay-current .app-icon{display:none}.relay .relay-return-target .target-title{font-size:13px}.relay .relay-return-target .app-icon{width:33px;height:33px}.relay .mode-strip{top:65px;left:18px;right:auto;font-size:9px}.relay .product-search{top:65px;left:18px;right:18px;width:auto}.relay .relay-shelf-targets{grid-template-columns:repeat(2,minmax(0,1fr));max-height:232px;overflow:auto;scrollbar-width:thin}.relay .relay-shelf .target{min-height:57px}.relay .relay-index{top:117px}.relay .relay-index-targets{grid-template-columns:1fr}.relay .relay-index .target{min-height:64px}.relay .relay-shelf-label{font-size:8px}}
+@media(max-width:520px){.relay .surface-head{left:10px;right:10px;top:11px}.relay .mode-strip{left:10px;top:61px;padding:8px 10px}.relay .surface-foot{left:10px;right:10px;bottom:10px;font-size:9px;padding:10px}.relay .product-search{left:10px;right:10px;top:60px}.relay .relay-content{padding:101px 10px 61px;gap:14px}.relay .relay-pair{left:0;align-items:stretch}.relay .relay-current{width:32%;padding:11px 9px;align-items:center}.relay .relay-current-text small{font-size:7px;letter-spacing:.03em}.relay .relay-current-text strong{font-size:10px}.relay .relay-current-text>span{font-size:8px;flex-wrap:wrap;gap:5px}.relay .relay-thread{width:20px;font-size:15px;align-self:center}.relay .relay-return{width:calc(68% - 20px);padding:12px 10px}.relay .relay-return-label{font-size:7px;letter-spacing:.07em;flex-wrap:wrap;gap:5px;margin-bottom:9px}.relay .relay-return-label>span:last-child:not(:first-child){font-size:6px}.relay .relay-return-target .target{gap:8px;align-items:flex-start}.relay .relay-return-target .app-icon{display:none}.relay .relay-return-target .target-title{font-size:12px}.relay .relay-return-target .target-meta{font-size:8px}.relay .relay-return-target .target kbd{font-size:12px;min-width:25px;min-height:25px}.relay .relay-return-action{font-size:10px;padding:8px;gap:8px}.relay .relay-return-action kbd{font-size:9px}.relay .relay-empty-pair strong{font-size:13px}.relay .relay-empty-pair p{font-size:10px}.relay .relay-shelf{padding:10px 9px}.relay .relay-shelf-label{font-size:7px;letter-spacing:.04em;gap:10px}.relay .relay-shelf-label>span:last-child{font-size:6px}.relay .relay-shelf-targets{gap:5px;max-height:205px}.relay .relay-shelf .target{padding:8px 6px;gap:7px;min-height:67px;align-items:flex-start}.relay .relay-shelf .app-icon{display:none}.relay .relay-shelf .target-title{font-size:10px}.relay .relay-shelf .target-meta{font-size:8px}.relay .relay-shelf kbd{font-size:12px;min-width:24px;min-height:24px;padding:3px}.relay .relay-index{left:10px;right:10px;top:110px;bottom:60px;padding:12px}.relay .relay-index-label{font-size:8px}.relay .relay-index .target{padding:11px;min-height:70px}}

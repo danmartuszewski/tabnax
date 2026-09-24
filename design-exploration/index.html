@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Tabnax — Six ways back to work</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23202720'/%3E%3Cpath d='M8 24 24 8M10 8h14v14' fill='none' stroke='%23d9f68c' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="lattice.css">
+  <link rel="stylesheet" href="fold.css">
+  <link rel="stylesheet" href="relay.css">
+</head>
+<body>
+  <main class="gallery">
+    <header class="masthead"><a class="wordmark" href="./index.html" aria-label="Tabnax design exploration"><span class="brand-mark">↗</span> tabnax<span class="wordmark-dot">.</span></a><div>INTERACTION STUDIES <span class="edition">/ 01</span></div><span class="status-tag">Design exploration</span></header>
+    <section class="intro"><div><p class="eyebrow">A SMALLER DISTANCE BETWEEN THOUGHT & WINDOW</p><h1>Six ways back to work.</h1></div><p>Different switching habits. Different answers.<br>Try the interaction that fits yours.</p></section>
+
+    <div class="collection-label"><span>THE ORIGINAL STUDIES</span><span>Three spatial surfaces</span></div>
+    <nav class="concepts" aria-label="Design concepts">
+      <button type="button" class="concept active" data-concept="shore" aria-pressed="true"><span class="concept-number">01</span><span><strong>Shore</strong><small>A quiet edge. One clear scan.</small></span><span class="mini mini-shore" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+      <button type="button" class="concept" data-concept="beacons" aria-pressed="false"><span class="concept-number">02</span><span><strong>Beacons</strong><small>The desktop becomes the switcher.</small></span><span class="mini mini-beacons" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+      <button type="button" class="concept" data-concept="canopy" aria-pressed="false"><span class="concept-number">03</span><span><strong>Canopy</strong><small>Apps above. Windows beneath.</small></span><span class="mini mini-canopy" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+    </nav>
+
+    <div class="collection-label"><span>NEW DIRECTIONS</span><span>Three different ways to choose</span></div>
+    <nav class="concepts additions" aria-label="Additional design concepts">
+      <button type="button" class="concept" data-concept="lattice" aria-pressed="false"><span class="concept-number">04</span><span><strong>Lattice</strong><small>A grid of addresses. Room to narrow.</small></span><span class="mini mini-lattice" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+      <button type="button" class="concept" data-concept="fold" aria-pressed="false"><span class="concept-number">05</span><span><strong>Fold</strong><small>Choose the app. Unfold its windows.</small></span><span class="mini mini-fold" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+      <button type="button" class="concept" data-concept="relay" aria-pressed="false"><span class="concept-number">06</span><span><strong>Relay</strong><small>One move back to your last window.</small></span><span class="mini mini-relay" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+    </nav>
+
+    <section class="demo" aria-label="Interactive concept prototype">
+      <div class="demo-toolbar"><div class="demo-label"><span class="live-dot"></span> SIMULATED DESKTOP <span class="toolbar-divider">/</span><span id="scene-label">8 windows · 6 apps</span></div><div class="demo-actions"><button type="button" id="reset">Reset</button><button type="button" class="primary" id="activate">Try it <kbd>Space</kbd></button></div></div>
+      <div id="desktop" class="desktop shore" tabindex="0" role="region" aria-label="Simulated macOS desktop. Space opens the switcher, letters select, slash searches, Escape cancels." aria-describedby="keyboard-help">
+        <div class="wallpaper" aria-hidden="true"><div class="wallpaper-fold one"></div><div class="wallpaper-fold two"></div><div class="wallpaper-fold three"></div></div>
+        <div class="menubar" aria-hidden="true"><span class="apple">●</span><b id="menu-app">Visual Studio Code</b><span>File</span><span>Edit</span><span>View</span><span class="menu-right">◒ &nbsp; ▰ &nbsp; Thu 17 Sep &nbsp; 09:41</span></div>
+        <div id="windows" class="windows" aria-hidden="true"></div>
+        <div id="dock" class="dock" aria-hidden="true"></div>
+        <div class="desktop-dim" aria-hidden="true"></div>
+        <div id="switcher" class="switcher" aria-label="Tabnax switcher"></div>
+        <div id="idle-hint" class="idle-hint"><span>Back in your flow.</span><small><kbd>Space</kbd> to switch again</small></div>
+      </div>
+      <div class="demo-bottom"><div id="feedback" role="status" aria-live="polite">Ready. Type a displayed letter to focus its window.</div><span>Browser simulation · no system access</span></div>
+    </section>
+
+    <div class="keyboard-help" id="keyboard-help"><span><kbd>Space</kbd> open</span><span><kbd id="hold-key">Left Shift</kbd> hold to peek</span><span><kbd>A…Z</kbd> select</span><span><kbd>/</kbd> find</span><span><kbd>Esc</kbd> back / cancel</span><span><kbd>1</kbd> windows <kbd>2</kbd> apps <kbd id="tabs-key">3</kbd><span id="tabs-key-label"> tabs in Canopy / Lattice</span></span><span id="concept-extra-key" hidden><kbd>Enter</kbd> previous window</span></div>
+
+    <section class="concept-notes" aria-live="polite"><div><p class="eyebrow" id="concept-kicker">01 / SHORE</p><h2 id="concept-headline">A place for every window.<br>A letter that stays put.</h2></div><div><h3>How your eyes move</h3><p id="concept-scan"></p></div><div><h3>The tradeoff</h3><p id="concept-tradeoff"></p></div></section>
+
+    <details class="lab"><summary><span>Prototype lab</span><span>Window churn, handedness & motion <span class="plus">+</span></span></summary><div class="lab-content">
+      <div class="lab-column"><h3>Change the desktop</h3><label for="scenario">Window set</label><select id="scenario"><option value="8">Everyday · 8 windows</option><option value="6">Light · 6 windows</option><option value="10">Busy · 10 windows</option></select><div class="inline-controls"><button type="button" id="add-window">Open a window</button><button type="button" id="close-window">Close focused window</button></div><p>Try while the switcher is open. Existing letters stay assigned. Closed addresses retire until Reset.</p><div class="lab-readout" id="address-readout"></div></div>
+      <div class="lab-column"><h3>Change the selection hand</h3><label for="hand">Alphabet</label><select id="hand"><option value="right">Right hand · J K L U I O N M H P</option><option value="left">Left hand · A S D F W E R C V Q</option><option value="custom">Custom alphabet…</option></select><div id="custom-controls" hidden><label for="custom-alphabet">6–12 unique letters, in comfort order</label><div class="inline-controls"><input id="custom-alphabet" value="jkluionmhp" maxlength="12" spellcheck="false" autocomplete="off"><button type="button" id="apply-alphabet">Apply</button></div><p id="alphabet-error" role="alert"></p></div><p id="alphabet-note">Left thumb opens; right hand selects. P is reserved for overflow: PJ, PK… No existing key must become a prefix.</p></div>
+      <div class="lab-column"><h3>Try the edge cases</h3><label class="check-label"><input type="checkbox" id="reduce-motion"> Reduce motion</label><p id="motion-note">System reduced-motion preference is also respected.</p><button type="button" id="tab-experiment">Explore 28 Safari tabs ↗</button><p>Canopy and Lattice explore tabs: two-letter addresses, three browser windows, long titles and an explicit search mode.</p><p class="compact-warning">For spatial comparison, use a desktop-sized viewport. Compact screens stack Beacons labels.</p></div>
+    </div></details>
+
+    <section class="decision"><div><p class="eyebrow">CHOOSE BY SWITCHING HABIT</p><h2>Different strengths.<br>Separate modes.</h2></div><div><p>Shore remains the compact baseline for random window switching. Lattice tests whether learning a spatial address makes selection more natural. Fold trades an extra key for a smaller set of choices. Relay gives repeated back-and-forth work its own interaction.</p><p>There is no need to force these into one interface. Compare the situations below, then keep only the modes that reduce hesitation in your own work.</p><a href="ADDITIONAL-DIRECTIONS.md">Read the team’s rationale & interaction differences ↗</a></div></section>
+    <div class="comparison-wrap"><table class="comparison"><caption>Where each direction could earn its place</caption><thead><tr><th>Concept</th><th>Try it when…</th><th>What it costs</th></tr></thead><tbody><tr><td>Shore</td><td>You jump among 6–10 unrelated windows.</td><td>An eye movement to the edge; a vertical scan.</td></tr><tr><td>Beacons</td><td>You remember where the window sits.</td><td>Scattered labels; a second scan for hidden windows.</td></tr><tr><td>Canopy</td><td>You recognize the app before its window title.</td><td>A wide scan, then a downward scan.</td></tr><tr><td>Lattice</td><td>You like Mouseless-style addresses and spatial memory.</td><td>More screen area; a second key for a branch.</td></tr><tr><td>Fold</td><td>One app has several easily confused windows.</td><td>Always app → window, including singleton apps.</td></tr><tr><td>Relay</td><td>You keep alternating between two windows.</td><td>The prominent target changes with real switching history.</td></tr></tbody></table></div>
+    <section class="try-sequence"><h3>A useful comparison</h3><ol><li>Find <strong>Tabnax · Layout preview</strong> without search.</li><li>Switch to Terminal, then back to the same Safari window.</li><li>Open and close a window in the lab. Use a letter you remember.</li><li>In Canopy, press <kbd>3</kbd>, then <kbd>/</kbd> and type <strong>pronouns</strong>.</li></ol><p>Look for hesitations and wrong targets, not just fewer keystrokes. Keep the concept you can read before you consciously “read the UI”.</p></section>
+    <footer><span>Tabnax / Design discovery, September 2026 · <a href="DESIGN-NOTES.md">Original rationale</a></span><span>Local prototype. No native integration. No feature commitments.</span></footer>
+  </main>
+  <script src="lattice.js"></script>
+  <script src="fold.js"></script>
+  <script src="relay.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

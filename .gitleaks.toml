@@ -1,0 +1,9 @@
+title = "Tabnax publication scan"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "workstation-home-path"
+description = "Personal workstation paths must not be published"
+regex = '''/Users/[A-Za-z0-9_.-]+/|/Volumes[/]Projects/'''

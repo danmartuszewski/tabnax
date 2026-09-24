@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Build Tabnax locally, connect your browsers, and learn how its macOS permissions work." />
+    <meta name="theme-color" content="#f6f7f0" />
+    <title>Build &amp; browser guide — Tabnax</title>
+    <link rel="icon" href="assets/tabnax-icon.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="guide.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header wrap">
+      <a class="wordmark" href="index.html"><img src="assets/tabnax-icon.png" width="32" height="32" alt="" />tabnax</a>
+      <a class="button button-small button-dark" href="index.html#playground">Try the playground ↗</a>
+    </header>
+    <main id="main" class="guide wrap">
+      <p class="eyebrow">THE NEXT STEP, AT YOUR PACE.</p>
+      <h1>Your Mac.<br />Your <em>shortcut.</em></h1>
+      <p class="guide-intro">Tabnax is in active development. You can build the native app from source and explore the six layouts today. A signed public download is still ahead.</p>
+      <nav class="guide-nav" aria-label="Guide sections"><a href="#build">Build locally</a><a href="#browsers">Connect browsers</a><a href="#permissions">Permissions &amp; privacy</a></nav>
+      <section id="build">
+        <p class="eyebrow">01 / BUILD LOCALLY</p>
+        <h2>Start with the native app.</h2>
+        <p>You’ll need an Apple silicon Mac running macOS 15 or later, Xcode with the macOS 26 SDK or newer, and its command-line tools selected. Obtain the project source from its owner; a public repository address has not been configured yet.</p>
+        <p>From the project’s root directory:</p>
+        <pre><code>make build
+open macos/build/DerivedData/Build/Products/Debug/Tabnax.app --args --settings</code></pre>
+        <p>Or run <code>make dev</code> to rebuild and reopen as native source changes. You can also open <code>macos/Tabnax.xcodeproj</code> and run the Tabnax scheme. The shared project uses ad-hoc signing without a private certificate.</p>
+        <ol><li>Open Settings → General and allow Accessibility for the exact app build.</li><li>Return to Tabnax and select Retry.</li><li>Press <kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>Space</kbd>, then type a destination’s displayed address.</li></ol>
+        <p>App settings include the activation shortcut, persistent app letters, mouse controls, display placement, six themes, and browser connections. Letter changes use Apply/Discard; other preferences save immediately.</p>
+      </section>
+      <section id="browsers">
+        <p class="eyebrow">02 / CONNECT BROWSERS</p>
+        <h2>Your tabs belong here, too.</h2>
+        <div class="guide-table"><table><thead><tr><th>Browser</th><th>Connection and setup</th></tr></thead><tbody>
+          <tr><td>Arc, Chrome, Edge, Brave</td><td>Built-in Apple Events. Use Set up in Browser tabs and approve macOS Automation for each browser.</td></tr>
+          <tr><td>Firefox, Zen</td><td>Companion extension and native messaging. Set up registers the local host and opens the installation guide. Current development installation is temporary; permanent installation requires a signed add-on.</td></tr>
+          <tr><td>Safari</td><td>Embedded Safari web extension. Approve it in Safari’s extension settings. Development builds may require Safari’s unsigned-extension setting.</td></tr>
+        </tbody></table></div>
+        <p>Private tabs are excluded. Choose all available browsers or a subset, and limit tabs to all, the active browser, or its active window. A checked preference does not bypass browser consent.</p>
+      </section>
+      <section id="permissions">
+        <p class="eyebrow">03 / PERMISSIONS &amp; PRIVACY</p>
+        <h2>Local by design.</h2>
+        <p>The current app processes window and tab metadata locally, stores settings on your Mac, and has no cloud account or analytics service. Accessibility enables window discovery, focus, and keyboard capture. Browser Automation and extension approval are separate. Launch at login is optional.</p>
+        <p>Tabnax does not request Screen Recording or an additional Input Monitoring permission. Companions use tab metadata and native messaging without page-content scripts or browsing-history access.</p>
+        <p>The website demo uses sample data. It cannot discover real windows, launch apps, or change native preferences. Native images are app-owned view exports; glass appears opaque in those exports.</p>
+        <p>Compatibility across Spaces, full-screen apps, Stage Manager, input utilities, and display arrangements still needs broader testing. Development builds are not signed/notarized public releases.</p>
+      </section>
+      <a class="button button-dark" href="index.html#playground">Back to the playground ↗</a>
+    </main>
+    <footer class="site-footer wrap"><span>Tabnax · A little less switching. A little more doing.</span><a href="index.html">Product homepage ↗</a></footer>
+  </body>
+</html>

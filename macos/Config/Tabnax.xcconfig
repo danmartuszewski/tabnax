@@ -1,0 +1,9 @@
+// Shared by every target. Release Please bumps MARKETING_VERSION on release;
+// the release script derives CURRENT_PROJECT_VERSION from it for Sparkle.
+MARKETING_VERSION = 0.1.0 // x-release-please-version
+CURRENT_PROJECT_VERSION = 1
+
+// Sparkle update feed. The `/$()/` keeps xcconfig from reading `//` as a comment.
+TABNAX_UPDATE_FEED_URL = https:/$()/github.com/danmartuszewski/tabnax/releases/latest/download/appcast.xml
+// Public half of the Sparkle EdDSA key (docs/RELEASING.md). Empty disables updates.
+TABNAX_SPARKLE_PUBLIC_KEY = cs+rsEiHbaNJ4jrAtvt6PPIvfew9k5TvLTTFhOqcpOM=

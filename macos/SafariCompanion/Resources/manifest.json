@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "Tabnax Companion",
+  "version": "0.1.0",
+  "description": "Select non-private browser tabs from the native Tabnax switcher.",
+  "permissions": [
+    "tabs",
+    "nativeMessaging"
+  ],
+  "background": {
+    "scripts": [
+      "safari-port.js",
+      "background.js"
+    ],
+    "persistent": true
+  }
+}

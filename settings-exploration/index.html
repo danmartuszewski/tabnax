@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Tabnax · Settings study</title><link rel="icon" href="data:,"><link rel="stylesheet" href="styles.css"></head>
+<body>
+<header class="study"><a class="brand" href="../design-exploration/tabnax-gallery.html"><span class="brand-mark">t</span> Tabnax <span class="study-tag">Settings study</span></a><a href="SPECIFICATION.md">Design specification ↗</a></header>
+<main class="mac-window" aria-label="Tabnax settings simulation">
+  <header class="titlebar"><div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div><div id="window-title">Selection</div><span class="sim-label">SIMULATION</span></header>
+  <nav class="toolbar" aria-label="Settings panes">
+    <button data-pane="general" aria-pressed="false"><span class="toolbar-icon">⚙</span>General</button>
+    <button data-pane="selection" aria-pressed="true"><span class="toolbar-icon keyboard-icon">⌨</span>Selection</button>
+    <button data-pane="position" aria-pressed="false"><span class="toolbar-icon">▣</span>Position</button>
+    <button data-pane="appearance" aria-pressed="false"><span class="toolbar-icon">◐</span>Appearance</button>
+    <button data-pane="tabs" aria-pressed="false"><span class="toolbar-icon">▤</span>Browser Tabs</button>
+  </nav>
+  <div class="content">
+    <div class="settings-column">
+    <section id="pane-general" class="pane" hidden aria-labelledby="general-heading">
+      <h1 id="general-heading">Ready when you are.</h1><p class="lede">Open Tabnax, type a letter, get back to work.</p>
+      <h2>Activation</h2>
+      <div class="setting-row"><label for="record">Open switcher</label><button id="record" class="shortcut">⌃ ⌥ Space</button></div>
+      <p id="shortcut-help" class="help">Suggested shortcut. Check it alongside Mouseless.</p><button id="reset-shortcut" class="text-button scoped-reset">Use suggested shortcut</button><p id="shortcut-error" class="error" role="alert"></p>
+      <div class="setting-row"><label for="activation">Behavior</label><select id="activation"><option value="latch">Press to open</option><option value="hold">Hold to show</option></select></div>
+      <p id="activation-help" class="help">Release the shortcut, then type. Escape cancels.</p>
+      <details><summary>Shortcut details</summary><div class="setting-row"><label for="modifier-side">Modifier side</label><select id="modifier-side"><option value="either">Either side</option><option value="left">Left only</option><option value="right">Right only</option></select></div><p class="help">Side-specific capture is a native design contract. The browser cannot register a global shortcut.</p><p class="help">Modifier-only taps remain an optional native experiment. Mouseless uses left Command tap by default.</p></details>
+      <h2>Windows</h2>
+      <label class="check"><input id="minimized" type="checkbox">Include minimized windows</label>
+      <label class="check"><input id="hidden" type="checkbox">Include windows of hidden apps</label>
+      <p class="help">User-facing windows only. Availability across Spaces must be verified in the native app.</p>
+      <h2>Startup & access</h2>
+      <label class="check"><input id="login" type="checkbox">Launch at login</label>
+      <div class="permission"><span class="permission-icon" aria-hidden="true">◈</span><div><strong>Accessibility</strong><p id="permission-status">Not checked in this prototype</p></div><button id="permission-info">Details…</button></div>
+      <p class="help">Used to read window names and select a window. No screen images are needed.</p>
+    </section>
+    <section id="pane-selection" class="pane" aria-labelledby="selection-heading">
+      <h1 id="selection-heading">Letters that stay familiar.</h1><p class="lede">Choose keys that feel natural under your hand.</p>
+      <h2>Selection keys</h2>
+      <div class="setting-row"><label for="hand">Select with</label><select id="hand"><option value="right">Right hand</option><option value="left">Left hand</option><option value="both">Both hands</option><option value="custom">Custom order</option></select></div>
+      <p class="help">Right-hand keys pair with a left-hand activation shortcut.</p>
+      <div class="field-heading"><label class="field-label" for="alphabet">Letters, in comfort order</label><button id="reset-alphabet" class="text-button" aria-describedby="alphabet-reset-help">Restore default order</button></div>
+      <input id="alphabet" class="alphabet" type="text" spellcheck="false" autocomplete="off" aria-describedby="alphabet-help alphabet-error">
+      <div id="letter-order" class="letter-order" aria-label="Alphabet order"></div>
+      <p id="alphabet-help" class="help">First letters go to the first windows. Move a selected letter with the arrows.</p>
+      <div class="reorder"><span id="selected-letter">J selected</span><button id="move-left" aria-label="Move selected letter earlier">←</button><button id="move-right" aria-label="Move selected letter later">→</button><button id="remove-ambiguous" class="text-button">Remove I / O</button></div>
+      <p id="alphabet-reset-help" class="help">Restores the Right hand preset. Preview first, then Apply labels.</p>
+      <p id="alphabet-error" class="error" role="alert"></p>
+      <div class="setting-row"><label for="policy">Assign letters</label><select id="policy"><option value="stable">Stable · recommended</option><option value="mnemonic">Name initials first</option><option value="pairs">Always two letters</option></select></div>
+      <p id="policy-help" class="help"></p>
+      <div id="overflow-note" class="inline-note"></div>
+      <details id="advanced"><summary>Advanced selection</summary>
+        <div class="setting-row"><label for="key-mode">Keys follow</label><select id="key-mode"><option value="physical">Physical positions</option><option value="characters">Typed characters</option></select></div><p class="help">The sandbox uses A–Z key positions. Native layout mapping is unverified.</p>
+        <div class="pin-heading">Pin a target label <span>Optional study</span></div>
+        <label class="sr-only" for="pin-target">Target to pin</label><select id="pin-target"></select>
+        <div class="pin-entry"><input id="pin-code" maxlength="4" aria-label="Pinned label" placeholder="Free label, e.g. H" autocomplete="off"><button id="pin">Pin label</button></div><p id="pin-error" class="error" role="alert"></p><p class="help">Pins last for this address session. Used labels and prefixes cannot be taken from another target.</p>
+        <button id="reset-labels">Reset label assignments…</button>
+      </details>
+      <div id="draft-bar" class="draft-bar" hidden><strong id="draft-summary"></strong><p id="draft-help">Preview only. Applying starts a new address session.</p><div><button id="discard">Discard</button><button id="apply" class="primary">Apply labels</button></div></div>
+    </section>
+    <section id="pane-position" class="pane" hidden aria-labelledby="position-heading">
+      <h1 id="position-heading">Right where you expect it.</h1><p class="lede">Give the switcher a familiar place on your screen.</p>
+      <h2>Display</h2><p id="position-mode" class="help"></p>
+      <div class="setting-row"><label for="position-display">Show on</label><select id="position-display"><option value="focused">Display with active window</option><option value="pointer">Display with pointer</option><option value="main">Main display</option></select></div>
+      <p class="help">Choose the display when you open Tabnax. It stays there until you finish switching.</p>
+      <h2>Position on screen</h2>
+      <div class="anchor-picker" role="group" aria-label="Switcher position">
+        <button data-anchor="top-left" aria-label="Top left" title="Top left">↖</button><button data-anchor="top-center" aria-label="Top center" title="Top center">↑</button><button data-anchor="top-right" aria-label="Top right" title="Top right">↗</button>
+        <button data-anchor="middle-left" aria-label="Middle left" title="Middle left">←</button><button data-anchor="middle-center" aria-label="Center" title="Center">•</button><button data-anchor="middle-right" aria-label="Middle right" title="Middle right">→</button>
+        <button data-anchor="bottom-left" aria-label="Bottom left" title="Bottom left">↙</button><button data-anchor="bottom-center" aria-label="Bottom center" title="Bottom center">↓</button><button data-anchor="bottom-right" aria-label="Bottom right" title="Bottom right">↘</button>
+      </div>
+      <p id="position-summary" class="position-summary" role="status">Middle right</p>
+      <div class="setting-row"><label for="position-inset">Space from screen edges</label><output id="inset-value" for="position-inset">24 pt</output></div>
+      <input id="position-inset" class="inset-range" type="range" min="12" max="64" step="4" value="24" aria-describedby="position-help">
+      <p id="position-help" class="help">Keeps the switcher clear of the menu bar and Dock. Centered axes stay centered.</p>
+      <div id="mode-position-note" class="inline-note"></div>
+      <button id="position-reset">Use default position</button>
+      <p class="help">Saved immediately. Moving the switcher never changes its letters.</p>
+    </section>
+    <section id="pane-tabs" class="pane" hidden aria-labelledby="tabs-heading">
+      <h1 id="tabs-heading">Go straight to the tab.</h1><p class="lede">Browser tabs, in the same keyboard-first switcher.</p>
+      <label class="check"><input id="tabs-enabled" type="checkbox">Include browser tabs</label>
+      <p class="help">Windows and tabs have separate views and keep their own labels.</p>
+      <div class="setting-row"><label for="tabs-range">Show tabs from</label><select id="tabs-range"><option value="all">All included browsers</option><option value="browser">Active browser</option><option value="window">Active browser window</option></select></div>
+      <div class="setting-row"><label for="default-scope">Open switcher to</label><select id="default-scope"><option value="windows">Windows</option><option value="tabs">Browser tabs</option></select></div>
+      <p id="tabs-range-help" class="help">The preview includes Arc, Zen, Safari, Chrome, Firefox, Edge and Brave.</p>
+      <h2>Your browsers</h2>
+      <div class="setting-row"><label for="browser-selection">Use tabs from</label><select id="browser-selection"><option value="automatic">All available browsers</option><option value="selected">Choose browsers…</option></select></div>
+      <p class="help">Tabnax will find supported browsers automatically. If access is needed, setup will guide you through it.</p>
+      <p id="browser-selection-status" class="help" role="status"></p>
+      <div id="primary-browsers"></div>
+      <details id="more-browsers"><summary>More browsers · Firefox, Edge &amp; Brave</summary><div id="additional-browsers"></div></details>
+      <p class="help">Sample browsers only. This preview does not detect or connect to installed browsers.</p>
+      <h2>Easy to recognize</h2>
+      <p class="help">Each result keeps its title, browser and window or workspace context. Two-letter labels stay stable when titles change or tabs move.</p>
+      <p class="help">Private tabs are excluded. Tab titles are used for switching, not saved as browsing history.</p>
+      <button id="preview-tabs" class="primary">Preview sample tabs</button>
+    </section>
+    <section id="pane-appearance" class="pane" hidden aria-labelledby="appearance-heading">
+      <h1 id="appearance-heading">Quiet, with a clear next key.</h1><p class="lede">A familiar surface. Just enough emphasis to act.</p>
+      <h2>Display mode</h2><div class="setting-row"><label for="display-mode">Show windows as</label><select id="display-mode"><option value="shore">Shore · compact index</option><option value="beacons">Beacons · window plaques</option><option value="canopy">Canopy · app groups</option><option value="lattice">Lattice · address grid</option><option value="fold">Fold · app then window</option><option value="relay">Relay · return pair</option></select></div>
+      <p id="mode-description" class="help"></p><p id="mode-error" class="error" role="status"></p><p class="help">All modes share themes, selection keys and browser choices. Each remembers its own position.</p>
+      <h2>Appearance</h2><fieldset class="segments"><legend class="sr-only">Appearance</legend><label><input name="appearance" type="radio" value="system"><span>System</span></label><label><input name="appearance" type="radio" value="light"><span>Light</span></label><label><input name="appearance" type="radio" value="dark"><span>Dark</span></label></fieldset>
+      <h2>Theme</h2><div class="presets" role="group" aria-label="Theme presets"><button data-theme="graphite"><i class="swatch graphite"></i>macOS</button><button data-theme="tabnax"><i class="swatch tabnax"></i>Tabnax</button><button data-theme="sage"><i class="swatch sage"></i>Sage</button><button data-theme="iris"><i class="swatch iris"></i>Iris</button></div><p id="theme-description" class="help">Native neutral surfaces, with familiar Mac blue selection.</p>
+      <details id="customize-theme"><summary>Customize this theme…</summary>
+        <p id="custom-mode" class="help">Editing Light appearance</p>
+        <div class="color-row"><label for="custom-key-color">Key color</label><code id="key-color-value"></code><input id="custom-key-color" type="color" aria-describedby="color-help"><button id="reset-key-color" class="text-button" aria-label="Restore default key color">Reset</button></div>
+        <div class="color-row"><label for="custom-selection-color">Selection color</label><code id="selection-color-value"></code><input id="custom-selection-color" type="color" aria-describedby="color-help"><button id="reset-selection-color" class="text-button" aria-label="Restore default selection color">Reset</button></div>
+        <p id="color-help" class="help">Letter color adjusts automatically for readability. Selection colors are kept visible against the surface.</p>
+        <p id="theme-contrast" class="help" role="status"></p>
+        <button id="reset-theme">Reset this theme</button>
+        <p class="help">Reset restores both appearances of this preset. Your other themes are kept.</p>
+      </details>
+      <div class="setting-row"><label for="label-size">Label size</label><select id="label-size"><option value="standard">Standard</option><option value="large">Large</option><option value="extra">Extra large</option></select></div>
+      <label class="check"><input id="strong-labels" type="checkbox">Stronger label outlines</label>
+      <p class="help">System Increase Contrast takes priority. Reduce Motion and Reduce Transparency are always respected.</p>
+      <div class="appearance-note"><span aria-hidden="true">◐</span><p>Theme changes appear immediately.<br>Theme changes keep labels and window order.</p></div>
+    </section>
+    </div>
+    <aside class="preview-column" aria-label="Live switcher preview">
+      <div class="preview-heading"><span>LIVE PREVIEW</span><span id="preview-state">Saved settings</span></div>
+      <div id="position-preview" class="position-preview" hidden>
+        <div class="display-strip" aria-label="Simulated displays"><div id="display-main" class="display-mini"><span>Main</span><i>▰</i></div><div id="display-external" class="display-mini"><span>External</span><i>▰</i></div></div>
+        <div id="position-desktop" class="position-desktop" role="img" aria-label="Simulated switcher position"><span class="mini-menubar">Tabnax <span>◷</span></span><div class="mini-work-window"></div><div id="position-mini-switcher" class="position-mini-switcher"><b>Windows</b><span>▧ &nbsp; Tabnax <kbd>J</kbd></span><span>◈ &nbsp; Tabnax <kbd>K</kbd></span><span>◈ &nbsp; Preview <kbd>L</kbd></span><span>▧ &nbsp; Assets <kbd>U</kbd></span></div><div class="mini-dock">▧ ◈ ▧ ▤</div></div>
+        <p id="position-caption" class="help"></p>
+      </div>
+      <p id="mode-preview-note" class="help mode-preview-note"></p>
+      <div class="preview-scope" role="group" aria-label="Preview scope"><button id="scope-windows" aria-pressed="true"><kbd>1</kbd> Windows</button><button id="scope-tabs" aria-pressed="false"><kbd>2</kbd> Tabs</button></div>
+      <div class="preview-wallpaper">
+        <div class="preview-surface" id="preview-surface" tabindex="0" aria-label="Simulated switcher. Press Space to open, then type a label. Escape cancels.">
+          <div class="switcher-heading"><span id="scope-name">Windows</span><span id="window-count">8</span></div>
+          <div id="search-box" class="search-box" hidden><label class="sr-only" for="search">Find a window</label><input id="search" placeholder="Find a window…" autocomplete="off"><span>esc</span></div>
+          <div id="targets" class="targets"></div>
+          <div class="switcher-foot"><span id="sequence-hint">Type a label to switch</span><kbd>/</kbd><span>find</span></div>
+        </div>
+      </div>
+      <div class="try-row"><button id="try" class="primary">Try these keys</button><button id="cancel-try" hidden>Stop</button><span id="try-instruction">No real windows will move.</span></div>
+      <p id="selection-result" class="selection-result" role="status" aria-live="polite">Choose a window without leaving this preview.</p>
+      <details class="inventory"><summary>Inspect labels & windows</summary><div id="inventory"></div><button id="add-window">＋ Add a window</button><p id="held-labels" class="help"></p></details>
+    </aside>
+  </div>
+  <footer class="window-footer"><button id="restore">Restore defaults…</button><span id="save-status" role="status">Saved on this device</span><button id="undo" disabled>Undo</button></footer>
+</main>
+<details class="test-controls"><summary>Prototype controls <span>Scenarios & accessibility states · outside the product</span></summary><div class="harness">
+  <label>Dataset<select id="dataset"><option value="6">6 windows</option><option value="8" selected>8 windows</option><option value="10">10 windows</option><option value="tabs">48 browser tabs</option></select></label>
+  <label>Sample active browser<select id="active-browser"><option value="arc">Arc · Work</option><option value="zen">Zen · Work</option><option value="safari">Safari · Work</option><option value="chrome">Chrome · Work</option><option value="firefox">Firefox · Work</option><option value="edge">Edge · Work</option><option value="brave">Brave · Work</option></select></label>
+  <label>Legacy layout comparison<select id="layout"><option value="list">Compact list</option><option value="grid">Flat cells · comparison only</option></select></label>
+  <label>System appearance<select id="system-appearance"><option value="auto">From browser</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+  <label>Permission scenario<select id="permission-scenario"><option value="unknown">Not checked</option><option value="denied">Access denied</option><option value="revoked">Access revoked</option><option value="granted">Granted · simulated</option></select></label>
+  <label class="check"><input id="simulate-contrast" type="checkbox">Simulate Increase Contrast</label><label class="check"><input id="simulate-focus-failure" type="checkbox">Simulate failed selection</label><label class="check"><input id="simulate-motion" type="checkbox">Simulate Reduce Motion</label>
+  <p>Space opens this focused preview. Held Shift is a browser-only hold surrogate. The recorder stores a sample shortcut; it changes nothing in macOS. No permissions are requested.</p>
+</div></details>
+<footer class="study-footer"><span>A settings proposal. Position and browser tabs included. All six display modes are available in Appearance.</span><a href="EVALUATION.md">Try the evaluation guide ↗</a></footer>
+<dialog id="dialog"><form method="dialog"><h2 id="dialog-title"></h2><p id="dialog-copy"></p><div id="dialog-extra"></div><div class="dialog-actions"><button value="cancel">Cancel</button><button id="dialog-confirm" value="confirm" class="primary">Continue</button></div></form></dialog>
+<script src="model.js"></script><script src="modes.js"></script><script src="app.js"></script></body></html>

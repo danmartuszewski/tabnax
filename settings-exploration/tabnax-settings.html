@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Tabnax · Settings study</title><link rel="icon" href="data:,"><style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;color:#25282c;background:#e7eaf0;color-scheme:light;--surface:#f6f5f4;--field:#fff;--text:#25282c;--muted:#62666c;--line:#d9d9dd;--blue:#006bd6;--focus:#005cc4;--toolbar:#eeeded;--preview:#fafafa;--previewText:#22272c;--previewMuted:#62666c;--keyBg:#e5e7e9;--keyFg:#292d33;--keyBorder:#adb2b8}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 10% 10%,#f6f0e8 0,transparent 50%),radial-gradient(ellipse at 100% 95%,#c4d7df 0,transparent 50%),#e5e9ee;padding:28px 24px 32px;color:var(--text)}a{color:#365778;text-decoration:none}a:hover{text-decoration:underline}button,input,select{font:inherit;color:inherit}button,select,input{accent-color:var(--blue)}button,select{cursor:pointer}button{background:var(--field);border:1px solid #0002;border-radius:6px;padding:5px 11px;box-shadow:0 1px 2px #0000000a;min-height:28px}button:active{filter:brightness(.96)}button:disabled{cursor:default;opacity:.45}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--focus);outline-offset:3px}input[type=text],input:not([type]),select{background:var(--field);border:1px solid var(--line);border-radius:5px;padding:5px 8px;min-height:29px;max-width:100%}select{max-width:195px}input[type=checkbox]{width:15px;height:15px;margin:0;flex:none}p{line-height:1.5;margin:0}h1{font-size:20px;line-height:1.2;letter-spacing:-.55px;margin:0 0 8px;font-weight:650}h2{font-size:12px;margin:23px 0 10px;font-weight:650}fieldset{border:0;padding:0;margin:0}.help{color:var(--muted);font-size:11px;line-height:1.5;margin:7px 0 12px}.lede{font-size:12px;color:var(--muted);margin-bottom:24px}.study{width:min(900px,100%);margin:0 auto 24px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#556471;gap:12px}.brand{font-size:16px;font-weight:650;display:flex;align-items:center;gap:9px;color:#273b4a}.brand-mark{display:grid;place-items:center;width:30px;height:30px;background:#253944;color:#edf3f5;border-radius:8px;font-size:23px;font-weight:500;font-style:italic}.study-tag{font-size:11px;font-weight:400;border-left:1px solid #9fabb7;padding-left:10px;margin-left:5px}.mac-window{width:860px;max-width:100%;margin:auto;background:var(--surface);border:1px solid #0003;border-radius:12px;box-shadow:0 28px 65px #2a3c4a26,0 2px 8px #25374616;overflow:hidden}.titlebar{height:39px;display:flex;align-items:center;justify-content:center;position:relative;background:var(--toolbar);font-weight:600}.traffic{position:absolute;left:15px;display:flex;gap:8px}.traffic i{width:12px;height:12px;border-radius:100%;background:#c7c5c4;border:1px solid #0001}.traffic i:first-child{background:#ff6158;border-color:#db514b}.sim-label{position:absolute;right:15px;font-size:9px;letter-spacing:1px;color:var(--muted);font-weight:500}.toolbar{display:flex;gap:9px;justify-content:center;background:var(--toolbar);border-bottom:1px solid var(--line);padding:0 0 12px}.toolbar button{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:77px;min-height:58px;border:0;background:transparent;box-shadow:none;font-size:11px;border-radius:7px;padding:4px 11px}.toolbar button[aria-pressed=true]{background:#0000000c;color:var(--blue)}.toolbar-icon{font-size:26px;line-height:29px;font-weight:400}.keyboard-icon{font-size:31px}.content{display:grid;grid-template-columns:1fr 362px;min-height:568px}.settings-column{padding:29px 28px 25px 30px;min-width:0}.preview-column{padding:28px 23px 25px;border-left:1px solid var(--line);background:color-mix(in srgb,var(--surface) 70%,var(--field));min-width:0}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0}.field-label{display:block;font-size:12px;margin-top:16px;margin-bottom:8px}.alphabet{width:100%;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:3px;font-size:15px!important;padding:9px!important}.letter-order{display:flex;gap:4px;flex-wrap:wrap;margin-top:9px}.letter-order button{font-family:ui-monospace,SFMono-Regular,monospace;padding:3px 0;min-width:28px;flex:1;max-width:33px;min-height:30px}.letter-order button[aria-pressed=true]{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue);color:var(--blue)}.letter-order .branch{border-style:dashed}.reorder{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);margin-bottom:11px}.reorder span{margin-right:auto}.reorder button{padding:2px 9px}.text-button{box-shadow:none;border:0;background:none;color:var(--blue);font-size:11px}.error{font-size:11px;color:#af251b;line-height:1.5;margin:7px 0}.error:empty{display:none}.inline-note{background:#e7edf2;color:#3e5261;border-radius:6px;font-size:11px;line-height:1.5;padding:10px 12px;margin:12px 0 17px}.inline-note kbd{font-weight:700}details{font-size:12px}summary{cursor:pointer;line-height:1.5}details[open]>summary{margin-bottom:15px}.pin-heading{font-size:12px;font-weight:600;margin:18px 0 8px}.pin-heading span{font-size:10px;font-weight:400;color:var(--muted);margin-left:6px}#pin-target{max-width:100%;width:100%}.pin-entry{display:flex;gap:7px;margin-top:7px}.pin-entry input{min-width:0;flex:1}.draft-bar{margin-top:20px;background:var(--field);border:1px solid var(--line);border-radius:7px;padding:12px;font-size:12px}.draft-bar p{font-size:11px;color:var(--muted);margin-top:5px}.draft-bar>div{display:flex;gap:6px;justify-content:flex-end;margin-top:12px}.primary{background:var(--blue);border-color:#0001;color:white;box-shadow:0 1px 2px #0001}.preview-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 11px;font-size:9px;letter-spacing:1.1px;font-weight:600;color:var(--muted)}.preview-heading span:last-child{letter-spacing:0;font-size:10px;font-weight:400}.preview-wallpaper{background:radial-gradient(ellipse at 0% 0%,#d9e6e6 0%,transparent 70%),radial-gradient(ellipse at 100% 100%,#bccbd0 0%,transparent 75%),#d4dbda;border-radius:10px;padding:15px 12px;min-height:385px;display:flex;align-items:flex-start;justify-content:center}.preview-surface{background:var(--preview);color:var(--previewText);width:100%;border-radius:9px;box-shadow:0 8px 21px #20374322;overflow:hidden;border:1px solid #0003}.preview-surface.armed{outline:3px solid var(--focus);outline-offset:4px}.switcher-heading{display:flex;justify-content:space-between;padding:12px 12px 9px;font-size:11px;font-weight:650}.switcher-heading span:last-child{color:var(--previewMuted);font-weight:400}.targets{padding:0 5px;max-height:440px;overflow:auto}.target{display:flex;align-items:center;gap:8px;width:100%;text-align:left;box-shadow:none;border:1px solid transparent;border-radius:5px;background:transparent;padding:6px;min-height:39px;color:var(--previewText)}.target:hover,.target.highlight{background:color-mix(in srgb,var(--keyBg) 50%,var(--preview));border-color:var(--keyBorder)}.target.dim{opacity:.42}.target .target-text{min-width:0;flex:1;line-height:1.25}.target-title{font-size:11px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.target-meta{font-size:9px;color:var(--previewMuted);display:block;margin-top:2px}.app-icon{width:26px;height:26px;display:grid;place-items:center;border-radius:6px;flex:none;color:#fff;font-size:17px;box-shadow:inset 0 0 0 1px #0001;position:relative}.app-icon.code{background:#e1f2ff;color:#087aca;font-size:21px}.app-icon.safari{background:linear-gradient(#1bd0ff,#1474dc);border:3px solid #f7fafc;border-radius:7px;color:white;font-size:21px}.app-icon.finder{background:linear-gradient(90deg,#54b9f9 50%,#c6eafb 50%);color:#173857;font-size:19px}.app-icon.figma{background:#272c36;color:#ff927f;font-size:20px}.app-icon.terminal{background:#2b323b;font-size:12px;font-family:monospace}.app-icon.notes{background:linear-gradient(#ffd763 28%,#fff1b4 28%);color:#8d7937;font-size:17px}.key-label{display:inline-flex;justify-content:center;align-items:center;font:600 var(--labelFont,12px)/1 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--keyBg);color:var(--keyFg);border:1px solid var(--keyBorder);border-bottom-width:2px;border-radius:5px;min-width:26px;min-height:25px;padding:3px 5px;flex:none}.key-label .entered{opacity:.5}.switcher-foot{display:flex;align-items:center;gap:4px;border-top:1px solid color-mix(in srgb,var(--previewMuted) 23%,var(--preview));margin-top:6px;padding:9px 11px;color:var(--previewMuted);font-size:9px}.switcher-foot>span:first-child{margin-right:auto}.switcher-foot kbd{font-size:10px}.try-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0 8px}.try-row>span{font-size:10px;color:var(--muted)}.selection-result{font-size:11px;color:var(--muted);min-height:34px;line-height:1.5}.inventory{border-top:1px solid var(--line);margin-top:10px;padding-top:12px}.inventory-row{display:flex;align-items:center;gap:6px;margin:6px 0}.inventory-row .inv-title{font-size:10px;flex:1;min-width:0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.inventory-row code{min-width:29px;font-size:11px}.inventory-row button{min-height:24px;padding:1px 6px;font-size:12px}.window-footer{padding:11px 18px;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;font-size:11px}.window-footer>span{margin-left:auto;color:var(--muted)}.window-footer button{font-size:11px}.check{display:flex;align-items:center;gap:8px;margin:12px 0;font-size:12px}.permission{display:flex;align-items:center;gap:9px;margin-top:18px;font-size:11px}.permission>div{flex:1}.permission p{font-size:10px;color:var(--muted);margin-top:3px}.permission button{font-size:11px}.permission-icon{font-size:26px;color:#7c8096}.segments{display:flex;background:#0000000b;border:1px solid var(--line);padding:2px;border-radius:6px}.segments label{flex:1;position:relative;cursor:pointer}.segments input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}.segments span{display:block;text-align:center;padding:6px;border-radius:4px;font-size:12px}.segments input:checked+span{background:var(--field);box-shadow:0 1px 3px #0002}.segments input:focus-visible+span{outline:3px solid var(--focus);outline-offset:3px}.presets{display:flex;gap:9px}.presets button{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;background:transparent;box-shadow:none;border:1px solid transparent;font-size:11px;padding:10px 4px}.presets button[aria-pressed=true]{border-color:var(--blue);background:#0876e40a}.swatch{width:54px;height:39px;border-radius:6px;display:block;box-shadow:0 1px 3px #0002;position:relative}.swatch:after{content:'J';display:grid;place-items:center;position:absolute;inset:9px 15px;font:600 12px ui-monospace;border:1px solid currentColor;border-radius:3px}.swatch.graphite{background:#e5e7e9;color:#292d33}.swatch.sage{background:#dcebdd;color:#254a36}.swatch.iris{background:#e7e1fa;color:#4d367d}.appearance-note{margin:28px 0;display:flex;align-items:center;gap:13px;color:var(--muted);font-size:11px}.appearance-note>span{font-size:28px}.test-controls{max-width:860px;margin:22px auto 0;color:#415569;font-size:11px}.test-controls summary{font-weight:600}.test-controls summary span{font-weight:400;color:#5e6b79;margin-left:8px}.harness{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 22px;padding:8px 0}.harness>label:not(.check){display:flex;align-items:center;justify-content:space-between;gap:8px}.harness p{grid-column:1/-1;max-width:690px;color:#536474}.harness .check{margin:0;font-size:11px}.harness select{font-size:11px;color:var(--text)}.study-footer{max-width:860px;margin:18px auto 0;display:flex;justify-content:space-between;gap:15px;font-size:10px;color:#536575}.search-box{display:flex;gap:5px;align-items:center;margin:0 10px 8px;font-size:9px}.search-box input{width:100%;min-width:0;background:var(--preview);color:var(--previewText);font-size:11px}.targets.grid{display:grid;grid-template-columns:1fr 1fr;gap:3px}.grid .target{flex-wrap:wrap;padding:7px;min-height:80px;position:relative;align-content:start;gap:6px}.grid .target-text{order:3;flex-basis:100%}.grid .key-label{margin-left:auto}.grid .target-title{font-size:10px}.empty-cell{min-height:80px;border:1px dashed var(--keyBorder);border-radius:5px;display:grid;place-items:center;font-size:10px;color:var(--previewMuted)}dialog{background:var(--surface);color:var(--text);border:1px solid var(--line);box-shadow:0 18px 65px #0004;border-radius:12px;max-width:420px;width:calc(100% - 32px);padding:25px}dialog::backdrop{background:#162c4036}dialog h2{font-size:16px;margin:0 0 12px}dialog p{font-size:12px;color:var(--muted)}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:22px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}[hidden]{display:none!important}
+body.dark{color-scheme:dark;--surface:#27292d;--field:#36393e;--text:#eeeff1;--muted:#b2b7bf;--line:#474a50;--blue:#087cf0;--focus:#77baff;--toolbar:#303237;--preview:#24282e;--previewText:#f1f3f5;--previewMuted:#b7bec8;--keyBg:#424a54;--keyFg:#fafbfc;--keyBorder:#87919e}.dark .toolbar button[aria-pressed=true]{background:#ffffff13;color:#8bc2ff}.dark .inline-note{background:#323f4b;color:#d4e4f0}.dark .error{color:#ffaba5}.dark .preview-wallpaper{background:radial-gradient(ellipse at 0 0,#415c62,transparent 90%),#283c48}.dark .traffic i:not(:first-child){background:#55585c}.dark .text-button{color:#8ac4ff}body[data-theme=sage]{--keyBg:#dcebdd;--keyFg:#254a36;--keyBorder:#8aab95}body.dark[data-theme=sage]{--keyBg:#c0d9ba;--keyFg:#1d3b28;--keyBorder:#8faa89}body[data-theme=iris]{--keyBg:#e7e1fa;--keyFg:#4d367d;--keyBorder:#b0a0cd}body.dark[data-theme=iris]{--keyBg:#d0c2ee;--keyFg:#362258;--keyBorder:#ad96d5}body.strong .key-label{border-width:2px}.contrast{--line:#7c8188!important;--muted:#404750!important;--keyBorder:#60666d!important}.contrast.dark{--muted:#e0e4eb!important;--line:#8f959f!important;--keyBorder:#c4c9cf!important}.contrast .target{border-color:var(--keyBorder)}.no-motion *{animation:none!important;transition:none!important}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}@media(prefers-contrast:more){.key-label{border-width:2px}.target{border-color:var(--keyBorder)}}@media(max-width:760px){body{padding:16px 12px}.content{grid-template-columns:1fr 320px}.settings-column{padding:24px 20px}.preview-column{padding:24px 15px}.setting-row{align-items:flex-start;flex-direction:column;gap:6px}.setting-row select{max-width:100%;width:100%}.study-tag{display:none}}@media(max-width:620px){.content{grid-template-columns:1fr}.preview-column{border-left:0;border-top:1px solid var(--line)}.settings-column{padding:24px}.preview-wallpaper{min-height:0;padding:22px}.preview-surface{max-width:380px}.harness{grid-template-columns:1fr}.harness p{grid-column:auto}.study-footer{flex-direction:column}.sim-label{font-size:8px}.window-footer{flex-wrap:wrap}.window-footer>span{font-size:10px}.setting-row{flex-direction:row;align-items:center}.setting-row select{width:auto;max-width:190px}.test-controls summary span{display:block;margin:5px 0 0 12px}}@media(pointer:coarse){button,select{min-height:40px}.letter-order button{min-width:36px;max-width:40px}.reorder{flex-wrap:wrap}input{font-size:16px!important}.target{min-height:44px}}@media(max-width:360px){.setting-row{flex-direction:column;align-items:stretch}.setting-row select{max-width:100%}.brand{font-size:14px}.study>a:last-child{font-size:10px}.settings-column{padding:22px 18px}.window-footer{gap:8px}}
+/* Reflow from the actual window width, including CSS/browser zoom. */
+.mac-window{container-type:inline-size;container-name:settings}
+@container settings (max-width:620px){
+ .content{grid-template-columns:minmax(0,1fr)}
+ .settings-column{padding:24px;min-width:0}
+ .preview-column{border-left:0;border-top:1px solid var(--line);padding:24px}
+ .preview-wallpaper{min-height:0;padding:20px}
+ .preview-surface{max-width:380px}
+ .setting-row{flex-wrap:wrap}
+ .window-footer{flex-wrap:wrap}
+}
+@container settings (max-width:340px){
+ .settings-column,.preview-column{padding:22px 16px}
+ .setting-row{flex-direction:column;align-items:stretch}
+ .setting-row select{max-width:100%;width:100%}
+ .presets{gap:5px}
+ .preview-wallpaper{padding:14px}
+}
+/* Position and browser-tab panes extend the existing native-style toolbar. */
+.toolbar{gap:6px}.toolbar button{min-width:79px;max-width:98px}
+body[data-pane=position] .preview-wallpaper,body[data-pane=position] .try-row,body[data-pane=position] .selection-result,body[data-pane=position] .inventory{display:none}
+.anchor-picker{display:grid;grid-template-columns:repeat(3,48px);gap:8px;width:max-content;background:var(--field);padding:17px;border:1px solid var(--line);border-radius:10px}
+.anchor-picker button{height:38px;padding:4px;font-size:18px;color:var(--muted);box-shadow:none;background:var(--surface)}
+.anchor-picker button[aria-pressed=true]{background:var(--blue);color:white;border-color:var(--blue)}
+.position-summary{font-size:12px;margin:10px 0 21px;font-weight:600}.inset-range{width:100%;margin:5px 0 9px}.position-preview{margin:8px 0 20px}
+.display-strip{display:flex;align-items:flex-end;gap:12px;margin:18px 12px 27px;justify-content:center}
+.display-mini{width:91px;height:57px;border:2px solid var(--line);border-radius:5px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;color:var(--muted);background:var(--field)}
+.display-mini:nth-child(2){width:115px;height:70px}.display-mini:after{content:'';position:absolute;bottom:-9px;width:30px;border-bottom:3px solid var(--line)}.display-mini.selected{border-color:var(--blue);color:var(--blue)}.display-mini.selected:after{border-color:var(--blue)}.display-mini i{font-size:11px;font-style:normal;opacity:0}.display-mini.selected i{opacity:1}
+.position-desktop{position:relative;width:100%;height:224px;overflow:hidden;border:1px solid var(--line);border-radius:8px;background:radial-gradient(ellipse at 0 0,#d9e6e6,transparent 80%),#acbec8}.mini-menubar{position:absolute;left:0;top:0;right:0;display:flex;justify-content:space-between;font-size:9px;padding:5px 10px;background:#ffffff95;color:#314450}.mini-work-window{position:absolute;width:42%;height:42%;top:28%;left:23%;background:#ffffff44;border:1px solid #ffffff66;border-radius:4px}.mini-work-window:before{content:'';height:12%;border-bottom:1px solid #ffffff66;display:block}.mini-dock{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);border:1px solid #ffffff6b;border-radius:4px;background:#ffffff50;font-size:9px;color:#38525f;padding:2px 10px;letter-spacing:5px;white-space:nowrap}
+.position-mini-switcher{position:absolute;z-index:1;width:106px;background:var(--preview);color:var(--previewText);box-shadow:0 3px 9px #152d3b33;border:1px solid var(--keyBorder);border-radius:5px;padding:6px;font-size:8px}.position-mini-switcher b{font-size:8px;display:block;margin:0 0 4px}.position-mini-switcher span{display:flex;align-items:center;margin-top:4px;min-height:14px}.position-mini-switcher kbd{margin-left:auto;background:var(--keyBg);color:var(--keyFg);padding:2px 3px;border-radius:2px;font:600 8px ui-monospace}.dark .position-desktop{background:radial-gradient(ellipse at 0 0,#415c62,transparent 90%),#283c48}.dark .mini-work-window{background:#ffffff0b}.dark .mini-menubar{background:#0004;color:#e3eff3}
+.preview-scope{display:flex;padding:2px;background:#00000008;border:1px solid var(--line);border-radius:6px;gap:3px;margin-bottom:13px}.preview-scope button{flex:1;box-shadow:none;background:transparent;border-color:transparent;font-size:11px}.preview-scope button[aria-pressed=true]{background:var(--field);border-color:var(--line)}.preview-scope kbd{font-size:9px;color:var(--muted);margin-right:4px}
+.browser-connection{display:flex;align-items:center;gap:9px;padding:11px 0;border-bottom:1px solid var(--line)}.browser-connection>label{flex:1;min-width:0;font-size:12px}.browser-connection span:not(.app-icon){display:block;font-size:10px;color:var(--muted);margin-top:3px}.browser-connection button{font-size:11px}.app-icon.chrome{background:conic-gradient(#df5143 0 33%,#efc65d 33% 66%,#51a571 66%);color:#fff;font-size:20px}
+@container settings (max-width:620px){.toolbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:0 7px 10px;gap:2px}.toolbar button{min-width:0;max-width:none;font-size:10px;padding:4px 2px}.toolbar-icon{font-size:24px}.browser-connection{flex-wrap:wrap}}
+/* Presets keep native settings chrome; customization changes the switcher only. */
+.swatch.tabnax{background:#202720;color:#d9f68c}.swatch.tabnax:after{background:#d9f68c;color:#28361b;border-color:#b0cb7a}.presets button{min-width:0}.color-row{display:flex;align-items:center;gap:10px;margin:14px 0;font-size:12px}.color-row label{margin-right:auto}.color-row code{font-size:10px;color:var(--muted)}.color-row input[type=color]{width:37px;height:28px;padding:2px;border:1px solid var(--line);border-radius:5px;background:var(--field)}
+.target:hover,.target.highlight{background:color-mix(in srgb,var(--selectionAccent) 12%,var(--preview));border-color:var(--selectionAccent)}.preview-surface.armed{outline-color:var(--selectionAccent)}
+@container settings (max-width:340px){.presets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.color-row{gap:6px}}
+
+/* Browser choices retain native checkbox controls and explicit sample state. */
+.browser-connection>label{cursor:pointer;line-height:1.4}.browser-connection>input{flex:none}.browser-connection button{flex:none}.browser-connection .app-icon{flex:none}.app-icon.arc{background:linear-gradient(140deg,#d29bec,#ed916f);color:#20272f;font-weight:700}.app-icon.zen{background:#e0c39b;color:#2f302d;font-size:25px}.app-icon.firefox{background:linear-gradient(145deg,#e56a24,#603ee2);color:#ffdf7d;font-size:22px}.app-icon.edge{background:linear-gradient(150deg,#319ba3,#176bd4);color:white;font-size:23px}.app-icon.brave{background:#da522e;color:white;font-size:23px}#more-browsers{margin:14px 0}#more-browsers[open]>summary{margin-bottom:2px}#browser-selection{max-width:210px}
+@container settings (max-width:340px){.browser-connection{gap:7px}.browser-connection>label{flex-basis:120px}.browser-connection button{margin-left:auto}}
+/* Six renderers share the same theme, input router and target identities. */
+.mode-preview-note{margin:0 0 10px;font-size:11px}.mode-section-title{font-size:10px;font-weight:650;color:var(--previewMuted);padding:9px 7px 5px}.mode-group+.mode-group{border-top:1px solid var(--keyBorder);margin-top:7px;padding-top:3px}.mode-empty{padding:12px 8px;color:var(--previewMuted);font-size:11px;line-height:1.5}.mode-back{background:transparent;color:var(--selectionAccent);font-size:10px;box-shadow:none;margin:3px 4px 8px;border-color:var(--keyBorder)}.mode-group{min-width:0}.canopy-preview{display:grid;gap:7px}.canopy-preview .mode-group{border:1px solid color-mix(in srgb,var(--keyBorder) 55%,transparent);border-radius:7px;padding:2px;overflow:hidden}
+.fold-preview{display:grid;grid-template-columns:92px minmax(0,1fr);gap:6px}.fold-spine,.fold-sheet{min-width:0}.fold-app{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;width:100%;margin:4px 0;background:var(--preview);color:var(--previewText);border-color:var(--keyBorder);padding:8px 5px;font-size:10px;text-align:left}.fold-app span{min-width:0;flex:1 1 34px;overflow-wrap:anywhere}.fold-app small{display:block;font-size:9px;font-weight:400;color:var(--previewMuted);margin-top:3px}.fold-app kbd{background:var(--keyBg);color:var(--keyFg);padding:2px 4px;border-radius:3px;flex:none}.fold-app.selected{border-color:var(--selectionAccent);background:color-mix(in srgb,var(--selectionAccent) 9%,var(--preview))}.fold-sheet{border-left:1px solid var(--keyBorder);padding-left:4px}.fold-sheet .target{flex-wrap:wrap;align-content:start;gap:5px}.fold-sheet .target-text{order:3;flex-basis:100%}.fold-sheet .target-title{white-space:normal;overflow-wrap:anywhere;font-size:10px}.fold-sheet .key-label{margin-left:auto}
+.address-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.address-cell{min-width:0;min-height:73px;border:1px solid var(--keyBorder);border-radius:6px;overflow:hidden}.address-cell>.target{flex-wrap:wrap;gap:6px;min-height:73px;align-content:start}.address-cell>.target .target-text{order:3;flex-basis:100%}.address-cell .key-label{margin-left:auto}.address-cell .target-title{font-size:10px}.address-cell.empty-cell{display:flex;flex-direction:column;gap:6px;font-size:10px;min-height:73px;padding:7px;border-style:dashed}.address-cell.empty-cell kbd{font-size:var(--labelFont)}.branch-cell>button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:10px;color:var(--previewText);background:var(--preview);border:0;border-radius:0;text-align:left}.branch-cell>button kbd{padding:3px;background:var(--keyBg);color:var(--keyFg);border-radius:3px;font-size:var(--labelFont)}.branch-title{padding:2px 6px;color:var(--previewMuted);font-size:9px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.address-inventory .app-icon{display:none}.address-inventory .target{gap:3px;padding:5px;min-height:36px}.address-inventory .target-meta{font-size:8px}.address-inventory .key-label{min-width:24px;padding:2px}
+.beacon-field{position:relative;height:238px;border-radius:7px;background:linear-gradient(140deg,#9eaead55,#4b797833);margin:3px 2px 10px;overflow:hidden}.beacon-window{position:absolute;width:calc(100% - 38px);height:75px;background:var(--preview);border:1px solid var(--keyBorder);border-radius:6px;box-shadow:0 4px 12px #0002}.beacon-window:after{content:'';display:block;height:12px;margin:2px 10px;width:45%;border-bottom:3px solid color-mix(in srgb,var(--previewMuted) 30%,transparent)}.beacon-0{left:4px;top:8px}.beacon-1{left:17px;top:82px}.beacon-2{left:31px;top:156px}.beacon-window .target{padding:7px 5px}.beacon-window .target-title{font-size:10px}
+.relay-previous{border:1px solid var(--selectionAccent);border-radius:7px;padding:4px;margin:8px 0;background:color-mix(in srgb,var(--selectionAccent) 5%,var(--preview))}.return-action{display:flex;justify-content:space-between;width:calc(100% - 10px);margin:6px 5px;background:var(--preview);color:var(--previewText);border-color:var(--selectionAccent);font-size:11px}.return-action kbd{font-size:10px}#display-mode{max-width:225px}
+@container settings (max-width:340px){.fold-preview{grid-template-columns:80px minmax(0,1fr)}.beacon-window{width:calc(100% - 24px)}.beacon-1{left:10px}.beacon-2{left:20px}}
+
+/* Scoped recovery actions stay beside the setting they restore. */
+.field-heading{display:flex;align-items:center;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;margin:16px 0 8px}.field-heading .field-label{margin:0}.field-heading .text-button{padding:4px 0;flex:none}.scoped-reset{padding-left:0;margin:-7px 0 3px}.color-row .text-button{padding:4px;flex:none}
+
+</style></head>
+<body>
+<header class="study"><a class="brand" href="../design-exploration/tabnax-gallery.html"><span class="brand-mark">t</span> Tabnax <span class="study-tag">Settings study</span></a><a href="SPECIFICATION.md">Design specification ↗</a></header>
+<main class="mac-window" aria-label="Tabnax settings simulation">
+  <header class="titlebar"><div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div><div id="window-title">Selection</div><span class="sim-label">SIMULATION</span></header>
+  <nav class="toolbar" aria-label="Settings panes">
+    <button data-pane="general" aria-pressed="false"><span class="toolbar-icon">⚙</span>General</button>
+    <button data-pane="selection" aria-pressed="true"><span class="toolbar-icon keyboard-icon">⌨</span>Selection</button>
+    <button data-pane="position" aria-pressed="false"><span class="toolbar-icon">▣</span>Position</button>
+    <button data-pane="appearance" aria-pressed="false"><span class="toolbar-icon">◐</span>Appearance</button>
+    <button data-pane="tabs" aria-pressed="false"><span class="toolbar-icon">▤</span>Browser Tabs</button>
+  </nav>
+  <div class="content">
+    <div class="settings-column">
+    <section id="pane-general" class="pane" hidden aria-labelledby="general-heading">
+      <h1 id="general-heading">Ready when you are.</h1><p class="lede">Open Tabnax, type a letter, get back to work.</p>
+      <h2>Activation</h2>
+      <div class="setting-row"><label for="record">Open switcher</label><button id="record" class="shortcut">⌃ ⌥ Space</button></div>
+      <p id="shortcut-help" class="help">Suggested shortcut. Check it alongside Mouseless.</p><button id="reset-shortcut" class="text-button scoped-reset">Use suggested shortcut</button><p id="shortcut-error" class="error" role="alert"></p>
+      <div class="setting-row"><label for="activation">Behavior</label><select id="activation"><option value="latch">Press to open</option><option value="hold">Hold to show</option></select></div>
+      <p id="activation-help" class="help">Release the shortcut, then type. Escape cancels.</p>
+      <details><summary>Shortcut details</summary><div class="setting-row"><label for="modifier-side">Modifier side</label><select id="modifier-side"><option value="either">Either side</option><option value="left">Left only</option><option value="right">Right only</option></select></div><p class="help">Side-specific capture is a native design contract. The browser cannot register a global shortcut.</p><p class="help">Modifier-only taps remain an optional native experiment. Mouseless uses left Command tap by default.</p></details>
+      <h2>Windows</h2>
+      <label class="check"><input id="minimized" type="checkbox">Include minimized windows</label>
+      <label class="check"><input id="hidden" type="checkbox">Include windows of hidden apps</label>
+      <p class="help">User-facing windows only. Availability across Spaces must be verified in the native app.</p>
+      <h2>Startup & access</h2>
+      <label class="check"><input id="login" type="checkbox">Launch at login</label>
+      <div class="permission"><span class="permission-icon" aria-hidden="true">◈</span><div><strong>Accessibility</strong><p id="permission-status">Not checked in this prototype</p></div><button id="permission-info">Details…</button></div>
+      <p class="help">Used to read window names and select a window. No screen images are needed.</p>
+    </section>
+    <section id="pane-selection" class="pane" aria-labelledby="selection-heading">
+      <h1 id="selection-heading">Letters that stay familiar.</h1><p class="lede">Choose keys that feel natural under your hand.</p>
+      <h2>Selection keys</h2>
+      <div class="setting-row"><label for="hand">Select with</label><select id="hand"><option value="right">Right hand</option><option value="left">Left hand</option><option value="both">Both hands</option><option value="custom">Custom order</option></select></div>
+      <p class="help">Right-hand keys pair with a left-hand activation shortcut.</p>
+      <div class="field-heading"><label class="field-label" for="alphabet">Letters, in comfort order</label><button id="reset-alphabet" class="text-button" aria-describedby="alphabet-reset-help">Restore default order</button></div>
+      <input id="alphabet" class="alphabet" type="text" spellcheck="false" autocomplete="off" aria-describedby="alphabet-help alphabet-error">
+      <div id="letter-order" class="letter-order" aria-label="Alphabet order"></div>
+      <p id="alphabet-help" class="help">First letters go to the first windows. Move a selected letter with the arrows.</p>
+      <div class="reorder"><span id="selected-letter">J selected</span><button id="move-left" aria-label="Move selected letter earlier">←</button><button id="move-right" aria-label="Move selected letter later">→</button><button id="remove-ambiguous" class="text-button">Remove I / O</button></div>
+      <p id="alphabet-reset-help" class="help">Restores the Right hand preset. Preview first, then Apply labels.</p>
+      <p id="alphabet-error" class="error" role="alert"></p>
+      <div class="setting-row"><label for="policy">Assign letters</label><select id="policy"><option value="stable">Stable · recommended</option><option value="mnemonic">Name initials first</option><option value="pairs">Always two letters</option></select></div>
+      <p id="policy-help" class="help"></p>
+      <div id="overflow-note" class="inline-note"></div>
+      <details id="advanced"><summary>Advanced selection</summary>
+        <div class="setting-row"><label for="key-mode">Keys follow</label><select id="key-mode"><option value="physical">Physical positions</option><option value="characters">Typed characters</option></select></div><p class="help">The sandbox uses A–Z key positions. Native layout mapping is unverified.</p>
+        <div class="pin-heading">Pin a target label <span>Optional study</span></div>
+        <label class="sr-only" for="pin-target">Target to pin</label><select id="pin-target"></select>
+        <div class="pin-entry"><input id="pin-code" maxlength="4" aria-label="Pinned label" placeholder="Free label, e.g. H" autocomplete="off"><button id="pin">Pin label</button></div><p id="pin-error" class="error" role="alert"></p><p class="help">Pins last for this address session. Used labels and prefixes cannot be taken from another target.</p>
+        <button id="reset-labels">Reset label assignments…</button>
+      </details>
+      <div id="draft-bar" class="draft-bar" hidden><strong id="draft-summary"></strong><p id="draft-help">Preview only. Applying starts a new address session.</p><div><button id="discard">Discard</button><button id="apply" class="primary">Apply labels</button></div></div>
+    </section>
+    <section id="pane-position" class="pane" hidden aria-labelledby="position-heading">
+      <h1 id="position-heading">Right where you expect it.</h1><p class="lede">Give the switcher a familiar place on your screen.</p>
+      <h2>Display</h2><p id="position-mode" class="help"></p>
+      <div class="setting-row"><label for="position-display">Show on</label><select id="position-display"><option value="focused">Display with active window</option><option value="pointer">Display with pointer</option><option value="main">Main display</option></select></div>
+      <p class="help">Choose the display when you open Tabnax. It stays there until you finish switching.</p>
+      <h2>Position on screen</h2>
+      <div class="anchor-picker" role="group" aria-label="Switcher position">
+        <button data-anchor="top-left" aria-label="Top left" title="Top left">↖</button><button data-anchor="top-center" aria-label="Top center" title="Top center">↑</button><button data-anchor="top-right" aria-label="Top right" title="Top right">↗</button>
+        <button data-anchor="middle-left" aria-label="Middle left" title="Middle left">←</button><button data-anchor="middle-center" aria-label="Center" title="Center">•</button><button data-anchor="middle-right" aria-label="Middle right" title="Middle right">→</button>
+        <button data-anchor="bottom-left" aria-label="Bottom left" title="Bottom left">↙</button><button data-anchor="bottom-center" aria-label="Bottom center" title="Bottom center">↓</button><button data-anchor="bottom-right" aria-label="Bottom right" title="Bottom right">↘</button>
+      </div>
+      <p id="position-summary" class="position-summary" role="status">Middle right</p>
+      <div class="setting-row"><label for="position-inset">Space from screen edges</label><output id="inset-value" for="position-inset">24 pt</output></div>
+      <input id="position-inset" class="inset-range" type="range" min="12" max="64" step="4" value="24" aria-describedby="position-help">
+      <p id="position-help" class="help">Keeps the switcher clear of the menu bar and Dock. Centered axes stay centered.</p>
+      <div id="mode-position-note" class="inline-note"></div>
+      <button id="position-reset">Use default position</button>
+      <p class="help">Saved immediately. Moving the switcher never changes its letters.</p>
+    </section>
+    <section id="pane-tabs" class="pane" hidden aria-labelledby="tabs-heading">
+      <h1 id="tabs-heading">Go straight to the tab.</h1><p class="lede">Browser tabs, in the same keyboard-first switcher.</p>
+      <label class="check"><input id="tabs-enabled" type="checkbox">Include browser tabs</label>
+      <p class="help">Windows and tabs have separate views and keep their own labels.</p>
+      <div class="setting-row"><label for="tabs-range">Show tabs from</label><select id="tabs-range"><option value="all">All included browsers</option><option value="browser">Active browser</option><option value="window">Active browser window</option></select></div>
+      <div class="setting-row"><label for="default-scope">Open switcher to</label><select id="default-scope"><option value="windows">Windows</option><option value="tabs">Browser tabs</option></select></div>
+      <p id="tabs-range-help" class="help">The preview includes Arc, Zen, Safari, Chrome, Firefox, Edge and Brave.</p>
+      <h2>Your browsers</h2>
+      <div class="setting-row"><label for="browser-selection">Use tabs from</label><select id="browser-selection"><option value="automatic">All available browsers</option><option value="selected">Choose browsers…</option></select></div>
+      <p class="help">Tabnax will find supported browsers automatically. If access is needed, setup will guide you through it.</p>
+      <p id="browser-selection-status" class="help" role="status"></p>
+      <div id="primary-browsers"></div>
+      <details id="more-browsers"><summary>More browsers · Firefox, Edge &amp; Brave</summary><div id="additional-browsers"></div></details>
+      <p class="help">Sample browsers only. This preview does not detect or connect to installed browsers.</p>
+      <h2>Easy to recognize</h2>
+      <p class="help">Each result keeps its title, browser and window or workspace context. Two-letter labels stay stable when titles change or tabs move.</p>
+      <p class="help">Private tabs are excluded. Tab titles are used for switching, not saved as browsing history.</p>
+      <button id="preview-tabs" class="primary">Preview sample tabs</button>
+    </section>
+    <section id="pane-appearance" class="pane" hidden aria-labelledby="appearance-heading">
+      <h1 id="appearance-heading">Quiet, with a clear next key.</h1><p class="lede">A familiar surface. Just enough emphasis to act.</p>
+      <h2>Display mode</h2><div class="setting-row"><label for="display-mode">Show windows as</label><select id="display-mode"><option value="shore">Shore · compact index</option><option value="beacons">Beacons · window plaques</option><option value="canopy">Canopy · app groups</option><option value="lattice">Lattice · address grid</option><option value="fold">Fold · app then window</option><option value="relay">Relay · return pair</option></select></div>
+      <p id="mode-description" class="help"></p><p id="mode-error" class="error" role="status"></p><p class="help">All modes share themes, selection keys and browser choices. Each remembers its own position.</p>
+      <h2>Appearance</h2><fieldset class="segments"><legend class="sr-only">Appearance</legend><label><input name="appearance" type="radio" value="system"><span>System</span></label><label><input name="appearance" type="radio" value="light"><span>Light</span></label><label><input name="appearance" type="radio" value="dark"><span>Dark</span></label></fieldset>
+      <h2>Theme</h2><div class="presets" role="group" aria-label="Theme presets"><button data-theme="graphite"><i class="swatch graphite"></i>macOS</button><button data-theme="tabnax"><i class="swatch tabnax"></i>Tabnax</button><button data-theme="sage"><i class="swatch sage"></i>Sage</button><button data-theme="iris"><i class="swatch iris"></i>Iris</button></div><p id="theme-description" class="help">Native neutral surfaces, with familiar Mac blue selection.</p>
+      <details id="customize-theme"><summary>Customize this theme…</summary>
+        <p id="custom-mode" class="help">Editing Light appearance</p>
+        <div class="color-row"><label for="custom-key-color">Key color</label><code id="key-color-value"></code><input id="custom-key-color" type="color" aria-describedby="color-help"><button id="reset-key-color" class="text-button" aria-label="Restore default key color">Reset</button></div>
+        <div class="color-row"><label for="custom-selection-color">Selection color</label><code id="selection-color-value"></code><input id="custom-selection-color" type="color" aria-describedby="color-help"><button id="reset-selection-color" class="text-button" aria-label="Restore default selection color">Reset</button></div>
+        <p id="color-help" class="help">Letter color adjusts automatically for readability. Selection colors are kept visible against the surface.</p>
+        <p id="theme-contrast" class="help" role="status"></p>
+        <button id="reset-theme">Reset this theme</button>
+        <p class="help">Reset restores both appearances of this preset. Your other themes are kept.</p>
+      </details>
+      <div class="setting-row"><label for="label-size">Label size</label><select id="label-size"><option value="standard">Standard</option><option value="large">Large</option><option value="extra">Extra large</option></select></div>
+      <label class="check"><input id="strong-labels" type="checkbox">Stronger label outlines</label>
+      <p class="help">System Increase Contrast takes priority. Reduce Motion and Reduce Transparency are always respected.</p>
+      <div class="appearance-note"><span aria-hidden="true">◐</span><p>Theme changes appear immediately.<br>Theme changes keep labels and window order.</p></div>
+    </section>
+    </div>
+    <aside class="preview-column" aria-label="Live switcher preview">
+      <div class="preview-heading"><span>LIVE PREVIEW</span><span id="preview-state">Saved settings</span></div>
+      <div id="position-preview" class="position-preview" hidden>
+        <div class="display-strip" aria-label="Simulated displays"><div id="display-main" class="display-mini"><span>Main</span><i>▰</i></div><div id="display-external" class="display-mini"><span>External</span><i>▰</i></div></div>
+        <div id="position-desktop" class="position-desktop" role="img" aria-label="Simulated switcher position"><span class="mini-menubar">Tabnax <span>◷</span></span><div class="mini-work-window"></div><div id="position-mini-switcher" class="position-mini-switcher"><b>Windows</b><span>▧ &nbsp; Tabnax <kbd>J</kbd></span><span>◈ &nbsp; Tabnax <kbd>K</kbd></span><span>◈ &nbsp; Preview <kbd>L</kbd></span><span>▧ &nbsp; Assets <kbd>U</kbd></span></div><div class="mini-dock">▧ ◈ ▧ ▤</div></div>
+        <p id="position-caption" class="help"></p>
+      </div>
+      <p id="mode-preview-note" class="help mode-preview-note"></p>
+      <div class="preview-scope" role="group" aria-label="Preview scope"><button id="scope-windows" aria-pressed="true"><kbd>1</kbd> Windows</button><button id="scope-tabs" aria-pressed="false"><kbd>2</kbd> Tabs</button></div>
+      <div class="preview-wallpaper">
+        <div class="preview-surface" id="preview-surface" tabindex="0" aria-label="Simulated switcher. Press Space to open, then type a label. Escape cancels.">
+          <div class="switcher-heading"><span id="scope-name">Windows</span><span id="window-count">8</span></div>
+          <div id="search-box" class="search-box" hidden><label class="sr-only" for="search">Find a window</label><input id="search" placeholder="Find a window…" autocomplete="off"><span>esc</span></div>
+          <div id="targets" class="targets"></div>
+          <div class="switcher-foot"><span id="sequence-hint">Type a label to switch</span><kbd>/</kbd><span>find</span></div>
+        </div>
+      </div>
+      <div class="try-row"><button id="try" class="primary">Try these keys</button><button id="cancel-try" hidden>Stop</button><span id="try-instruction">No real windows will move.</span></div>
+      <p id="selection-result" class="selection-result" role="status" aria-live="polite">Choose a window without leaving this preview.</p>
+      <details class="inventory"><summary>Inspect labels & windows</summary><div id="inventory"></div><button id="add-window">＋ Add a window</button><p id="held-labels" class="help"></p></details>
+    </aside>
+  </div>
+  <footer class="window-footer"><button id="restore">Restore defaults…</button><span id="save-status" role="status">Saved on this device</span><button id="undo" disabled>Undo</button></footer>
+</main>
+<details class="test-controls"><summary>Prototype controls <span>Scenarios & accessibility states · outside the product</span></summary><div class="harness">
+  <label>Dataset<select id="dataset"><option value="6">6 windows</option><option value="8" selected>8 windows</option><option value="10">10 windows</option><option value="tabs">48 browser tabs</option></select></label>
+  <label>Sample active browser<select id="active-browser"><option value="arc">Arc · Work</option><option value="zen">Zen · Work</option><option value="safari">Safari · Work</option><option value="chrome">Chrome · Work</option><option value="firefox">Firefox · Work</option><option value="edge">Edge · Work</option><option value="brave">Brave · Work</option></select></label>
+  <label>Legacy layout comparison<select id="layout"><option value="list">Compact list</option><option value="grid">Flat cells · comparison only</option></select></label>
+  <label>System appearance<select id="system-appearance"><option value="auto">From browser</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+  <label>Permission scenario<select id="permission-scenario"><option value="unknown">Not checked</option><option value="denied">Access denied</option><option value="revoked">Access revoked</option><option value="granted">Granted · simulated</option></select></label>
+  <label class="check"><input id="simulate-contrast" type="checkbox">Simulate Increase Contrast</label><label class="check"><input id="simulate-focus-failure" type="checkbox">Simulate failed selection</label><label class="check"><input id="simulate-motion" type="checkbox">Simulate Reduce Motion</label>
+  <p>Space opens this focused preview. Held Shift is a browser-only hold surrogate. The recorder stores a sample shortcut; it changes nothing in macOS. No permissions are requested.</p>
+</div></details>
+<footer class="study-footer"><span>A settings proposal. Position and browser tabs included. All six display modes are available in Appearance.</span><a href="EVALUATION.md">Try the evaluation guide ↗</a></footer>
+<dialog id="dialog"><form method="dialog"><h2 id="dialog-title"></h2><p id="dialog-copy"></p><div id="dialog-extra"></div><div class="dialog-actions"><button value="cancel">Cancel</button><button id="dialog-confirm" value="confirm" class="primary">Continue</button></div></form></dialog>
+<script>
+/* Pure simulation model. No native APIs, title-derived identity, or system access. */
+(function (root) {
+  'use strict';
+  const presets = {right:'JKLUIONMHP',left:'ASDFWERCGQ',both:'ASDFJKLWERUIOP'};
+  const browsers=[
+    {id:'arc',name:'Arc',icon:'A',setup:'builtin',note:'Permission may be needed'},
+    {id:'zen',name:'Zen',icon:'◌',setup:'addon',note:'Add-on likely needed'},
+    {id:'safari',name:'Safari',icon:'◈',setup:'verify',note:'Connection being evaluated'},
+    {id:'chrome',name:'Chrome',icon:'◉',setup:'builtin',note:'Permission may be needed'},
+    {id:'firefox',name:'Firefox',icon:'◉',setup:'addon',note:'Add-on likely needed'},
+    {id:'edge',name:'Edge',icon:'e',setup:'builtin',note:'Permission may be needed'},
+    {id:'brave',name:'Brave',icon:'♜',setup:'builtin',note:'Permission may be needed'}
+  ];
+  const defaults = {version:1,displayMode:'shore',modePositions:{},themeOverrides:{},position:{display:'focused',anchor:'middle-right',inset:24},browserTabs:{enabled:true,range:'all',defaultScope:'windows',selection:'automatic',selectedBrowsers:browsers.map(b=>b.id)},appearance:'system',theme:'graphite',labelSize:'standard',strongLabels:false,login:false,minimized:true,hidden:true,shortcut:'⌃ ⌥ Space',activation:'latch',modifierSide:'either',keyMode:'physical',selection:{hand:'right',baseHand:'right',alphabet:presets.right,policy:'stable'}};
+  const themes={
+    graphite:{light:{surface:'#fafafa',text:'#22272c',muted:'#62666c',keyBg:'#e5e7e9',keyFg:'#292d33',keyBorder:'#adb2b8',selection:'#006bd6'},dark:{surface:'#24282e',text:'#f1f3f5',muted:'#b7bec8',keyBg:'#424a54',keyFg:'#fafbfc',keyBorder:'#87919e',selection:'#77baff'}},
+    tabnax:{light:{surface:'#f5f7ef',text:'#293323',muted:'#59634f',keyBg:'#d9f68c',keyFg:'#28361b',keyBorder:'#91aa5f',selection:'#557719'},dark:{surface:'#202720',text:'#f6f8ee',muted:'#bac3b3',keyBg:'#d9f68c',keyFg:'#28361b',keyBorder:'#b0cb7a',selection:'#d9f68c'}},
+    sage:{light:{surface:'#fafafa',text:'#22272c',muted:'#62666c',keyBg:'#dcebdd',keyFg:'#254a36',keyBorder:'#8aab95',selection:'#3a7753'},dark:{surface:'#24282e',text:'#f1f3f5',muted:'#b7bec8',keyBg:'#c0d9ba',keyFg:'#1d3b28',keyBorder:'#8faa89',selection:'#c0d9ba'}},
+    iris:{light:{surface:'#fafafa',text:'#22272c',muted:'#62666c',keyBg:'#e7e1fa',keyFg:'#4d367d',keyBorder:'#b0a0cd',selection:'#7755b6'},dark:{surface:'#24282e',text:'#f1f3f5',muted:'#b7bec8',keyBg:'#d0c2ee',keyFg:'#362258',keyBorder:'#ad96d5',selection:'#c3a8f7'}}
+  };
+  function luminance(hex){return hex.slice(1).match(/../g).map(x=>parseInt(x,16)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4).reduce((n,x,i)=>n+x*[.2126,.7152,.0722][i],0);}
+  function contrast(a,b){const hi=Math.max(luminance(a),luminance(b)),lo=Math.min(luminance(a),luminance(b));return (hi+.05)/(lo+.05);}
+  function readableText(bg){return contrast('#000000',bg)>=contrast('#ffffff',bg)?'#000000':'#ffffff';}
+  function safeAccent(color,surface){
+    if(contrast(color,surface)>=3)return color;
+    const toward=readableText(surface),a=color.slice(1).match(/../g).map(x=>parseInt(x,16)),b=toward.slice(1).match(/../g).map(x=>parseInt(x,16));
+    for(let i=1;i<=20;i++){const c='#'+a.map((v,j)=>Math.round(v+(b[j]-v)*i/20).toString(16).padStart(2,'0')).join('');if(contrast(c,surface)>=3)return c;}
+    return toward;
+  }
+  function resolveTheme(theme,appearance,overrides={}){
+    const base={...(themes[theme]||themes.graphite)[appearance]},custom=overrides[theme]?.[appearance]||{};
+    if(/^#[0-9a-f]{6}$/i.test(custom.keyBg||'')){base.keyBg=custom.keyBg;base.keyFg=readableText(custom.keyBg);base.keyBorder=safeAccent(custom.keyBg,base.surface);}
+    if(/^#[0-9a-f]{6}$/i.test(custom.selection||''))base.selection=safeAccent(custom.selection,base.surface);
+    return base;
+  }
+  const windows = [
+    {id:'code',app:'code',name:'VS Code',title:'Tabnax · switcher.swift'},
+    {id:'lesson',app:'safari',name:'Safari',title:'Tabnax · Keyboard guide',context:'Work'},
+    {id:'preview',app:'safari',name:'Safari',title:'Tabnax · Layout preview',context:'Work'},
+    {id:'assets',app:'finder',name:'Finder',title:'Tabnax · Assets'},
+    {id:'design',app:'figma',name:'Figma',title:'Interaction studies'},
+    {id:'terminal',app:'terminal',name:'Terminal',title:'tabnax · zsh'},
+    {id:'notes',app:'notes',name:'Notes',title:'Switching · Interview notes'},
+    {id:'personal',app:'safari',name:'Safari',title:'Weekend walks',context:'Personal',minimized:true},
+    {id:'review',app:'code',name:'VS Code',title:'Tabnax · Review diff'},
+    {id:'exports',app:'finder',name:'Finder',title:'Tabnax · Exports',hidden:true}
+  ];
+  const tabs = Array.from({length:28},(_,i)=>({
+    id:'tab-'+i,app:i<14?'safari':'chrome',name:i<14?'Safari':'Chrome',
+    browserId:i<14?'safari':'chrome',windowId:i<8?'safari-work':i<14?'safari-personal':i<23?'chrome-work':'chrome-reference',
+    title:['Tabnax · Window shortcuts','Workspace guide · Lesson '+(i+1),'Apple · Accessibility','Tabnax · Notes','Saved walks · Route '+(i+1),'Reference · Keyboard layouts'][i%6],
+    context:(i<8||i>=14&&i<23?'Work':'Personal')+' / tab '+(i+1),private:false
+  }));
+  for(const browser of browsers.filter(b=>!['safari','chrome'].includes(b.id))){
+    for(let i=0;i<4;i++)tabs.push({id:browser.id+'-tab-'+i,app:browser.id,name:browser.name,browserId:browser.id,windowId:browser.id+(i<2?'-work':'-personal'),title:['Tabnax · Research','Tabnax · Shortcut planning','Saved walks · Route notes','Reference · Keyboard layouts'][i],context:(i<2?'Work':'Personal')+(browser.id==='arc'?' Space':browser.id==='zen'?' workspace':' window')+(i===0&&browser.id==='arc'?' · pinned':''),private:false});
+  }
+  function includedBrowsers(preference){return preference.selection==='selected'?browsers.filter(b=>preference.selectedBrowsers.includes(b.id)).map(b=>b.id):browsers.map(b=>b.id);}
+  const clone = x => JSON.parse(JSON.stringify(x));
+  const normalize = s => s.toUpperCase().replace(/\s/g,'');
+  function baseHand(selection) {
+    if(Object.hasOwn(presets,selection.hand))return selection.hand;
+    if(Object.hasOwn(presets,selection.baseHand))return selection.baseHand;
+    return Object.keys(presets).find(hand=>presets[hand]===normalize(selection.alphabet||''))||'right';
+  }
+  function validateAlphabet(raw) {
+    const a=normalize(raw);
+    if (!/^[A-Z]*$/.test(a)) return {error:'Use letters A–Z only. Slash, digits and punctuation are reserved for commands.'};
+    if (a.length<6 || a.length>20) return {error:'Use 6–20 letters so there is room for comfortable short sequences.'};
+    const duplicates=[...new Set([...a].filter((c,i)=>a.indexOf(c)!==i))];
+    if (duplicates.length) return {error:`Remove repeated letters: ${duplicates.join(', ')}.`};
+    return {alphabet:a,error:''};
+  }
+  function codes(alphabet, policy) {
+    const a=[...alphabet], out=[];
+    if(policy==='pairs') {for(const x of a) for(const y of a) out.push(x+y);}
+    else {const branch=a.pop(); for(let depth=0;depth<4;depth++) for(const c of a) out.push(branch.repeat(depth)+c);}
+    return out;
+  }
+  function create(selection, targets, pins={}) {
+    const state={selection:clone(selection),map:{},retired:[],pins:clone(pins),order:[],nextSlot:0,slots:{}};
+    const pool=codes(selection.alphabet,selection.policy);
+    for(const t of targets) if(pins[t.id] && pool.includes(pins[t.id])) state.map[t.id]=pins[t.id];
+    for(const t of targets) allocate(state,t);
+    return state;
+  }
+  function allocate(state,target) {
+    if(state.order.includes(target.id)) return;
+    const used=new Set([...Object.values(state.map),...state.retired]);
+    const pool=codes(state.selection.alphabet,state.selection.policy);
+    let code=state.map[target.id];
+    if(!code && state.selection.policy==='mnemonic') {
+      // First available name initial, then distinguishing title initials; never move existing labels.
+      const words=(target.name+' '+target.title).toUpperCase().match(/[A-Z]+/g)||[];
+      code=words.map(w=>w[0]).find(c=>pool.includes(c)&&!used.has(c));
+    }
+    if(!code) code=pool.find(c=>!used.has(c))||null;
+    state.map[target.id]=code;
+    state.slots[target.id]=state.nextSlot++;
+    state.order.push(target.id);
+  }
+  function retire(state,id) {
+    if(state.map[id]) state.retired.push(state.map[id]);
+    delete state.map[id];delete state.pins[id];
+    state.order=state.order.filter(x=>x!==id);
+    // Keep old slot occupied by a hole until deliberate reset.
+  }
+  function pin(state,id,raw) {
+    const label=normalize(raw), pool=codes(state.selection.alphabet,state.selection.policy);
+    if(!label) return 'Enter a label.';
+    if(Object.entries(state.map).some(([key,c])=>key!==id&&c===label)) return `${label} already belongs to another window. Choose a free label.`;
+    if(state.retired.includes(label)&&state.map[id]!==label) return `${label} is held for a closed or reassigned window. Reset labels to reuse it.`;
+    if(!pool.includes(label)) return `That label is a reserved prefix or is outside this alphabet. Try a free complete label, such as ${pool.find(c=>!Object.values(state.map).includes(c)&&!state.retired.includes(c))||'a label after resetting'}.`;
+    const old=state.map[id];if(old&&old!==label) state.retired.push(old);
+    state.map[id]=label;state.pins[id]=label;return '';
+  }
+  const api={browsers,includedBrowsers,presets,baseHand,defaults,themes,contrast,readableText,safeAccent,resolveTheme,windows,tabs,clone,normalize,validateAlphabet,codes,create,allocate,retire,pin};
+  if(typeof module!=='undefined') module.exports=api;
+  root.TabnaxModel=api;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+</script><script>
+/* Mode behavior for the settings simulation. No native window geometry or focus APIs. */
+(function(root){
+'use strict';
+const M=root.TabnaxModel||(typeof require==='function'?require('./model.js'):null);
+const definitions={
+ shore:{name:'Shore',anchor:'middle-right',description:'A compact index with direct window labels. Overflow adds a prefix; the other letters stay put.',position:'Places the window index and the browser-tab list.'},
+ beacons:{name:'Beacons',anchor:'bottom-center',description:'Labels beside visible windows, with an out-of-sight bank for covered, hidden and minimized windows. Tabs use a compact list.',position:'Places the out-of-sight bank and tab list. Window plaques follow their windows; they do not move to this anchor.'},
+ canopy:{name:'Canopy',anchor:'top-center',description:'Windows grouped by app. Every window still has a direct label. Tabs group by browser and browser window.',position:'Places the grouped panel. Grouping changes the scan, never the address.'},
+ lattice:{name:'Lattice',anchor:'middle-center',description:'Fixed address cells, with held places after closing. A prefix opens its next grid; full tab addresses remain visible.',position:'Places the grid. Cells follow alphabet order and reflow to fit; labels never change on resize.'},
+ fold:{name:'Fold',anchor:'middle-center',description:'App first, window second—even for an app with one window. Fold keeps its own stable addresses. Tabs use their existing two-letter list.',position:'Places the app spine and window sheet together. The sheet stays inside the usable screen.'},
+ relay:{name:'Relay',anchor:'middle-right',description:'Enter returns to the previous distinct live window. Other windows keep their direct labels. Tab selection does not enter window history.',position:'Places the current/previous window pair and the remaining window index.'}
+};
+function createFold(selection,targets){
+ const s={selection:{...M.clone(selection),policy:'stable'},apps:M.create({...selection,policy:'stable'},[]),children:{},map:{},pins:{},retired:[]};
+ for(const t of targets)allocateFold(s,t);
+ return s;
+}
+function refresh(s){
+ s.map={};s.pins={};s.retired=[];
+ for(const [app,children] of Object.entries(s.children)){
+  const head=s.apps.map[app];if(!head)continue;
+  for(const [id,label] of Object.entries(children.map))s.map[id]=label?head+label:null;
+  for(const [id,label] of Object.entries(children.pins))s.pins[id]=head+label;
+  s.retired.push(...children.retired.map(label=>head+label));
+ }
+}
+function allocateFold(s,t){
+ if(!s.children[t.app]){M.allocate(s.apps,{id:t.app,name:t.name,title:t.name});s.children[t.app]=M.create(s.selection,[]);}
+ M.allocate(s.children[t.app],t);refresh(s);
+}
+function retireFold(s,t){if(s.children[t.app])M.retire(s.children[t.app],t.id);refresh(s);}
+function pinFold(s,t,raw){
+ const label=M.normalize(raw),head=s.apps.map[t.app];
+ if(!head||!label.startsWith(head))return 'Keep this app’s prefix: '+(head||'unavailable')+'. Pin a free complete app + window address.';
+ const error=M.pin(s.children[t.app],t.id,label.slice(head.length));if(error)return error;
+ refresh(s);return '';
+}
+function reassignFold(s,selection,targets){
+ const candidate=createFold(selection,targets);
+ for(const t of targets){
+  const old=s.children[t.app]?.pins[t.id];if(!old)continue;
+  if(!M.codes(selection.alphabet,'stable').includes(old))return {error:'The new alphabet cannot keep a pinned Fold label. Reset Fold labels first.'};
+ }
+ // Seed all child reservations together so a pin can never collide with a newly allocated sibling.
+ for(const app of Object.keys(candidate.children)){
+  const family=targets.filter(t=>t.app===app),pins={};
+  for(const t of family)if(s.children[app]?.pins[t.id])pins[t.id]=s.children[app].pins[t.id];
+  candidate.children[app]=M.create(candidate.selection,family,pins);
+ }
+ refresh(candidate);return {state:candidate,error:''};
+}
+function render(ctx){
+ const {mode,tabs,list,state,prefix,query,markup,esc,focus}=ctx;
+ if(query!==null)return null; // Shared global search never gains another hierarchy.
+ const heading=text=>`<div class="mode-section-title">${esc(text)}</div>`;
+ const group=(title,rows)=>`<section class="mode-group">${heading(title)}${rows.map(markup).join('')}</section>`;
+ if(mode==='canopy'){
+  const keys=[...new Set(list.map(t=>tabs?t.browserId+':'+t.windowId:t.app))];
+  return '<div class="canopy-preview">'+keys.map(key=>{const rows=list.filter(t=>(tabs?t.browserId+':'+t.windowId:t.app)===key),first=rows[0];return group(first.name+(tabs?' · '+(first.context||'Window').split(' / ')[0]:''),rows);}).join('')+'</div>';
+ }
+ if(mode==='fold'&&!tabs){
+  const apps=state.apps.order.filter(app=>list.some(t=>t.app===app)),selected=apps.find(app=>state.apps.map[app]&&prefix.startsWith(state.apps.map[app]));
+  const spine=apps.map(app=>{const rows=list.filter(t=>t.app===app),key=state.apps.map[app],selectedApp=app===selected;return `<button class="fold-app ${selectedApp?'selected':''}" data-mode-prefix="${esc(key||'')}" ${key?'':'disabled'} aria-pressed="${selectedApp}" aria-label="${esc(rows[0].name)} windows. App prefix ${esc(key||'unavailable')}"><span>${esc(rows[0].name)}<small>${rows.length} window${rows.length===1?'':'s'}</small></span><kbd class="key-label">${esc(key||'—')}</kbd></button>`;}).join('');
+  return `<div class="fold-preview"><div class="fold-spine">${heading('Choose app')}${spine}</div><section class="fold-sheet">${selected?heading('Choose window')+'<button class="mode-back" data-mode-back>← All apps</button>'+list.filter(t=>t.app===selected).map(markup).join(''):'<p class="mode-empty">Choose an app, then a window.<br>Both parts of the full label are required.</p>'}</section></div>`;
+ }
+ if(mode==='lattice'){
+  const allCodes=Object.values(state.map).filter(Boolean),held=state.retired||[];
+  const cells=[...state.selection.alphabet].map(letter=>{
+   const code=prefix+letter,target=list.find(t=>state.map[t.id]===code),descendants=list.filter(t=>state.map[t.id]?.startsWith(code)&&state.map[t.id].length>code.length);
+   if(target)return `<div class="address-cell" data-cell="${esc(code)}">${markup(target)}</div>`;
+   const branch=descendants.length||(state.selection.policy!=='pairs'&&letter===state.selection.alphabet.at(-1)&&code.length<4);
+   if(branch)return `<section class="address-cell branch-cell" data-cell="${esc(code)}"><button data-mode-prefix="${esc(code)}" ${descendants.length?'':'disabled'} aria-label="${esc(code)}: ${descendants.length?'show '+descendants.length+' targets':'reserved overflow'}"><kbd class="key-label">${esc(code)}</kbd><span>${descendants.length?descendants.length+' '+(tabs?'tabs':'windows'):'More windows'}</span></button>${tabs&&!prefix?'<div class="address-inventory">'+descendants.map(markup).join('')+'</div>':descendants.slice(0,2).map(t=>`<p class="branch-title">${esc(t.title)}</p>`).join('')}</section>`;
+   return `<div class="address-cell empty-cell" data-cell="${esc(code)}"><kbd class="key-label">${esc(code)}</kbd><span>${held.some(x=>x.startsWith(code))?'Address held':allCodes.some(x=>x.startsWith(code))?'Not included':'Available'}</span></div>`;
+  }).join('');
+  const unaddressed=list.filter(t=>!state.map[t.id]);
+  return `${prefix?'<button class="mode-back" data-mode-back>← All addresses</button>':''}<div class="address-grid">${cells}</div>${unaddressed.length?group('Without a short label · search or click',unaddressed):''}`;
+ }
+ if(mode==='beacons'&&!tabs){
+  // Deliberately synthetic visibility: show three unobstructed title bars, bank every other target.
+  const exposed=list.filter(t=>!t.minimized&&!t.hidden).sort((a,b)=>(b.id===focus.current)-(a.id===focus.current)).slice(0,3),bank=list.filter(t=>!exposed.includes(t));
+  return `<div class="beacon-preview" aria-label="Simulated desktop geometry">${heading('Visible windows · sample geometry')}<div class="beacon-field">${exposed.map((t,i)=>`<div class="beacon-window beacon-${i}">${markup(t)}</div>`).join('')}</div>${bank.length?group('Out of sight · '+bank.length,bank):''}</div>`;
+ }
+ if(mode==='relay'&&!tabs){
+  const current=list.find(t=>t.id===focus.current),previous=list.find(t=>t.id===focus.previous&&t.id!==focus.current),rest=list.filter(t=>t!==current&&t!==previous);
+  return `<div class="relay-preview">${group('Current window',current?[current]:[])}<section class="relay-previous">${heading('Previous window')}${previous?markup(previous)+'<button class="return-action" data-return-window>Return here <kbd>Enter ↵</kbd></button>':'<p class="mode-empty">No previous available window. Select a different window to start a return pair.</p>'}</section>${group('Other windows · same letters',rest)}</div>`;
+ }
+ return null;
+}
+const api={definitions,createFold,allocateFold,retireFold,pinFold,reassignFold,render};
+if(typeof module!=='undefined')module.exports=api;root.TabnaxModes=api;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+</script><script>
+/* Browser-only settings study. Preferences persist locally; windows, permissions and focus are synthetic. */
+(() => {
+'use strict';
+const M=TabnaxModel,V=TabnaxModes, $=id=>document.getElementById(id), clone=M.clone;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const STORE='tabnax.settings-study.v1';
+let cfg=clone(M.defaults), storageOK=true, pane='selection';
+try { const old=JSON.parse(localStorage.getItem(STORE)); if(old?.config?.version===1) {
+  const c=old.config, valid=M.validateAlphabet(c.selection?.alphabet||'');
+  if(!valid.error&&['stable','mnemonic','pairs'].includes(c.selection?.policy)) cfg={...cfg,...c,selection:{...cfg.selection,...c.selection,baseHand:M.baseHand(c.selection)},position:{...cfg.position,...c.position},browserTabs:{...cfg.browserTabs,...c.browserTabs},themeOverrides:c.themeOverrides||{}};
+  if(['general','selection','position','appearance','tabs'].includes(old.pane))pane=old.pane;
+}}catch{storageOK=false;}
+if(!V.definitions[cfg.displayMode])cfg.displayMode='shore';
+cfg.modePositions=cfg.modePositions||{};
+cfg.selection.baseHand=M.baseHand(cfg.selection);
+let targets=clone(M.windows.slice(0,8)),engine=M.create(cfg.selection,targets),draft=null,draftSelection=null,draftInvalid=false;
+let foldEngine=V.createFold(cfg.selection,targets),foldDraft=null,focus={current:'code',previous:null};
+let history=[],picked=0,active=false,prefix='',query=null,searchIndex=0,held=false,nextID=1,recording=false,dialogAction=null;
+let harness={dataset:'8',layout:'list',system:'auto',activeBrowser:'arc',contrast:false,motion:false,focusFailure:false,permission:'unknown'};
+let otherCatalogue={targets:clone(M.tabs),engine:M.create({...cfg.selection,policy:'pairs'},M.tabs),dataset:'tabs'};
+const icons={arc:'A',zen:'◌',firefox:'◉',edge:'e',brave:'♜',chrome:'◉',code:'‹›',safari:'◈',finder:'⌣',figma:'●',terminal:'›_',notes:'≡'};
+const foldActive=()=>cfg.displayMode==='fold'&&!isTabs();
+const effective=()=>foldActive()?(foldDraft||foldEngine):(draft||engine);
+const hasDraft=()=>!!(draft||foldDraft||draftInvalid);
+const windowTargets=()=>isTabs()?otherCatalogue.targets:targets;
+const currentPosition=()=>cfg.displayMode==='shore'?cfg.position:(cfg.modePositions[cfg.displayMode]||{...M.defaults.position,anchor:V.definitions[cfg.displayMode].anchor});
+const isTabs=()=>harness.dataset==='tabs';
+const visible=()=>{
+ const included=M.includedBrowsers(cfg.browserTabs),list=targets.filter(t=>isTabs()?cfg.browserTabs.enabled&&included.includes(t.browserId)&&!t.private&&(cfg.browserTabs.range==='all'||(cfg.browserTabs.range==='browser'?t.browserId===harness.activeBrowser:t.windowId===harness.activeBrowser+'-work')):(cfg.minimized||!t.minimized)&&(cfg.hidden||!t.hidden));
+ return isTabs()?list.sort((a,b)=>M.browsers.findIndex(x=>x.id===a.browserId)-M.browsers.findIndex(x=>x.id===b.browserId)):list;
+};
+function snapshot(){return clone({cfg,engine,foldEngine,targets,otherCatalogue,dataset:harness.dataset});}
+function checkpoint(){history.push(snapshot());if(history.length>20)history.shift();$('undo').disabled=false;}
+function save(message='Saved on this device') {
+ try{localStorage.setItem(STORE,JSON.stringify({config:cfg,pane}));}catch{storageOK=false;}
+ $('save-status').textContent=storageOK?message:'Storage unavailable · changes last for this page';
+}
+function announce(text){$('selection-result').textContent=text;}
+function cancel(message){active=false;held=false;prefix='';query=null;$('search-box').hidden=true;if(message)announce(message);renderPreview();}
+function mutate(key,value){checkpoint();cfg[key]=value;save();renderControls();renderPreview();}
+function currentSelection(){return draftSelection||cfg.selection;}
+function otherSelectionChanges(selection){return selection.alphabet!==cfg.selection.alphabet||(otherCatalogue.dataset!=='tabs'&&selection.policy!==cfg.selection.policy);}
+function setPane(name){pane=name;document.querySelectorAll('button[data-pane]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pane===pane)));document.querySelectorAll('.pane').forEach(p=>p.hidden=p.id!=='pane-'+name);$('window-title').textContent=name==='tabs'?'Browser Tabs':name[0].toUpperCase()+name.slice(1);document.body.dataset.pane=name;save();renderDraft();renderPosition();}
+function isDark(){return cfg.appearance==='dark'||(cfg.appearance==='system'&&(harness.system==='dark'||(harness.system==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches)));}
+function style(){
+ const dark=isDark();
+ document.body.classList.toggle('dark',dark);document.body.dataset.theme=cfg.theme;
+ document.body.classList.toggle('strong',cfg.strongLabels);document.body.classList.toggle('contrast',harness.contrast||matchMedia('(prefers-contrast: more)').matches);document.body.classList.toggle('no-motion',harness.motion||matchMedia('(prefers-reduced-motion: reduce)').matches);
+ const palette=M.resolveTheme(cfg.theme,dark?'dark':'light',cfg.themeOverrides);
+ for(const [token,value] of Object.entries({preview:palette.surface,previewText:palette.text,previewMuted:palette.muted,keyBg:palette.keyBg,keyFg:palette.keyFg,keyBorder:palette.keyBorder,selectionAccent:palette.selection}))document.body.style.setProperty('--'+token,value);
+ renderThemeControls(palette,dark);
+ document.body.style.setProperty('--labelFont',({standard:12,large:17,extra:24}[cfg.labelSize]||12)+'px');
+}
+function renderControls(){
+ const s=currentSelection();$('hand').value=s.hand;$('alphabet').value=s.alphabet;$('policy').value=isTabs()?'pairs':foldActive()?'stable':s.policy;$('policy').disabled=isTabs()||foldActive();
+ $('display-mode').value=cfg.displayMode;$('mode-description').textContent=V.definitions[cfg.displayMode].description;
+ $('pin-code').maxLength=foldActive()?8:4;$('pin-code').placeholder=foldActive()?'Full label, e.g. JH':'Free label, e.g. H';
+ $('key-mode').value=cfg.keyMode;$('record').textContent=recording?'Press shortcut…':cfg.shortcut;$('activation').value=cfg.activation;$('modifier-side').value=cfg.modifierSide;
+ $('reset-shortcut').disabled=cfg.shortcut===M.defaults.shortcut&&!recording;
+ $('activation-help').textContent=cfg.activation==='latch'?'Release the shortcut, then type. Escape cancels.':'Select while holding the shortcut. Releasing without selection cancels.';
+ for(const id of ['login','minimized','hidden'])$(id).checked=cfg[id];
+ document.querySelectorAll('[name=appearance]').forEach(r=>r.checked=r.value===cfg.appearance);
+ document.querySelectorAll('button[data-theme]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===cfg.theme)));
+ $('label-size').value=cfg.labelSize;$('strong-labels').checked=cfg.strongLabels;
+ const position=currentPosition();$('position-display').value=position.display;$('position-inset').value=position.inset;$('inset-value').textContent=position.inset+' pt';
+ $('position-mode').textContent='Position for '+V.definitions[cfg.displayMode].name+' · other modes keep their own placement';$('mode-position-note').textContent=V.definitions[cfg.displayMode].position;
+ document.querySelectorAll('[data-anchor]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.anchor===position.anchor)));
+ $('tabs-enabled').checked=cfg.browserTabs.enabled;$('tabs-range').value=cfg.browserTabs.range;$('default-scope').value=cfg.browserTabs.defaultScope;
+ $('tabs-range').disabled=!cfg.browserTabs.enabled;$('default-scope').disabled=!cfg.browserTabs.enabled;$('preview-tabs').disabled=!cfg.browserTabs.enabled;
+ const activeBrowser=M.browsers.find(b=>b.id===harness.activeBrowser).name;
+ $('tabs-range-help').textContent=cfg.browserTabs.range==='all'?'The preview includes Arc, Zen, Safari, Chrome, Firefox, Edge and Brave.':cfg.browserTabs.range==='browser'?`Sample active browser: ${activeBrowser}. Only included browsers appear.`:`Sample active browser window: ${activeBrowser} · Work. No matching window means an empty tab view.`;
+ renderBrowserControls();
+ renderLetters(s.alphabet);policyHelp();renderDraft();style();renderPosition();
+}
+function renderLetters(raw){
+ const a=M.normalize(raw);picked=Math.min(picked,Math.max(0,a.length-1));
+ $('letter-order').innerHTML=[...a].map((c,i)=>`<button type="button" data-letter="${i}" aria-label="${esc(c)}, position ${i+1}${i===a.length-1?', overflow prefix':''}" aria-pressed="${i===picked}" class="${i===a.length-1?'branch':''}">${esc(c)}</button>`).join('');
+ $('selected-letter').textContent=a[picked]?`${a[picked]} selected`:'Select a letter';$('move-left').disabled=picked===0;$('move-right').disabled=picked===a.length-1;$('remove-ambiguous').disabled=!/[IO]/.test(a);
+ const hand=M.baseHand(currentSelection()),name={right:'Right hand',left:'Left hand',both:'Both hands'}[hand];
+ $('reset-alphabet').disabled=a===M.presets[hand];
+ $('alphabet-reset-help').textContent=`Restores the ${name} preset. Preview first, then Apply labels.`;
+ $('reset-alphabet').title=`Restore ${name.toLowerCase()} order: ${[...M.presets[hand]].join(' ')}`;
+}
+function policyHelp(){
+ const s=currentSelection(),policy=isTabs()?'pairs':foldActive()?'stable':s.policy,a=s.alphabet,last=a.at(-1);
+ $('policy-help').textContent=({stable:'Windows keep their letters as you switch, rename or open other windows.',mnemonic:'Try an available app or title initial, then use your comfort order. Existing labels stay put.',pairs:'Every window starts with two letters. More room, with an extra key for every selection.'})[policy];
+ $('overflow-note').innerHTML=policy==='pairs'?`Type both letters, with no pause or Enter. ${a.length*a.length} complete labels are available.`:`<kbd>${esc(last)}</kbd> is kept for more windows. The first ${a.length-1} use one letter; the next uses <kbd>${esc(last+a[0])}</kbd>. Learned labels never shift.`;
+ if(foldActive()){$('policy-help').textContent='Fold uses a stable app prefix and stable child label. Your flat-window policy is kept for the other modes.';$('overflow-note').textContent='Type app then window, including singleton apps. The full label stays visible. Both stages can overflow; / searches all apps.';}
+}
+function renderDraft(){
+ let changed=draft?targets.filter(t=>draft.map[t.id]!==engine.map[t.id]).length:0;
+ if(draft&&draftSelection&&otherSelectionChanges(draftSelection)){
+  const proposal=M.create({...draftSelection,policy:otherCatalogue.dataset==='tabs'?'pairs':draftSelection.policy},otherCatalogue.targets,otherCatalogue.engine.pins);
+  changed+=otherCatalogue.targets.filter(t=>proposal.map[t.id]!==otherCatalogue.engine.map[t.id]).length;
+ }
+ if(foldDraft)changed+=windowTargets().filter(t=>foldDraft.map[t.id]!==foldEngine.map[t.id]).length;
+ $('draft-bar').hidden=!hasDraft();$('apply').disabled=draftInvalid||(!draft&&!foldDraft);
+ if(hasDraft())$('save-status').textContent='Label changes not applied';
+ else if($('save-status').textContent==='Label changes not applied')$('save-status').textContent=storageOK?'Saved on this device':'Storage unavailable · changes last for this page';
+ $('draft-summary').textContent=draftInvalid?'Fix the alphabet to continue':`${changed} label assignment${changed===1?'':'s'} will change`;
+ $('draft-help').textContent='Preview only. Applying replaces the address session. You can undo it.';
+ $('preview-state').textContent=draftInvalid?'Last valid labels':(draft||foldDraft)?'Unsaved labels':'Saved settings';
+}
+function stageSelection(selection){
+ selection={...selection,baseHand:M.baseHand(selection)};
+ cancel();draftInvalid=false;
+ const result=M.validateAlphabet(selection.alphabet);
+ $('alphabet-error').textContent=result.error;$('alphabet').setAttribute('aria-invalid',String(!!result.error));
+ if(result.error){draftInvalid=true;renderDraft();return;}
+ selection.alphabet=result.alphabet;draftSelection=selection;
+ const allocSelection={...selection,policy:harness.dataset==='tabs'?'pairs':selection.policy};
+ const otherSelection={...selection,policy:otherCatalogue.dataset==='tabs'?'pairs':selection.policy};
+ const incompatible=Object.values((draft||engine).pins).some(p=>!M.codes(allocSelection.alphabet,allocSelection.policy).includes(p))||Object.values(otherCatalogue.engine.pins).some(p=>!M.codes(otherSelection.alphabet,otherSelection.policy).includes(p));
+ if(incompatible){$('alphabet-error').textContent='This alphabet cannot keep a pinned label. Discard, then reset label assignments to clear pins first.';draftInvalid=true;renderDraft();return;}
+ if(selection.alphabet!==(foldDraft||foldEngine).selection.alphabet){const nextFold=V.reassignFold(foldDraft||foldEngine,selection,windowTargets());if(nextFold.error){$('alphabet-error').textContent=nextFold.error;draftInvalid=true;renderDraft();return;}foldDraft=nextFold.state;}
+ draft=M.create(allocSelection,targets,(draft||engine).pins);prefix='';renderControls();renderPreview();
+}
+function discard(){foldDraft=null;draft=null;draftSelection=null;draftInvalid=false;$('mode-error').textContent='';$('alphabet-error').textContent='';$('alphabet').setAttribute('aria-invalid','false');$('pin-error').textContent='';cancel();renderControls();renderPreview();}
+function apply(){
+ if((!draft&&!foldDraft)||draftInvalid)return;checkpoint();
+ if(draftSelection&&otherSelectionChanges(draftSelection))otherCatalogue.engine=M.create({...draftSelection,policy:otherCatalogue.dataset==='tabs'?'pairs':draftSelection.policy},otherCatalogue.targets,otherCatalogue.engine.pins);
+ cfg.selection=clone(draftSelection||cfg.selection);if(draft)engine=draft;if(foldDraft)foldEngine=foldDraft;
+ draft=null;foldDraft=null;draftSelection=null;draftInvalid=false;$('mode-error').textContent='';cancel();save('Labels applied · Undo available');renderControls();renderPreview();announce('New labels applied. Undo restores the previous labels.');
+}
+function renderPreview(){
+ style();const state=effective(),list=visible();
+ $('preview-surface').dataset.mode=cfg.displayMode;
+ $('mode-preview-note').textContent=V.definitions[cfg.displayMode].name+' · '+(isTabs()?({canopy:'tabs grouped by browser window',lattice:'two-letter tab grid'}[cfg.displayMode]||'two-letter tab list'):({fold:'app → window · separate addresses',relay:'Enter returns · letters select',beacons:'plaques + out-of-sight bank',canopy:'grouped apps · direct window labels',lattice:'address cells · prefixes open another grid',shore:'compact index · direct window labels'}[cfg.displayMode]));
+ const matches=query===null?(prefix&&harness.dataset==='tabs'&&harness.layout==='list'?list.filter(t=>state.map[t.id]?.startsWith(prefix)):list):list.filter(t=>(query.toLowerCase().trim().split(/\s+/)).every(q=>(t.name+' '+t.title+' '+(t.context||'')).toLowerCase().includes(q)));
+ searchIndex=Math.max(0,Math.min(searchIndex,matches.length-1));
+ $('scope-name').textContent=isTabs()?'Browser tabs':'Windows';$('window-count').textContent=String(matches.length);
+ $('scope-windows').setAttribute('aria-pressed',String(!isTabs()));$('scope-tabs').setAttribute('aria-pressed',String(isTabs()));$('scope-tabs').disabled=!cfg.browserTabs.enabled;
+ $('search').placeholder=isTabs()?'Find a browser tab…':'Find a window…';
+ document.querySelector('.inventory>summary').textContent=isTabs()?'Inspect labels & tabs':'Inspect labels & windows';
+ $('add-window').textContent=isTabs()?'＋ Add a tab':'＋ Add a window';
+ $('preview-surface').classList.toggle('armed',active);$('targets').classList.toggle('grid',harness.layout==='grid'&&query===null&&cfg.displayMode==='shore');
+ const markup=t=>{
+   const label=state.map[t.id]||'—',idx=matches.indexOf(t),isMatch=!prefix||label.startsWith(prefix);
+   const labelHTML=prefix&&isMatch?`<span class="entered">${esc(prefix)}</span>${esc(label.slice(prefix.length))}`:esc(label);
+   return `<button type="button" class="target ${!isMatch?'dim':''} ${query!==null&&idx===searchIndex?'highlight':''}" data-target="${esc(t.id)}" aria-label="${esc(t.name+': '+t.title+'. Label '+label+(t.minimized?'. Minimized':''))}" title="${esc(t.title)}"><span class="app-icon ${esc(t.app)}" aria-hidden="true">${icons[t.app]||'▧'}</span><span class="target-text"><span class="target-title">${esc(t.title)}</span><span class="target-meta">${esc(t.name+(t.context?' · '+t.context:'')+(t.minimized?' · minimized':'')+(t.hidden?' · hidden':''))}</span></span><span class="key-label" aria-hidden="true">${labelHTML}</span></button>`;
+ };
+ const modeMarkup=V.render({mode:cfg.displayMode,tabs:isTabs(),list:cfg.displayMode==='lattice'?list:matches,state,prefix,query,markup,esc,focus});
+ if(modeMarkup!==null&&list.length)$('targets').innerHTML=modeMarkup;
+ else if(harness.layout==='grid'&&query===null&&cfg.displayMode==='shore'){let cells=[];for(let i=0;i<state.nextSlot;i++){const t=list.find(t=>state.slots[t.id]===i);cells.push(t?markup(t):'<div class="empty-cell">Held position</div>');}$('targets').innerHTML=cells.join('');}
+ else $('targets').innerHTML=matches.map(markup).join('')||(query!==null?`<p class="help">No matching ${isTabs()?'tabs':'windows'}. Edit your search or press Escape.</p>`:(isTabs()?'<p class="help">No included tabs. Choose a browser or a wider scope in Browser Tabs settings.</p>':'<p class="help">No included windows. Add a sample window below.</p>'));
+ $('sequence-hint').textContent=query!==null?'↑ ↓ choose · Enter selects':prefix?`${prefix} … next letter`:(active?'Listening for a label':'Type a label to switch');
+ $('try').textContent=active?'Restart preview':'Try these keys';$('cancel-try').hidden=!active;
+ $('try-instruction').textContent=active?'Letters select · Esc cancels':'No real windows will move.';
+ const oldPin=$('pin-target').value;$('pin-target').innerHTML=targets.map(t=>`<option value="${esc(t.id)}">${esc(t.name+' · '+t.title)}</option>`).join('');if(targets.some(t=>t.id===oldPin))$('pin-target').value=oldPin;
+ $('inventory').innerHTML=targets.map(t=>`<div class="inventory-row"><code>${esc(state.map[t.id]||'—')}${state.pins[t.id]?' ⌖':''}</code><span class="inv-title" title="${esc(t.title)}">${esc(t.title)}${!list.includes(t)?' (excluded)':''}</span><button data-rename="${esc(t.id)}" aria-label="Rename ${esc(t.title)}" title="Rename">✎</button><button data-remove="${esc(t.id)}" aria-label="Close ${esc(t.title)}" title="Close simulated window">−</button></div>`).join('');
+ $('held-labels').textContent=targets.some(t=>!state.map[t.id])?'All short labels are in use. Reset labels to reuse closed-window labels. Unlabelled windows can still be clicked or found with /.':state.retired.length?`Held labels: ${state.retired.join(', ')}. They are not reused until you reset.`:'Closing a window holds its label for this session.';
+ $('add-window').disabled=targets.length>=(isTabs()?80:40);renderDraft();renderPosition();
+}
+function arm(){active=true;prefix='';query=null;searchIndex=0;$('search-box').hidden=true;renderPreview();$('preview-surface').focus();announce('Preview ready. Type the visible letter or sequence.');}
+function selectTarget(id){const t=visible().find(t=>t.id===id);if(!t)return;
+ if(harness.focusFailure){cancel();announce('Could not select '+t.name+' · '+t.title+'. Simulated failure; return history unchanged.');return;}
+ if(!isTabs()&&focus.current!==id){focus.previous=windowTargets().some(w=>w.id===focus.current)?focus.current:null;focus.current=id;}
+ cancel();announce(`Selected ${t.name} · ${t.title}. Simulated only.`);$('try').focus();}
+function returnPrevious(){const t=visible().find(t=>t.id===focus.previous&&t.id!==focus.current);if(t&&!isTabs())selectTarget(t.id);else announce('No previous available window. Choose a window first.');}
+
+function keyDown(e){
+ if(e.isComposing||e.repeat)return;
+ if(active&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&(e.code==='Digit1'||e.code==='Digit2')&&query===null){e.preventDefault();switchScope(e.code==='Digit2'?'tabs':'windows',true);return;}
+ if(e.key==='Tab'){cancel('Preview stopped. Tab continues through the settings.');return;}
+ if(e.key==='Shift'&&e.code===(currentSelection().hand==='left'?'ShiftRight':'ShiftLeft')&&e.target===$('preview-surface')){if(!active)arm();held=true;return;}
+ if(e.metaKey||e.ctrlKey||e.altKey)return;
+ if(query!==null){
+  if(e.key==='Escape'){e.preventDefault();query=null;prefix='';$('search-box').hidden=true;renderPreview();$('preview-surface').focus();}
+  else if(['ArrowDown','ArrowUp','Enter'].includes(e.key)){
+   e.preventDefault();const matches=visible().filter(t=>query.toLowerCase().trim().split(/\s+/).every(q=>(t.name+' '+t.title+' '+(t.context||'')).toLowerCase().includes(q)));
+   if(e.key==='Enter'){if(matches[searchIndex])selectTarget(matches[searchIndex].id);}else{searchIndex=Math.max(0,Math.min(matches.length-1,searchIndex+(e.key==='ArrowDown'?1:-1)));renderPreview();}
+  }return;
+ }
+ if(e.target.closest('button')&&['Enter',' '].includes(e.key))return;
+ if(e.key===' '){e.preventDefault();if(active)cancel('Cancelled. No window selected.');else arm();return;}
+ if(!active)return;
+ if(e.key==='Enter'&&cfg.displayMode==='relay'&&!isTabs()&&!prefix){e.preventDefault();returnPrevious();return;}
+ if(e.key==='Escape'){e.preventDefault();if(prefix){prefix='';renderPreview();announce('Sequence cleared.');}else cancel('Cancelled. No window selected.');return;}
+ if(e.key==='Backspace'){e.preventDefault();prefix=prefix.slice(0,-1);renderPreview();return;}
+ if(e.code==='Slash'||e.key==='/'){e.preventDefault();prefix='';query='';searchIndex=0;$('search-box').hidden=false;$('search').value='';renderPreview();$('search').focus();return;}
+ const key=cfg.keyMode==='physical'?(e.code.startsWith('Key')?e.code.slice(3):''):e.key.toUpperCase();
+ if(!/^[A-Z]$/.test(key))return;
+ e.preventDefault();const next=prefix+key,state=effective(),list=visible();
+ const exact=list.find(t=>state.map[t.id]===next);if(exact){selectTarget(exact.id);return;}
+ if(list.some(t=>state.map[t.id]?.startsWith(next))){prefix=next;renderPreview();announce(`${prefix}. Type the next letter.`);}
+ else{announce(`No ${isTabs()?'tab':'window'} has ${next}. ${prefix?'Your prefix '+prefix+' is kept. Backspace goes back.':'Try a visible label.'}`);}
+}
+function showDialog(title,copy,action,confirm='Continue'){$('dialog-title').textContent=title;$('dialog-copy').textContent=copy;$('dialog-confirm').textContent=confirm;dialogAction=action;$('dialog').showModal();}
+$('dialog').addEventListener('close',()=>{if($('dialog').returnValue==='confirm')dialogAction?.();dialogAction=null;});
+document.querySelectorAll('button[data-pane]').forEach(b=>b.onclick=()=>setPane(b.dataset.pane));
+$('hand').onchange=e=>stageSelection({...currentSelection(),hand:e.target.value,alphabet:M.presets[e.target.value]||$('alphabet').value});
+$('alphabet').oninput=e=>{const raw=e.target.value;renderLetters(raw);stageSelection({...currentSelection(),hand:'custom',alphabet:raw});if(!draftInvalid){$('alphabet').focus();$('alphabet').setSelectionRange(raw.length,raw.length);}};
+$('letter-order').onclick=e=>{const b=e.target.closest('[data-letter]');if(b){picked=Number(b.dataset.letter);renderLetters($('alphabet').value);document.querySelector(`[data-letter="${picked}"]`)?.focus();}};
+function move(delta){let a=[...M.normalize($('alphabet').value)],j=picked+delta;if(j<0||j>=a.length)return;[a[picked],a[j]]=[a[j],a[picked]];picked=j;stageSelection({...currentSelection(),hand:'custom',alphabet:a.join('')});}
+$('move-left').onclick=()=>move(-1);$('move-right').onclick=()=>move(1);
+$('remove-ambiguous').onclick=()=>stageSelection({...currentSelection(),hand:'custom',alphabet:$('alphabet').value.replace(/[IOio]/g,'')});
+$('reset-alphabet').onclick=()=>{
+ const hand=M.baseHand(currentSelection());
+ stageSelection({...currentSelection(),hand,baseHand:hand,alphabet:M.presets[hand]});
+ renderControls();renderPreview();
+ if(!draftInvalid)announce('Default letter order previewed. Apply labels to save, or Discard to keep your saved order.');
+};
+$('policy').onchange=e=>stageSelection({...currentSelection(),policy:e.target.value});
+$('discard').onclick=discard;$('apply').onclick=apply;
+$('pin').onclick=()=>{
+ if(draftInvalid){$('pin-error').textContent='Fix the alphabet first.';return;}
+ const candidate=clone(effective()),target=targets.find(t=>t.id===$('pin-target').value);if(!target)return;
+ const error=foldActive()?V.pinFold(candidate,target,$('pin-code').value):M.pin(candidate,target.id,$('pin-code').value);$('pin-error').textContent=error;if(error)return;
+ if(foldActive())foldDraft=candidate;else draft=candidate;draftSelection=clone(currentSelection());cancel();renderDraft();renderPreview();
+};
+$('reset-labels').onclick=()=>showDialog('Reset label assignments?','Preview fresh labels for the current view and mode. Held labels become available and its session pins are removed. Other namespaces stay unchanged. Nothing changes until you apply.',()=>{
+ if(foldActive())foldDraft=V.createFold(currentSelection(),targets);else draft=M.create({...currentSelection(),policy:isTabs()?'pairs':currentSelection().policy},targets);
+ draftSelection=clone(currentSelection());draftInvalid=false;$('alphabet-error').textContent='';cancel();renderControls();renderPreview();
+},'Preview reset');
+for(const id of ['login','minimized','hidden'])$(id).onchange=e=>{cancel();mutate(id,e.target.checked);if(id==='login')save('Login preference saved · OS unchanged');};
+for(const [id,key] of [['activation','activation'],['modifier-side','modifierSide'],['key-mode','keyMode'],['label-size','labelSize']])$(id).onchange=e=>{if(id!=='label-size')cancel();mutate(key,e.target.value);};
+$('strong-labels').onchange=e=>mutate('strongLabels',e.target.checked);
+document.querySelectorAll('[name=appearance]').forEach(r=>r.onchange=()=>mutate('appearance',r.value));
+document.querySelectorAll('button[data-theme]').forEach(b=>b.onclick=()=>mutate('theme',b.dataset.theme));
+$('undo').onclick=()=>{const old=history.pop();if(!old)return;cfg=old.cfg;engine=old.engine;foldEngine=old.foldEngine;foldDraft=null;targets=old.targets;otherCatalogue=old.otherCatalogue;harness.dataset=old.dataset;$('dataset').value=harness.dataset;draft=null;draftSelection=null;draftInvalid=false;$('alphabet-error').textContent='';cancel();$('undo').disabled=!history.length;save('Previous settings restored');renderControls();renderPreview();};
+$('restore').onclick=()=>showDialog('Restore Tabnax defaults?','Restore display mode, themes, all mode positions, browser tabs, activation preferences and selection keys. Window, tab and Fold addresses receive fresh labels and pins are removed. System permissions stay unchanged. Undo restores this session’s previous settings.',()=>{checkpoint();cfg=clone(M.defaults);foldDraft=null;draft=null;draftSelection=null;draftInvalid=false;$('alphabet-error').textContent='';engine=M.create({...cfg.selection,policy:harness.dataset==='tabs'?'pairs':cfg.selection.policy},targets);otherCatalogue.engine=M.create({...cfg.selection,policy:otherCatalogue.dataset==='tabs'?'pairs':cfg.selection.policy},otherCatalogue.targets);foldEngine=V.createFold(cfg.selection,windowTargets());cancel();save('Defaults restored · Undo available');renderControls();renderPreview();},'Restore defaults');
+$('permission-info').onclick=()=>showDialog('Accessibility access','In the native app, this explains why access is needed and opens the relevant System Settings page. This prototype cannot inspect, request or grant permissions. The selected scenario is only an illustration.',null,'Done');
+$('record').onclick=()=>{recording=!recording;$('shortcut-error').textContent='';$('record').textContent=recording?'Press shortcut…':cfg.shortcut;$('reset-shortcut').disabled=cfg.shortcut===M.defaults.shortcut&&!recording;};
+$('reset-shortcut').onclick=()=>{
+ recording=false;$('shortcut-error').textContent='';cancel();
+ if(cfg.shortcut!==M.defaults.shortcut)mutate('shortcut',M.defaults.shortcut);else renderControls();
+ announce('Suggested shortcut restored. Activation behavior and modifier side are kept.');
+};
+$('record').addEventListener('keydown',e=>{
+ if(!recording)return;
+ if(e.key==='Tab'){recording=false;renderControls();return;}
+ e.preventDefault();if(e.key==='Escape'){recording=false;renderControls();return;}
+ if(['Meta','Control','Alt','Shift'].includes(e.key))return;
+ if(!(e.ctrlKey||e.metaKey||e.altKey)){$('shortcut-error').textContent='Use Control, Option or Command with a key. Plain typing keys stay available.';return;}
+ if((e.metaKey&&['tab',' ','q','w',','].includes(e.key.toLowerCase()))||(e.ctrlKey&&e.key===' ')){$('shortcut-error').textContent='This combination commonly belongs to macOS. Record another shortcut.';return;}
+ const parts=[e.ctrlKey?'⌃':'',e.altKey?'⌥':'',e.shiftKey?'⇧':'',e.metaKey?'⌘':'',e.code==='Space'?'Space':e.key.toUpperCase()].filter(Boolean);
+ recording=false;$('shortcut-error').textContent='';mutate('shortcut',parts.join(' '));$('shortcut-help').textContent='Sample recorded. Global conflicts cannot be checked in this browser.';
+});
+$('record').addEventListener('blur',()=>{if(recording){recording=false;renderControls();}});
+$('try').onclick=arm;$('cancel-try').onclick=()=>cancel('Cancelled. No window selected.');
+$('preview-surface').addEventListener('keydown',keyDown);
+$('preview-surface').addEventListener('keyup',e=>{if(held&&e.code===(currentSelection().hand==='left'?'ShiftRight':'ShiftLeft'))cancel('Hold released. No window selected.');});
+$('targets').onclick=e=>{
+ const target=e.target.closest('[data-target]'),branch=e.target.closest('[data-mode-prefix]');
+ if(target){selectTarget(target.dataset.target);return;}
+ if(branch){if(!active)arm();prefix=branch.dataset.modePrefix;renderPreview();$('preview-surface').focus();return;}
+ if(e.target.closest('[data-mode-back]')){prefix='';renderPreview();$('preview-surface').focus();return;}
+ if(e.target.closest('[data-return-window]'))returnPrevious();
+};
+$('search').oninput=e=>{query=e.target.value;searchIndex=0;renderPreview();};
+$('inventory').onclick=e=>{
+ const close=e.target.closest('[data-remove]'),rename=e.target.closest('[data-rename]');
+ if(close){const id=close.dataset.remove,closed=targets.find(t=>t.id===id);checkpoint();if(!isTabs()&&closed){V.retireFold(foldEngine,closed);if(foldDraft)V.retireFold(foldDraft,closed);if(focus.current===id)focus.current=null;if(focus.previous===id)focus.previous=null;}targets=targets.filter(t=>t.id!==id);M.retire(engine,id);if(draft)M.retire(draft,id);prefix='';renderPreview();announce((isTabs()?'Tab':'Window')+' closed. Its label is held until reset.');}
+ if(rename){const t=targets.find(t=>t.id===rename.dataset.rename);if(t){checkpoint();t.title=t.title.endsWith(' · renamed')?t.title.replace(' · renamed',''):t.title+' · renamed';renderPreview();announce('Title changed. Its label stayed the same.');}}
+};
+$('add-window').onclick=()=>{checkpoint();const browser=M.browsers.find(b=>b.id===harness.activeBrowser),t={id:'new-'+nextID++,app:isTabs()?browser.id:'safari',name:isTabs()?browser.name:'Safari',title:'Reference · New '+(isTabs()?'tab ':'window ')+(nextID-1),...(isTabs()?{browserId:browser.id,windowId:browser.id+'-work',context:'Work',private:false}:{})};targets.push(t);if(!isTabs()){V.allocateFold(foldEngine,t);if(foldDraft)V.allocateFold(foldDraft,t);}M.allocate(engine,t);if(draft)M.allocate(draft,t);prefix='';renderPreview();announce((isTabs()?'Tab':'Window')+' added. Existing labels stayed the same.');};
+$('dataset').onchange=e=>{
+ if((e.target.value==='tabs')!==isTabs())otherCatalogue={targets,engine,dataset:harness.dataset};
+ harness.dataset=e.target.value;foldDraft=null;draft=null;draftSelection=null;draftInvalid=false;history=[];$('undo').disabled=true;$('alphabet-error').textContent='';
+ targets=isTabs()?clone(M.tabs):clone(M.windows.slice(0,Number(harness.dataset)));
+ engine=M.create({...cfg.selection,policy:harness.dataset==='tabs'?'pairs':cfg.selection.policy},targets);if(!isTabs()){foldEngine=V.createFold(cfg.selection,targets);focus={current:targets[0]?.id||null,previous:null};}cancel();renderControls();renderPreview();announce('New simulated dataset. A fresh address session has started.');
+};
+$('layout').onchange=e=>{harness.layout=e.target.value;renderPreview();};$('system-appearance').onchange=e=>{harness.system=e.target.value;style();};
+$('simulate-focus-failure').onchange=e=>{harness.focusFailure=e.target.checked;cancel();};
+$('simulate-contrast').onchange=e=>{harness.contrast=e.target.checked;style();};$('simulate-motion').onchange=e=>{harness.motion=e.target.checked;style();};
+$('permission-scenario').onchange=e=>{harness.permission=e.target.value;$('permission-status').textContent=({unknown:'Not checked in this prototype',denied:'Access denied · simulated',revoked:'Access revoked · simulated',granted:'Access granted · simulated only'})[e.target.value];cancel();announce('Permission scenario changed. The sample preview remains available; macOS is unchanged.');};
+window.addEventListener('blur',()=>{if(active)cancel('Preview cancelled when browser focus changed.');});
+document.addEventListener('pointerdown',e=>{if(active&&!e.target.closest('.preview-column'))cancel();});
+for(const media of ['(prefers-color-scheme: dark)','(prefers-contrast: more)','(prefers-reduced-motion: reduce)'])matchMedia(media).addEventListener('change',style);
+// Read-only inspection hook for repeatable prototype verification.
+window.TabnaxStudy={inspect:()=>clone({cfg,engine,draft,foldEngine,foldDraft,focus,targets,active,prefix,query,harness,storageOK,otherCatalogue})};
+
+function switchScope(next,keepOpen=false){
+ if((next==='tabs')===isTabs()){if(keepOpen){prefix='';query=null;renderPreview();}return;}
+ if(next==='tabs'&&!cfg.browserTabs.enabled){announce('Enable browser tabs in Browser Tabs settings first.');return;}
+ if(hasDraft()){announce('Apply or discard label changes before switching between windows and tabs.');return;}
+ const wasHeld=held,old={targets,engine,dataset:harness.dataset};
+ targets=otherCatalogue.targets;engine=otherCatalogue.engine;harness.dataset=otherCatalogue.dataset;otherCatalogue=old;$('dataset').value=harness.dataset;
+ cancel();renderControls();renderPreview();if(keepOpen){arm();held=wasHeld;}
+ announce(next==='tabs'?'Sample browser tabs. Type both letters, or / to find a title.':'Windows. Your window labels are unchanged.');
+}
+function mutateGroup(group,key,value){checkpoint();cfg[group]={...cfg[group],[key]:value};cancel();save();renderControls();renderPreview();}
+function renderPosition(previewInset){
+ const {anchor,display}=currentPosition(),inset=previewInset??currentPosition().inset,parts=anchor.split('-'),vertical=parts[0],horizontal=parts[1];
+ const text=anchor==='middle-center'?'Center':anchor.replace('middle-','Middle ').replace('top-','Top ').replace('bottom-','Bottom ');
+ $('position-summary').textContent=text;
+ $('position-preview').hidden=pane!=='position';
+ const mini=$('position-mini-switcher'),gap=8+inset*.16;
+ mini.style.left=horizontal==='left'?gap+'px':horizontal==='right'?`calc(100% - ${gap}px)`:'50%';
+ mini.style.top=vertical==='top'?(22+inset*.16)+'px':vertical==='bottom'?`calc(100% - ${22+inset*.16}px)`:'50%';
+ mini.style.transform=`translate(${horizontal==='right'?'-100%':horizontal==='center'?'-50%':'0'},${vertical==='bottom'?'-100%':vertical==='middle'?'-50%':'0'})`;
+ const external=display==='focused';$('display-main').classList.toggle('selected',!external);$('display-external').classList.toggle('selected',external);
+ $('position-caption').textContent=`${text} · ${external?'External':'Main'} display · ${inset} pt edge spacing. Sample active window: External; pointer: Main.`;
+ $('position-desktop').setAttribute('aria-label',`Simulated ${text.toLowerCase()} switcher on ${external?'External':'Main'} display with ${inset} point edge spacing.`);
+ const rows=visible().slice(0,4);$('position-mini-switcher').innerHTML='<b>'+ (isTabs()?'Tabs':'Windows')+'</b>'+rows.map(t=>`<span>▧ &nbsp; ${esc(t.name)} <kbd>${esc(effective().map[t.id]||'—')}</kbd></span>`).join('');
+}
+$('scope-windows').onclick=()=>switchScope('windows');$('scope-tabs').onclick=()=>switchScope('tabs');
+$('preview-tabs').onclick=()=>{switchScope('tabs');if(isTabs())arm();};
+$('position-display').onchange=e=>updatePosition('display',e.target.value);
+$('position-inset').oninput=e=>{$('inset-value').textContent=e.target.value+' pt';renderPosition(Number(e.target.value));};
+$('position-inset').onchange=e=>updatePosition('inset',Number(e.target.value));
+document.querySelectorAll('[data-anchor]').forEach(b=>b.onclick=()=>updatePosition('anchor',b.dataset.anchor));
+function updatePosition(key,value){
+ if(cfg.displayMode==='shore')mutateGroup('position',key,value);
+ else mutate('modePositions',{...cfg.modePositions,[cfg.displayMode]:{...currentPosition(),[key]:value}});
+}
+$('position-reset').onclick=()=>{
+ if(cfg.displayMode==='shore')mutate('position',clone(M.defaults.position));
+ else{const positions=clone(cfg.modePositions);delete positions[cfg.displayMode];mutate('modePositions',positions);}
+};
+$('display-mode').onchange=e=>{
+ if(hasDraft()){$('mode-error').textContent='Apply or discard label changes in Selection before changing modes.';e.target.value=cfg.displayMode;return;}
+ $('mode-error').textContent='';cancel();mutate('displayMode',e.target.value);announce(V.definitions[cfg.displayMode].name+' preview. '+V.definitions[cfg.displayMode].description);
+};
+$('tabs-enabled').onchange=e=>{
+ if(hasDraft()){e.target.checked=cfg.browserTabs.enabled;announce('Apply or discard label changes before changing browser tab availability.');return;}
+ checkpoint();cfg.browserTabs.enabled=e.target.checked;if(!e.target.checked){cfg.browserTabs.defaultScope='windows';switchScope('windows');}cancel();save();renderControls();renderPreview();
+};
+$('tabs-range').onchange=e=>mutateGroup('browserTabs','range',e.target.value);
+$('default-scope').onchange=e=>{
+ if(hasDraft()){e.target.value=cfg.browserTabs.defaultScope;announce('Apply or discard label changes before changing the opening view.');return;}
+ const next=e.target.value;mutateGroup('browserTabs','defaultScope',next);switchScope(next);
+};
+function renderBrowserControls(){
+ const automatic=cfg.browserTabs.selection==='automatic',included=M.includedBrowsers(cfg.browserTabs);
+ $('browser-selection').value=cfg.browserTabs.selection;$('browser-selection').disabled=!cfg.browserTabs.enabled;
+ $('browser-selection-status').textContent=!cfg.browserTabs.enabled?'Browser tabs are off. Your browser choices are kept.':automatic?'All 7 sample browsers included. Choose browsers to limit this list.':included.length?`${included.length} browser${included.length===1?'':'s'} included. Changes keep existing tab labels.`:'No browsers selected. Choose one below to show its tabs.';
+ for(const b of M.browsers){$('browser-'+b.id).checked=included.includes(b.id);$('browser-'+b.id).disabled=automatic||!cfg.browserTabs.enabled;}
+}
+for(const container of ['primary-browsers','additional-browsers']){
+ const list=container==='primary-browsers'?M.browsers.slice(0,4):M.browsers.slice(4);
+ $(container).innerHTML=list.map(b=>`<div class="browser-connection"><input id="browser-${b.id}" data-browser="${b.id}" type="checkbox"><span class="app-icon ${b.id}" aria-hidden="true">${b.icon}</span><label for="browser-${b.id}"><strong>${b.name}</strong><span>${b.note} · sample tabs only</span></label><button data-browser-info="${b.name}" aria-label="${b.name} connection details">Setup…</button></div>`).join('');
+ $(container).onchange=e=>{const id=e.target.dataset.browser;if(!id)return;const selected=new Set(cfg.browserTabs.selectedBrowsers);if(e.target.checked)selected.add(id);else selected.delete(id);mutateGroup('browserTabs','selectedBrowsers',[...selected]);};
+}
+$('browser-selection').onchange=e=>mutateGroup('browserTabs','selection',e.target.value);
+$('active-browser').onchange=e=>{harness.activeBrowser=e.target.value;cancel();renderControls();renderPreview();};
+for(const button of document.querySelectorAll('[data-browser-info]'))button.onclick=()=>{
+ const b=M.browsers.find(b=>b.name===button.dataset.browserInfo);
+ const copy=b.setup==='builtin'?`The planned ${b.name} connection is built in. Choose ${b.name}, then approve macOS access if asked. No extension or manual configuration is planned. Compatibility still needs a live connection test.`:b.setup==='addon'?`Choose ${b.name}. If a companion add-on is needed, Tabnax will guide you through installing and approving it in your browser. Tabnax will handle its app-side setup automatically. This connection still needs verification.`:`Choose ${b.name}. Tabnax will try the simplest supported connection and guide you through any required approval or add-on. The connection method is still being verified.`;
+ showDialog(b.name+' setup',copy+' This prototype cannot inspect your browser, connect to it or install anything.',null,'Done');
+};
+
+function renderThemeControls(palette,dark){
+ const mode=dark?'dark':'light',raw=cfg.themeOverrides[cfg.theme]?.[mode]||{};
+ $('custom-mode').textContent='Editing '+(dark?'Dark':'Light')+' appearance · saved with this preset';
+ $('custom-key-color').value=raw.keyBg||palette.keyBg;$('key-color-value').textContent=(raw.keyBg||palette.keyBg).toUpperCase();
+ $('custom-selection-color').value=raw.selection||palette.selection;$('selection-color-value').textContent=(raw.selection||palette.selection).toUpperCase();
+ $('theme-contrast').textContent='Letter contrast '+M.contrast(palette.keyFg,palette.keyBg).toFixed(1)+':1.'+(raw.selection&&raw.selection.toLowerCase()!==palette.selection.toLowerCase()?' Selection shade adjusted for visibility.':'');
+ $('reset-theme').disabled=!Object.keys(cfg.themeOverrides[cfg.theme]||{}).length;
+ for(const [id,key,label] of [['reset-key-color','keyBg','key'],['reset-selection-color','selection','selection']]){
+  $(id).disabled=!Object.hasOwn(raw,key);
+  $(id).setAttribute('aria-label',`Restore default ${label} color for ${mode} appearance`);
+ }
+ $('theme-description').textContent=({graphite:'Native neutral surfaces, with familiar Mac blue selection.',tabnax:'The original green: luminous keys on a quiet, green-tinted surface.',sage:'A softer green, paired with the native neutral surface.',iris:'A restrained violet accent, paired with the native neutral surface.'})[cfg.theme]||'';
+}
+let colorEdit=null;
+function customizeTheme(key,color){
+ const mode=isDark()?'dark':'light',overrides=clone(cfg.themeOverrides);
+ overrides[cfg.theme]={...overrides[cfg.theme],[mode]:{...overrides[cfg.theme]?.[mode],[key]:color}};
+ if(colorEdit!==key){checkpoint();colorEdit=key;}cfg.themeOverrides=overrides;save();renderControls();renderPreview();
+}
+for(const id of ['custom-key-color','custom-selection-color'])$(id).onblur=()=>{colorEdit=null;};
+$('custom-key-color').oninput=e=>customizeTheme('keyBg',e.target.value);
+$('custom-selection-color').oninput=e=>customizeTheme('selection',e.target.value);
+$('reset-theme').onclick=()=>{const overrides=clone(cfg.themeOverrides);delete overrides[cfg.theme];mutate('themeOverrides',overrides);};
+function resetThemeColor(key){
+ const mode=isDark()?'dark':'light',overrides=clone(cfg.themeOverrides);
+ if(!Object.hasOwn(overrides[cfg.theme]?.[mode]||{},key))return;
+ delete overrides[cfg.theme][mode][key];
+ if(!Object.keys(overrides[cfg.theme][mode]).length)delete overrides[cfg.theme][mode];
+ if(!Object.keys(overrides[cfg.theme]).length)delete overrides[cfg.theme];
+ colorEdit=null;mutate('themeOverrides',overrides);
+ announce(`Default ${key==='keyBg'?'key':'selection'} color restored for ${mode} appearance. Undo is available.`);
+}
+$('reset-key-color').onclick=()=>resetThemeColor('keyBg');
+$('reset-selection-color').onclick=()=>resetThemeColor('selection');
+
+if(cfg.browserTabs.enabled&&cfg.browserTabs.defaultScope==='tabs')switchScope('tabs');
+
+setPane(pane);renderControls();renderPreview();
+})();
+
+</script></body></html>

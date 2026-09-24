@@ -1,0 +1,100 @@
+async (page) => {
+  const passed=[],errors=[];
+  const check=(ok,label)=>{if(!ok)throw new Error(label);passed.push(label);};
+  const snap=()=>page.evaluate(()=>tabnaxSnapshot());
+  const press=key=>page.keyboard.press(key);
+  const choose=name=>page.locator(`[data-concept="${name}"]`).click();
+  const reset=()=>page.locator('#reset').click();
+  const stable=(before,after)=>before.every(t=>!after.find(x=>x.id===t.id)||after.find(x=>x.id===t.id).address===t.address);
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('http://127.0.0.1:4173/design-exploration/index.html');
+  await page.setViewportSize({width:1440,height:1200});
+  check(await page.locator('[data-concept]').count()===6,'all six concepts remain available');
+  for(const concept of ['lattice','fold','relay']){
+    await choose(concept);await reset();
+    let s=await snap();const baseline=s.targets;const key=s.targets.find(t=>t.id==='preview').address;
+    for(const char of key)await press(char);
+    s=await snap();check(!s.active&&s.focused==='preview',concept+': complete address selects same-app window');
+    await press('Space');await press('/');await page.locator('#product-query').fill('keyboard guide');s=await snap();
+    check(s.active&&s.mode==='search'&&s.focused==='preview',concept+': query typing cannot select');
+    await press('Enter');s=await snap();check(!s.active&&s.focused==='lesson',concept+': search Enter selects result');
+    await press('Space');await press('Escape');s=await snap();check(!s.active&&s.focused==='lesson',concept+': Escape preserves focus');
+    await press('Space');await press('2');s=await snap();check(s.scope==='apps'&&s.targets.length===6,concept+': apps scope remains usable');
+    await press('k');await press('Space');await press('1');s=await snap();check(stable(baseline,s.targets),concept+': scope changes preserve window addresses');
+    await press('Escape');await page.keyboard.down('Shift');
+    await press('Digit2');s=await snap();check(s.scope==='apps'&&s.active,concept+': shifted scope key works while held');
+    await press('Digit1');await press('Slash');s=await snap();check(s.mode==='search'&&s.active,concept+': shifted slash enters search while held');
+    await page.keyboard.up('Shift');s=await snap();check(!s.active,concept+': releasing held activation cancels search');
+    await reset();await page.locator('#desktop').screenshot({path:`design-exploration/verification/screenshots/${concept}.png`});
+  }
+  await choose('lattice');await reset();await page.locator('summary').click();
+  const latticeBefore=(await snap()).targets;
+  const originalCell=await page.locator('.lattice-cell:has([data-target="lesson"])').evaluate(el=>[...el.parentElement.children].indexOf(el));
+  await page.locator('#close-window').click();let s=await snap();
+  check(await page.locator('.lattice-retired').count()===1,'Lattice leaves a held cell after closing');
+  const afterCell=await page.locator('.lattice-cell:has([data-target="lesson"])').evaluate(el=>[...el.parentElement.children].indexOf(el));
+  check(originalCell===afterCell&&stable(latticeBefore,s.targets),'Lattice preserves surviving cell positions and letters');
+  await page.locator('#scenario').selectOption('10');await press('p');s=await snap();
+  check(s.prefix==='p'&&await page.locator('.lattice-cell [data-address="pj"]').count()===1,'Lattice overflow opens the suffix grid');
+  await page.locator('#desktop').screenshot({path:'design-exploration/verification/screenshots/lattice-overflow.png'});
+  await press('j');s=await snap();check(!s.active&&s.focused==='export','Lattice overflow sequence selects exact window');
+  await page.locator('#scenario').selectOption('8');await reset();await press('3');s=await snap();
+  check(s.targets.length===28&&await page.locator('.lattice-tab-group').count()===3,'Lattice exposes all tab prefix inventories');
+  await page.locator('#desktop').screenshot({path:'design-exploration/verification/screenshots/lattice-tabs.png'});
+  await press('k');s=await snap();check(s.prefix==='k'&&await page.locator('.lattice-cell [data-target]').count()===10,'Lattice tab prefix gives a ten-cell leaf grid');
+  await page.locator('#desktop').screenshot({path:'design-exploration/verification/screenshots/lattice-narrowed.png'});
+  await press('l');s=await snap();check(s.lastFocus==='tab-12'&&s.focused==='preview'&&!s.active,'Lattice second tab key selects correct parent');
+  await choose('fold');await reset();s=await snap();
+  check(await page.locator('.fold-family').count()===6&&await page.locator('.fold-detail').count()===0,'Fold initially exposes only application choices');
+  check(s.targets.find(t=>t.id==='preview').address==='kk','Fold explicitly uses its separate app/window namespace');
+  await press('k');s=await snap();check(s.active&&s.prefix==='k'&&s.focused==='code','Fold first app key does not auto-commit');
+  check(await page.locator('.fold-detail .target').count()===3,'Fold unfolds exactly the selected app family');
+  await page.locator('#desktop').screenshot({path:'design-exploration/verification/screenshots/fold-branch.png'});
+  await press('k');s=await snap();check(s.focused==='preview'&&!s.active,'Fold second key selects sibling window');
+  await press('Space');await press('j');s=await snap();check(s.active&&s.focused==='preview','Fold singleton app still waits for window key');
+  await press('j');s=await snap();check(!s.active&&s.focused==='code','Fold singleton second key commits');
+  await press('Space');const foldBefore=(await snap()).targets;
+  await page.locator('#add-window').click();s=await snap();check(stable(foldBefore,s.targets),'Fold new same-app window preserves all existing full addresses');
+  const immediate=await page.evaluate(()=>{const d=document.getElementById('desktop');d.focus();d.dispatchEvent(new KeyboardEvent('keydown',{key:'k',bubbles:true}));d.dispatchEvent(new KeyboardEvent('keydown',{key:'k',bubbles:true}));return tabnaxSnapshot();});
+  check(!immediate.active&&immediate.focused==='preview','Fold accepts both keys in one JavaScript turn');
+  await choose('relay');await page.locator('#scenario').selectOption('8');await reset();s=await snap();
+  check(s.focused==='code'&&s.previousFocused==='lesson','Relay has disclosed simulated initial history');
+  await press('Enter');s=await snap();check(s.focused==='lesson'&&s.previousFocused==='code'&&!s.active,'Relay Enter returns to previous window');
+  await press('Space');await press('Enter');s=await snap();check(s.focused==='code'&&s.previousFocused==='lesson','Relay repeated Enter alternates the pair');
+  await press('Space');await press('o');s=await snap();check(s.focused==='dev'&&s.previousFocused==='code','Relay direct letter updates committed history');
+  await press('Space');await press('o');s=await snap();check(s.previousFocused==='code','Relay selecting current window preserves history');
+  await press('Space');await press('Escape');s=await snap();check(s.previousFocused==='code'&&s.focused==='dev','Relay cancellation does not change history');
+  await press('Space');await page.locator('.relay-shelf [data-target="assets"]').focus();await press('Enter');s=await snap();
+  check(s.focused==='assets','Enter on a browser-focused target activates that target');
+  await press('Space');await page.locator('.relay-shelf [data-target="ideas"]').focus();await press('Space');s=await snap();
+  check(s.focused==='ideas','Space on a browser-focused target activates that target');
+  await reset();await press('m');await press('Space');await press('Enter');await press('Space');
+  await page.locator('#scenario').selectOption('6');s=await snap();await press('Enter');
+  check((await snap()).focused===s.focused&&(await snap()).active&&await page.locator('.relay-return-empty').count()===1,'Relay cannot return to a removed previous window');
+  await page.locator('#scenario').selectOption('10');await reset();await press('o');await press('Space');
+  await page.locator('#desktop').screenshot({path:'design-exploration/verification/screenshots/relay-ten.png'});
+  const overlap=await page.evaluate(()=>{const a=document.querySelector('.relay-pair').getBoundingClientRect(),b=document.querySelector('.relay-shelf').getBoundingClientRect();return a.bottom>b.top+1;});
+  check(!overlap,'Relay return pair does not overlap the ten-window shelf');
+  await page.locator('#scenario').selectOption('8');await reset();await choose('shore');
+  for(let i=0;i<35;i++){await press(i%2?'k':'l');await press('Space');}
+  check(await page.locator('.windows').evaluate(el=>getComputedStyle(el).zIndex)==='1','repeated focus stays within the desktop stacking layer');
+  const hit=await page.locator('[data-target="lesson"]').evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));});
+  check(hit,'switcher remains the hit target after 35 switches');
+  await page.locator('summary').click();
+  for(const width of [1440,1024,768,390,320]){
+    await page.setViewportSize({width,height:1150});
+    for(const concept of ['lattice','fold','relay']){
+      await choose(concept);await reset();
+      if(concept==='fold')await press('k');
+      const bounds=await page.evaluate(()=>{const s=document.getElementById('desktop').getBoundingClientRect(),p=document.querySelector('.surface').getBoundingClientRect();return {overflow:document.documentElement.scrollWidth>innerWidth,sx:s.x,sy:s.y,sr:s.right,sb:s.bottom,px:p.x,py:p.y,pr:p.right,pb:p.bottom};});
+      check(!bounds.overflow&&bounds.px>=bounds.sx-1&&bounds.pr<=bounds.sr+1&&bounds.py>=bounds.sy-1&&bounds.pb<=bounds.sb+1,`${concept}: surface fits at ${width}px`);
+      if(width===390)await page.locator('#desktop').screenshot({path:`design-exploration/verification/screenshots/${concept}-compact.png`});
+    }
+  }
+  await page.setViewportSize({width:1440,height:1200});await choose('lattice');await reset();await page.emulateMedia({reducedMotion:'reduce'});
+  check(await page.locator('.lattice-cell').first().evaluate(el=>getComputedStyle(el).transitionDuration)==='0s','Lattice narrowing respects system reduced motion');
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  check(errors.length===0,'no JavaScript errors during additional concept suite');
+  await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:'design-exploration/verification/screenshots/gallery-six.png',fullPage:true});
+  return {passed:passed.length,checks:passed,errors};
+}

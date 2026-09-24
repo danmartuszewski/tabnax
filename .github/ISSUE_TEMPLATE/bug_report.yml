@@ -1,0 +1,25 @@
+name: Bug report
+description: Report a reproducible app, website, or documentation problem.
+body:
+  - type: markdown
+    attributes:
+      value: "For vulnerabilities, read SECURITY.md and use a private reporting channel. Remove personal titles, URLs, and credentials from examples."
+  - type: textarea
+    id: problem
+    attributes:
+      label: Expected and observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce with sample data
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: App revision, macOS version, hardware, browser/version, layout, and relevant permission state.
+    validations:
+      required: true

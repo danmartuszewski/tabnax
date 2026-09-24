@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Tabnax — Six ways back to work</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23202720'/%3E%3Cpath d='M8 24 24 8M10 8h14v14' fill='none' stroke='%23d9f68c' stroke-width='2'/%3E%3C/svg%3E">
+  <style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#262924;background:#f6f5f0;font-synthesis:none;--ink:#262924;--muted:#73766c;--line:#dcded3;--lime:#d9f68c;--dark:#202720;--product-text:#f6f8ee;--product-muted:#bac3b3}
+*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,a,input,select,summary{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{cursor:default;opacity:.4}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #668a26;outline-offset:3px}button{border:0}a{color:inherit}button kbd{pointer-events:none}kbd{display:inline-flex;align-items:center;justify-content:center;min-width:21px;padding:3px 6px;border:1px solid #d8dacd;border-radius:5px;background:#eeefe6;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:#565e4d;white-space:nowrap}.gallery{max-width:1480px;padding:0 48px;margin:0 auto}.masthead{display:flex;align-items:center;justify-content:space-between;height:88px;border-bottom:1px solid var(--line);font:10px ui-monospace,monospace;letter-spacing:.14em;color:#6b7063}.wordmark{font:700 28px -apple-system,BlinkMacSystemFont,sans-serif;text-decoration:none;letter-spacing:-1.7px;color:#292e26;display:flex;align-items:center;gap:9px}.wordmark-dot{color:#7c9655;margin-left:-9px}.brand-mark{display:inline-flex;align-items:center;justify-content:center;width:29px;height:29px;border:1.8px solid #30372b;border-radius:8px;font:27px sans-serif;letter-spacing:0}.edition{color:#939789;margin-left:10px}.status-tag{border:1px solid #d3d8c8;border-radius:30px;padding:8px 11px;letter-spacing:.03em}.intro{display:flex;justify-content:space-between;align-items:center;gap:30px;padding:38px 0 31px}.eyebrow{font:10px ui-monospace,SFMono-Regular,monospace;letter-spacing:.13em;color:#768069;margin:0 0 10px}h1{font-size:42px;line-height:1.1;font-weight:500;letter-spacing:-1.8px;margin:0}h2{font-size:29px;line-height:1.15;letter-spacing:-.8px;font-weight:500;margin:0}h3{font-size:13px;font-weight:600;margin:0 0 12px}.intro>p{font-size:14px;line-height:1.65;color:#777b70;margin:0}.concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}.concept{background:transparent;border:1px solid #d8dccf;border-radius:12px;display:flex;align-items:center;gap:13px;text-align:left;padding:17px 18px;min-width:0;color:#555d4d;transition:background 120ms,border-color 120ms}.concept.active{background:#e8ecdF;border-color:#a3b48a;color:#273321}.concept:hover{background:#edf0e5}.concept-number{font:11px ui-monospace,monospace;color:#7f8b71;align-self:flex-start;margin-top:3px}.concept strong{display:block;font-size:17px;font-weight:550;letter-spacing:-.4px}.concept small{display:block;font-size:11px;margin-top:5px;color:#737e67}.mini{width:53px;height:36px;border:1px solid #9aa78c;border-radius:5px;margin-left:auto;flex-shrink:0;position:relative;opacity:.7}.mini i{position:absolute;background:#6e8654;border-radius:1px}.mini-shore i{right:5px;width:13px;height:3px}.mini-shore i:nth-child(1){top:6px}.mini-shore i:nth-child(2){top:12px}.mini-shore i:nth-child(3){top:18px}.mini-shore i:nth-child(4){top:24px}.mini-beacons i{width:8px;height:5px}.mini-beacons i:nth-child(1){left:5px;top:7px}.mini-beacons i:nth-child(2){right:5px;top:11px}.mini-beacons i:nth-child(3){left:14px;top:20px}.mini-beacons i:nth-child(4){right:6px;top:26px}.mini-canopy i{top:5px;width:7px;height:11px}.mini-canopy i:nth-child(1){left:5px}.mini-canopy i:nth-child(2){left:16px;height:18px}.mini-canopy i:nth-child(3){left:27px}.mini-canopy i:nth-child(4){left:38px;height:15px}.demo{border:1px solid #d2d7c7;border-radius:14px;overflow:hidden;box-shadow:0 12px 40px #2531120b}.demo-toolbar{background:#eef0e7;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px}.demo-label{font:10px ui-monospace,monospace;letter-spacing:.04em;color:#66735b;display:flex;gap:8px;align-items:center}.live-dot{width:5px;height:5px;border-radius:50%;background:#6b8d38}.toolbar-divider{color:#b8c0ad;margin:0 5px}#scene-label{letter-spacing:0;color:#828a7b}.demo-actions{display:flex;gap:7px}.demo-actions button,.inline-controls button,.lab button{background:#e7eadf;border:1px solid #d5dcc9;border-radius:7px;padding:7px 11px;color:#536047;font-size:11px}.demo-actions button.primary{color:#eff9df;background:#37452b;border-color:#37452b;display:flex;align-items:center;gap:20px}.primary kbd{background:#4d5c40;color:#e3efd2;border-color:#66735a;font-size:10px;padding:2px 5px}.desktop{position:relative;height:610px;overflow:hidden;background:#7b7563;isolation:isolate;outline-offset:-4px;color:#f7f7f2}.desktop:focus-visible{outline:2px solid #c5e993}.wallpaper{position:absolute;inset:0;background:radial-gradient(ellipse at 10% 5%,#b8b5a6 0,transparent 60%),linear-gradient(110deg,#84897a,#8a8c71 30%,#c0b38e 75%,#b1a188);overflow:hidden}.wallpaper-fold{position:absolute;width:120%;height:140%;border-radius:45%;transform:rotate(-33deg);box-shadow:-15px -10px 48px #424f3529,inset 0 10px 50px #fff7d92a}.wallpaper-fold.one{background:linear-gradient(125deg,#bcc2a3,#747d57 70%);left:-64%;top:31%}.wallpaper-fold.two{background:linear-gradient(120deg,#d3c6a2,#a6a783 70%);left:7%;top:67%}.wallpaper-fold.three{background:linear-gradient(140deg,#dfc7a2,#89946b 80%);left:53%;top:58%}.menubar{height:26px;background:#dbdccd55;position:absolute;inset:0 0 auto;z-index:2;display:flex;gap:19px;align-items:center;font-size:10px;padding:0 16px;color:#24291e}.menubar b{font-size:10px;font-weight:650}.menu-right{margin-left:auto}.apple{font-size:11px}.windows{position:absolute;inset:26px 0 0;transition:filter 120ms}.mac-window{position:absolute;border:1px solid #141e2840;background:#f6f6f3;border-radius:9px;overflow:hidden;box-shadow:0 15px 45px #1c252936;color:#383d43;min-width:250px;transition:box-shadow 120ms}.mac-window.focused{box-shadow:0 20px 65px #15211565}.window-bar{height:33px;display:flex;align-items:center;gap:12px;padding:0 11px;border-bottom:1px solid #141e2810;background:#f3f3f0;font-size:10px}.traffic{display:flex;gap:5px}.traffic i{width:8px;height:8px;border-radius:50%;background:#ff6059;border:1px solid #0001}.traffic i:nth-child(2){background:#ffbd2e}.traffic i:nth-child(3){background:#28c840}.window-bar>span{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;margin:auto}.window-content{height:calc(100% - 33px);overflow:hidden}.code-layout{display:flex;height:100%;background:#20262c;color:#a3adba;font:11px ui-monospace,monospace}.code-sidebar{width:125px;background:#252c34;flex-shrink:0;padding:18px 13px;line-height:2.5;color:#80909f;font-size:9px}.code-sidebar strong{color:#bcc6cf;font-weight:500;letter-spacing:.1em;display:block;margin-bottom:16px}.code-body{flex:1;min-width:0}.code-tab{padding:11px 18px;background:#1c2228;border-top:1px solid #a5c993;width:max-content;font-size:10px}.code-body pre{padding:10px 25px;line-height:1.9;margin:0;font:11px/1.95 ui-monospace,monospace;color:#d1d7d9;white-space:pre}.code-body em{font-style:normal;color:#b4d291}.code-body b{font-weight:400;color:#cca5d1}.code-body .comment{color:#647a68}.safari-url{height:28px;text-align:center;font-size:9px;padding:6px;background:#e5e8e7;border-bottom:1px solid #ccd1ce;color:#6c7771}.website-body{background:#f8f9f4;padding:20px 26px;height:100%;color:#28352f}.sample-brand{font-weight:700;color:#507b56;font-size:18px;letter-spacing:-.7px}.website-body .site-nav{float:right;font-size:8px;color:#859184;padding:6px}.website-body .site-eyebrow{font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:#92998c;margin-top:30px}.website-body h4{font-size:24px;font-weight:500;line-height:1.25;margin:10px 0}.website-body p{font-size:11px;line-height:1.6;color:#7f877c;max-width:260px}.lesson-line{height:8px;background:#e1e7d8;border-radius:2px;width:80%;margin:13px 0}.lesson-line.short{width:57%}.lesson-button{display:inline-block;border-radius:5px;padding:8px 16px;color:#fff;background:#547c55;font-size:9px;margin-top:10px}.finder-body{display:flex;height:100%;font-size:10px;background:#fff}.finder-side{width:100px;background:#edeef1;padding:15px;line-height:2.8;color:#858b99}.finder-files{padding:17px;line-height:2.8;flex:1;color:#727b82}.finder-files span{display:block;border-bottom:1px solid #eee;white-space:nowrap}.terminal-body{background:#242b27;color:#c7d5c0;font:11px/2 ui-monospace,monospace;padding:17px;height:100%}.terminal-body .terminal-green{color:#b6d99c}.note-body{padding:20px 24px;background:#fffced;height:100%;font-size:11px;line-height:1.9;color:#89806c}.note-body h4{color:#4c4b42;font-size:21px;line-height:1.25;margin:10px 0 17px}.figma-body{background:#e4e5e5;height:100%;display:flex;gap:14px;padding:25px;align-items:center;justify-content:center}.figma-artboard{background:#f7f8f1;border:1px solid #d0d5ca;width:42%;height:70%;border-radius:3px;padding:15px}.figma-artboard i{display:block;background:#a5b497;height:9px;margin-bottom:8px;border-radius:2px}.figma-artboard i:first-child{height:25px;background:#2c3e26;margin-bottom:18px}.dock{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);display:flex;gap:12px;align-items:center;padding:8px 13px 12px;border-radius:15px;background:#f8faed55;border:1px solid #fff5;z-index:13}.dock .app-icon{width:30px;height:30px;border-radius:7px;position:relative;box-shadow:0 2px 5px #0002}.dock .app-icon:after{content:"";position:absolute;width:3px;height:3px;border-radius:50%;bottom:-7px;background:#29351f;left:calc(50% - 1px)}.app-icon{display:inline-flex;align-items:center;justify-content:center;width:33px;height:33px;border-radius:8px;flex-shrink:0;box-shadow:inset 0 0 0 1px #ffffff2b;position:relative;overflow:hidden}.app-icon svg{width:76%;height:76%}.app-icon.code{background:linear-gradient(145deg,#fff,#d7e4eb)}.app-icon.safari{background:linear-gradient(150deg,#fff,#c9e5f6)}.app-icon.finder{background:linear-gradient(90deg,#7dc9ff 50%,#d8edff 50%)}.app-icon.figma{background:#242b32}.app-icon.terminal{background:linear-gradient(#313c3e,#111b1e);border:2px solid #a5b2b0;color:#eff8f2;font:700 15px ui-monospace,monospace}.app-icon.notes{background:linear-gradient(#f6cf59 0 29%,#fff9e0 29%);color:#b9b6a2;font:15px sans-serif}.desktop-dim{position:absolute;inset:26px 0 0;z-index:20;background:#17221cb0;opacity:0;pointer-events:none;transition:opacity 120ms}.desktop.is-open .desktop-dim{opacity:1}.desktop.shore .desktop-dim{background:linear-gradient(90deg,#16231d28,#12201866)}.desktop.beacons .desktop-dim{background:#18251d8a}.desktop.canopy .desktop-dim{background:#17251d77}.switcher{position:absolute;inset:26px 0 0;z-index:25;pointer-events:none;color:var(--product-text);visibility:hidden}.is-open .switcher{visibility:visible}.surface{pointer-events:auto}.switcher button{color:inherit}.switcher kbd{background:#d9f68c;color:#273915;border:0;font:500 15px ui-monospace,monospace;min-width:29px;min-height:29px;flex-shrink:0;box-shadow:0 1px 0 #efffc033;letter-spacing:1px}.switcher kbd .typed{opacity:.4}.surface-head{display:flex;gap:13px;align-items:center;justify-content:space-between;padding:15px 17px 11px;min-height:44px}.scope-buttons{display:flex;gap:12px}.scope-buttons button{background:transparent;font-size:10px;padding:2px 0;color:#9cab96}.scope-buttons button.selected{color:#e0f6c3}.scope-buttons button span{font-size:9px;opacity:.65;margin-right:3px}.surface-count{font:10px ui-monospace,monospace;color:#879680}.mode-strip{font:10px ui-monospace,monospace;color:#afbea3;padding:2px 17px 12px;min-height:27px;display:flex;gap:10px;align-items:center}.mode-strip .mode-light{height:4px;width:4px;background:#d9f68c;border-radius:50%;flex-shrink:0}.mode-strip .prefix{color:#d9f68c;font-size:12px;margin-left:auto}.product-search{margin:0 14px 11px;background:#324330;border:1px solid #617153;border-radius:6px;display:flex;align-items:center;padding:0 9px;gap:8px}.product-search span{color:#aebca2;font-size:11px}.product-search input{border:0;color:#f0f7e8;background:transparent;min-width:0;width:100%;padding:9px 0;font-size:13px;outline-offset:0}.product-search input::placeholder{color:#a4b399}.target{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:transparent;border-radius:7px;position:relative;min-width:0}.target:hover,.target.arrow-selected{background:#ffffff0e}.target-text{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}.target-title{font-size:12px;line-height:1.3;color:#f5f7ee;letter-spacing:.03px;overflow-wrap:anywhere}.target-meta{font-size:10px;color:#a1ae99;line-height:1.25;overflow-wrap:anywhere}.target .focused-dot{width:4px;height:4px;border-radius:50%;background:#bbd49d;position:absolute;left:3px}.target.unmatched{opacity:.22}.target.unmatched kbd{background:#6c7b60;color:#1e2919}.target.closed{opacity:.35;pointer-events:none}.surface-foot{display:flex;gap:14px;border-top:1px solid #ffffff12;padding:11px 17px;font-size:9px;color:#9dab92}.surface-foot .cancel-button{margin-left:auto;color:#a8b39d;background:transparent;padding:0;font-size:9px}.empty-results{color:#c5cebF;font-size:13px;line-height:1.7;padding:24px 20px}.empty-results small{color:#9aab91;display:block;font-size:11px}.shore .surface{position:absolute;right:14px;top:15px;bottom:15px;width:350px;border:1px solid #91a17a44;border-radius:13px;background:#20291f;box-shadow:0 14px 40px #12200e50;display:flex;flex-direction:column;transform:translateX(6px);transition:transform 120ms}.shore.is-open .surface{transform:translateX(0)}.shore .target-list{padding:0 9px 8px;flex:1;overflow:auto;scrollbar-width:thin;scrollbar-color:#566449 transparent}.shore .target{padding:10px 9px;min-height:54px}.shore .target kbd{margin-left:4px}.shore .target-title{font-size:12px}.shore .target-meta{font-size:10px}.shore .target .app-icon{width:30px;height:30px}.shore .surface-foot{flex-shrink:0}.shore .mode-strip{padding-bottom:10px}.beacons .surface{position:absolute;inset:0}.beacons .surface-head{position:absolute;left:17px;top:13px;background:#202b20;border:1px solid #82936c55;border-radius:9px;padding:11px 15px;gap:20px}.beacons .mode-strip{position:absolute;top:62px;left:19px;padding:7px 12px;background:#202b20e8;border-radius:6px}.beacons .product-search{position:absolute;top:60px;left:18px;width:310px;margin:0;z-index:3}.beacons .surface-foot{position:absolute;right:17px;bottom:15px;background:#202b20ed;border:1px solid #82936c33;border-radius:7px;padding:11px 14px;gap:17px}.beacon-position{position:absolute;width:244px}.beacon-position:after{content:"";height:18px;width:1px;background:#d9f68c77;position:absolute;left:23px;top:100%}.beacon-position:before{content:"";position:absolute;left:20px;top:calc(100% + 18px);width:7px;height:7px;border-radius:50%;background:#d9f68c;box-shadow:0 0 0 4px #d9f68c16}.beacons .target{background:#202b20;box-shadow:0 5px 24px #06130e38;border:1px solid #a6bf7959;border-radius:9px;padding:12px;gap:10px;min-height:69px}.beacons .target:hover,.beacons .target.arrow-selected{background:#35492a;border-color:#d9f68c}.beacons .target kbd{order:-1}.beacons .target-title{font-size:12px}.beacons .target .app-icon{width:27px;height:27px;border-radius:6px}.beacons .target .focused-dot{left:5px;top:5px}.beacons .hidden-bank{position:absolute;left:17px;right:17px;bottom:64px;background:#202b20;border:1px solid #82936c55;border-radius:10px;padding:10px 12px}.bank-caption{font:9px ui-monospace,monospace;letter-spacing:.08em;color:#a1b192;display:flex;justify-content:space-between;margin-bottom:8px}.bank-targets{display:flex;gap:8px;overflow:auto;scrollbar-width:thin}.beacons .hidden-bank .target{box-shadow:none;border:1px solid #ffffff13;min-width:200px;width:auto;flex:1;padding:9px;min-height:58px}.beacons .hidden-bank .target-title{font-size:11px}.beacons .hidden-bank .target .app-icon{display:none}.beacons .hidden-bank kbd{min-width:27px;min-height:27px}.beacons .empty-results{position:absolute;left:18px;top:110px;background:#202b20;border-radius:7px}.canopy .surface{position:absolute;top:0;left:0;right:0;background:#20291f;border-bottom:1px solid #afc89055;border-radius:0 0 18px 18px;box-shadow:0 20px 50px #14201040;max-height:calc(100% - 14px);display:flex;flex-direction:column;transform:translateY(-6px);transition:transform 120ms}.canopy.is-open .surface{transform:translateY(0)}.canopy .surface-head{padding:15px 24px 9px}.canopy .mode-strip{padding:2px 24px 9px}.canopy .surface-foot{padding:12px 24px}.canopy .product-search{margin:0 23px 13px;max-width:480px}.canopy-groups{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding:4px 13px 24px;overflow:auto;min-height:160px;scrollbar-width:thin;scrollbar-color:#566449 transparent}.canopy-group{padding:0 11px;border-right:1px solid #ffffff12;min-width:0}.canopy-group:last-child{border-right:0}.group-heading{padding:10px 8px 19px;display:flex;flex-direction:column;gap:9px}.group-heading .app-icon{width:43px;height:43px;border-radius:10px}.group-heading strong{font-weight:500;font-size:11px;color:#c9d5be}.group-heading small{font-size:9px;color:#94a486;font-weight:400}.canopy .target{padding:10px 8px;gap:8px;align-items:flex-start;margin-bottom:3px}.canopy .target .app-icon{display:none}.canopy .target-title{font-size:11px;line-height:1.5}.canopy .target-meta{font-size:9px}.canopy .target kbd{min-width:23px;min-height:25px;font-size:12px;padding:4px;order:-1;margin-top:1px;letter-spacing:0}.canopy .target .focused-dot{left:2px;top:3px}.canopy .tab-groups{grid-template-columns:repeat(3,minmax(0,1fr));padding-bottom:10px;max-height:460px}.tab-groups .group-heading{flex-direction:row;align-items:center;gap:10px;padding:2px 8px 10px}.tab-groups .group-heading .app-icon{width:25px;height:25px;border-radius:6px}.tab-groups .group-heading strong{display:block}.tab-groups .group-heading small{display:block;margin-top:3px}.tab-groups .target{padding:8px;min-height:46px}.tab-groups .target-title{font-size:11px;line-height:1.3}.tab-groups .target-meta{font-size:9px}.tab-groups .target kbd{letter-spacing:1px;min-width:33px}.canopy .app-scope .target{flex-direction:column;gap:14px;align-items:center;text-align:center;padding:12px 4px}.canopy .app-scope .target .app-icon{display:flex;width:50px;height:50px;border-radius:12px}.canopy .app-scope .target kbd{order:0}.canopy .app-scope .target .target-title{font-size:12px}.canopy .app-scope .target .focused-dot{left:50%;top:5px}.idle-hint{position:absolute;bottom:91px;left:50%;transform:translateX(-50%);z-index:18;display:flex;gap:13px;align-items:center;padding:10px 14px;background:#202c22ed;border:1px solid #d3e3be40;border-radius:9px;color:#e3ecd8;white-space:nowrap;max-width:90%}.idle-hint>span{font-size:11px}.idle-hint small{font-size:10px;color:#a8b99b}.idle-hint kbd{font-size:9px;border-color:#65765b;background:#3e5037;color:#d4e5c1;margin-right:4px}.is-open .idle-hint{display:none}.demo-bottom{display:flex;justify-content:space-between;gap:20px;background:#edf0e4;padding:13px 17px;font-size:11px;line-height:1.5;color:#607050;min-height:42px}.demo-bottom>span{color:#87917d;white-space:nowrap;font-size:10px}.keyboard-help{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:18px 1px 25px;color:#8a8f81;font-size:10px}.keyboard-help>span{display:flex;gap:5px;align-items:center}.keyboard-help kbd{font-size:10px;padding:3px 5px}.concept-notes{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:52px;padding:31px 0 37px;border-top:1px solid var(--line)}.concept-notes p:not(.eyebrow){font-size:13px;line-height:1.75;color:#7a8072;margin:0}.concept-notes h3{padding-top:3px}.lab{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:48px}.lab summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:21px 0;font-size:12px}.lab summary::-webkit-details-marker{display:none}.lab summary>span:first-child{font-weight:600}.lab summary>span:last-child{color:#8a9180;font-size:11px;display:flex;align-items:center;gap:35px}.plus{font-size:17px;line-height:11px}.lab[open] .plus{transform:rotate(45deg)}.lab-content{display:grid;grid-template-columns:repeat(3,1fr);gap:35px;padding:4px 0 28px}.lab h3{margin-bottom:17px}.lab label{display:block;color:#7a846c;font-size:11px;margin-bottom:8px}.lab select,.lab input:not([type=checkbox]){width:100%;background:#fffef9;border:1px solid #d8dfcb;border-radius:6px;padding:9px;color:#546445;font-size:12px;min-width:0}.inline-controls{display:flex;gap:8px;margin-top:9px}.lab p{font-size:11px;line-height:1.7;color:#89917f;margin:11px 0}.lab .check-label{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:12px}.check-label input{accent-color:#627e40}.lab-readout{font:10px/1.65 ui-monospace,monospace;color:#647b4f;overflow-wrap:anywhere}.lab #alphabet-error{color:#a6442e}.compact-warning{display:none}#custom-controls{margin-top:13px}.decision{display:grid;grid-template-columns:1.2fr 2fr;gap:60px;margin-bottom:40px}.decision p:not(.eyebrow){font-size:14px;line-height:1.8;margin:0 0 15px;color:#6e7964}.decision a{font-size:12px;text-decoration:none;border-bottom:1px solid #9caa87;padding-bottom:4px}.try-sequence{display:grid;grid-template-columns:.65fr 1.8fr 1fr;gap:35px;padding:26px 0;border-top:1px solid var(--line);font-size:12px}.try-sequence ol{margin:0;padding-left:17px;line-height:2;color:#6e7864}.try-sequence p{margin:0;font-size:11px;line-height:1.8;color:#8a9281}.try-sequence strong{font-weight:500;color:#49573c}.try-sequence kbd{font-size:10px;padding:1px 5px}.gallery>footer{border-top:1px solid var(--line);padding:23px 0 30px;color:#959b8a;font:9px ui-monospace,monospace;display:flex;justify-content:space-between;gap:20px}.reduce-motion *{animation:none!important;transition:none!important;scroll-behavior:auto!important}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(min-width:1500px){.desktop{height:670px}.shore .target{min-height:59px;padding:12px 9px}.shore .surface{width:365px}.target-title{font-size:13px}.shore .target-title{font-size:13px}}
+@media(max-width:1150px){.gallery{padding:0 26px}.intro{padding:28px 0}h1{font-size:35px}.intro>p{font-size:12px}.mini{display:none}.concept{padding:15px}.desktop{height:590px}.concept-notes{gap:28px}.beacon-position{width:215px}.beacons .target{gap:8px;padding:10px}.beacons .target-title{font-size:11px}.canopy-groups{padding-left:7px;padding-right:7px}.canopy-group{padding:0 5px}.canopy .target{padding-left:5px;padding-right:5px;gap:6px}.canopy .target-title{font-size:10px}.group-heading{padding-left:5px}.lab-content{gap:24px}.keyboard-help{justify-content:flex-start;gap:13px 20px}}
+@media(max-width:800px){.gallery{padding:0 18px}.masthead{height:70px}.masthead>div{display:none}.intro{display:block}.intro>p{margin-top:14px}.intro>p br{display:none}.concept{gap:8px;padding:13px 10px}.concept strong{font-size:15px}.concept small{font-size:10px;line-height:1.5}.concept-number{font-size:9px}.concepts{gap:7px}.desktop{height:660px}.menubar{gap:12px}.menubar>span:not(.apple):not(.menu-right){display:none}.menu-right{font-size:9px}.shore .surface{width:340px;right:12px;top:12px;bottom:12px}.concept-notes{grid-template-columns:1fr 1fr;gap:26px}.concept-notes>div:first-child{grid-column:1/-1}.concept-notes h2 br{display:none}.canopy-groups{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:15px;max-height:485px}.canopy-group:nth-child(3){border-right:0}.group-heading{padding:7px 6px;flex-direction:row;align-items:center;gap:8px}.group-heading .app-icon{width:30px;height:30px;border-radius:7px}.canopy .target-title{font-size:11px}.canopy .tab-groups{grid-template-columns:repeat(2,minmax(0,1fr));max-height:480px}.tab-groups .canopy-group:nth-child(3){border-top:1px solid #ffffff22;padding-top:12px;grid-column:1/-1}.tab-groups .canopy-group:nth-child(3)>div:last-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.beacons .target-list{position:absolute;inset:106px 14px 65px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:16px 12px;overflow:auto}.beacon-position{position:relative!important;left:auto!important;top:auto!important;width:auto}.beacon-position:after,.beacon-position:before{display:none}.beacons .hidden-bank{position:relative;left:auto;right:auto;bottom:auto;grid-column:1/-1;margin-top:6px;padding:9px}.beacons .bank-targets{display:grid;grid-template-columns:1fr 1fr}.beacons .hidden-bank .target{min-width:0;width:100%;min-height:66px}.beacons .target{height:100%}.compact-warning{display:block}.lab-content{grid-template-columns:1fr 1fr}.lab-column:last-child{grid-column:1/-1}.decision{gap:30px;grid-template-columns:1fr 1.5fr}.try-sequence{grid-template-columns:1fr 2fr;gap:20px}.try-sequence>p{grid-column:2}.demo-bottom>span{display:none}.demo-label{font-size:9px}#scene-label{display:none}.toolbar-divider{display:none}.gallery>footer{line-height:1.6}.beacons .empty-results{position:static;grid-column:1/-1}}
+@media(max-width:520px){.gallery{padding:0 12px}.status-tag{font-size:9px;padding:7px 8px}.wordmark{font-size:24px}.brand-mark{height:25px;width:25px;font-size:22px}.intro{padding:25px 2px}.eyebrow{font-size:8px;letter-spacing:.09em}h1{font-size:29px;letter-spacing:-1.2px}.intro>p{font-size:11px}.concept{display:block;padding:11px 10px}.concept-number{display:block;margin:0 0 6px}.concept strong{font-size:14px}.concept small{font-size:9px;min-height:29px}.concepts{margin-bottom:14px}.demo-toolbar{padding:10px}.demo-actions button{padding:6px 8px}.demo-actions button.primary{gap:8px}.demo-label{font-size:8px;max-width:100px;line-height:1.4}.live-dot{flex-shrink:0}.desktop{height:650px}.shore .surface{width:calc(100% - 20px);left:10px;right:10px;top:11px;bottom:11px}.shore .target{min-height:56px;padding:11px 8px}.shore .target-title{font-size:11px}.shore .target-meta{font-size:9px}.shore .surface-head{padding-left:15px}.menubar{padding:0 9px;gap:8px}.menubar b{font-size:9px}.menu-right{font-size:8px;max-width:135px;overflow:hidden;white-space:nowrap}.beacons .target-list{gap:12px 9px;inset:106px 10px 58px}.beacons .target{padding:10px 8px;gap:7px;align-items:flex-start}.beacons .target .app-icon{display:none}.beacons .target-title{font-size:10px}.beacons .target-meta{font-size:9px}.beacons .target kbd{min-width:25px;min-height:26px;font-size:13px}.beacons .surface-head{left:10px;right:10px;top:11px}.beacons .mode-strip{left:10px;top:61px;font-size:9px}.beacons .product-search{left:10px;right:10px;width:auto}.beacons .surface-foot{right:10px;left:10px;bottom:10px;font-size:9px;gap:10px}.bank-caption{font-size:8px}.bank-caption span:last-child{display:none}.beacons .hidden-bank .target-title{font-size:10px}.canopy .surface-head{padding:14px 15px 9px}.canopy .mode-strip{padding-left:15px;font-size:9px}.canopy-groups{grid-template-columns:repeat(2,minmax(0,1fr));max-height:475px;gap:10px 0;padding-bottom:13px}.canopy-group:nth-child(2n){border-right:0}.canopy-group:nth-child(3){border-right:1px solid #ffffff12}.group-heading{flex-direction:row;align-items:center;min-height:41px}.group-heading strong{font-size:10px}.group-heading small{font-size:8px}.canopy .target-title{font-size:10px}.canopy .target kbd{font-size:11px;min-width:22px}.canopy .surface-foot{padding:12px 15px;font-size:8px}.canopy .tab-groups{grid-template-columns:1fr;max-height:460px}.tab-groups .canopy-group{border-right:0!important;border-bottom:1px solid #ffffff22;padding:7px}.tab-groups .canopy-group:nth-child(3)>div:last-child{display:block}.tab-groups .target-title{font-size:11px}.canopy .product-search{margin:0 14px 11px}.idle-hint{gap:8px}.idle-hint>span{font-size:10px}.demo-bottom{font-size:10px;padding:11px 12px}.keyboard-help{gap:10px 15px;padding:16px 2px 24px;font-size:9px}.keyboard-help kbd{font-size:9px}.concept-notes{grid-template-columns:1fr;padding:24px 2px;gap:24px}.concept-notes>div:first-child{grid-column:auto}.concept-notes p:not(.eyebrow){font-size:12px}.concept-notes h2{font-size:26px}.lab summary>span:last-child{font-size:9px;gap:10px}.lab-content{grid-template-columns:1fr;gap:20px;padding:10px 2px 27px}.lab-column:last-child{grid-column:auto}.lab{margin-bottom:30px}.decision{grid-template-columns:1fr;gap:21px;padding:0 2px}.decision p:not(.eyebrow){font-size:13px}.try-sequence{grid-template-columns:1fr;padding:24px 2px;gap:15px}.try-sequence>p{grid-column:auto}.gallery>footer{flex-direction:column;gap:6px}.dock{gap:9px;padding:7px 10px 11px}.dock .app-icon{width:27px;height:27px}}
+
+@media(min-width:801px){.beacons .mode-strip{top:18px;left:auto;right:17px}.beacons .product-search{top:13px;left:auto;right:17px}}
+
+.group-heading strong,.group-heading small{display:block}.group-heading small{margin-top:4px}
+/* Gallery expansion. The original three product surfaces retain their styles. */
+.windows{z-index:1}.collection-label{display:flex;justify-content:space-between;gap:16px;font:9px ui-monospace,monospace;letter-spacing:.09em;color:#839076;margin:0 2px 9px}.collection-label>span:last-child{letter-spacing:0;color:#959c8c}.concepts.additions{margin-bottom:23px}.mini-lattice i{width:13px;height:9px}.mini-lattice i:nth-child(1){top:6px;left:9px}.mini-lattice i:nth-child(2){top:6px;right:9px}.mini-lattice i:nth-child(3){bottom:6px;left:9px}.mini-lattice i:nth-child(4){bottom:6px;right:9px}.mini-fold i{height:4px;left:7px;width:8px}.mini-fold i:nth-child(1){top:6px}.mini-fold i:nth-child(2){top:15px}.mini-fold i:nth-child(3){top:24px}.mini-fold i:nth-child(4){top:10px;left:23px;width:21px;height:18px;opacity:.6}.mini-relay i:first-child{left:5px;top:5px;width:14px;height:12px;opacity:.5}.mini-relay i:nth-child(2){right:5px;top:5px;width:23px;height:18px}.mini-relay i:nth-child(3){left:5px;bottom:5px;width:14px;height:4px}.mini-relay i:nth-child(4){left:23px;bottom:5px;width:24px;height:4px}.comparison-wrap{margin-bottom:32px}.comparison{width:100%;border-collapse:collapse;font-size:12px;text-align:left;line-height:1.6}.comparison caption{text-align:left;font-size:13px;font-weight:600;margin-bottom:16px}.comparison th{font-size:10px;font-weight:500;color:#919a84;padding:9px 12px;border-bottom:1px solid #dce1d2}.comparison td{padding:12px;color:#77836a;border-bottom:1px solid #e3e7db}.comparison td:first-child{font-weight:600;color:#4f613e}.comparison th:first-child,.comparison td:first-child{padding-left:0;width:14%}.keyboard-help [hidden]{display:none!important}@media(max-width:520px){.collection-label{font-size:8px}.collection-label>span:last-child{font-size:8px}.comparison{font-size:10px}.comparison th{font-size:9px}.comparison td,.comparison th{padding:9px 6px}.comparison td:first-child{width:18%}}
+
+</style>
+  <style>
+.lattice .desktop-dim{background:#101a19b8}
+.lattice .surface{position:absolute;inset:12px 14px 14px;display:flex;flex-direction:column;min-height:0;background:#182724;border:1px solid #9ac8ab46;border-radius:11px;box-shadow:0 20px 50px #071c1555;overflow:hidden}
+.lattice .surface-head{padding:15px 21px 10px}
+.lattice .mode-strip{padding:0 21px 10px;color:#a9beb0}
+.lattice .surface-foot{padding:12px 21px;flex-shrink:0}
+.lattice .product-search{margin:0 20px 10px;max-width:520px;background:#263c32}
+.lattice .scope-buttons button.selected{color:#d9f68c}
+.lattice .lattice-guide{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 21px;border-top:1px solid #c2e3c416;border-bottom:1px solid #c2e3c424;min-height:46px;font-size:10px;color:#829b8c}
+.lattice .lattice-guide>span:first-child{display:flex;align-items:center;gap:10px}
+.lattice .lattice-guide strong{font-size:11px;font-weight:500;color:#d4e7d8}
+.lattice .lattice-guide>span:last-child{font:9px ui-monospace,monospace;white-space:nowrap;letter-spacing:.025em}
+.lattice .lattice-breadcrumb{font-size:10px;padding:0;background:transparent;color:#a6c3ac;text-decoration:underline;text-underline-offset:3px}
+.lattice .lattice-guide-divider{color:#648773}
+.lattice .lattice-guide-next{margin-left:6px;font-size:10px}
+.lattice .lattice-field{display:grid;grid-template-columns:repeat(var(--lattice-columns),minmax(0,1fr));grid-auto-rows:minmax(155px,1fr);flex:1;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:#597660 transparent;background:linear-gradient(120deg,#2d4a3617,transparent)}
+.lattice .lattice-cell{position:relative;min-width:0;border:0;border-right:1px solid #c2e3c424;border-bottom:1px solid #c2e3c424;border-radius:0;background:transparent;transition:background 90ms}
+.lattice .lattice-cell:has(.target:hover),.lattice .lattice-branch:hover:not(:disabled){background:#a8d29512}
+.lattice .lattice-cell>.target{height:100%;width:100%;min-height:154px;padding:25px 19px 36px;display:grid;grid-template-columns:1fr 33px;grid-template-rows:auto 1fr;align-items:start;gap:19px 10px;border-radius:0;background:transparent}
+.lattice .lattice-cell>.target .app-icon{grid-column:1;grid-row:1;width:38px;height:38px;border-radius:10px}
+.lattice .lattice-cell>.target .target-text{grid-column:1/-1;grid-row:2;align-self:end;gap:7px}
+.lattice .lattice-cell>.target kbd{grid-column:2;grid-row:1;min-width:33px;min-height:32px;align-self:start;font-size:15px;justify-self:end;letter-spacing:1px}
+.lattice .lattice-cell>.target .target-title{font-size:12px;line-height:1.45;overflow-wrap:normal;color:#edf4e9}
+.lattice .lattice-cell>.target .target-meta{font-size:10px;line-height:1.4;color:#8faa98}
+.lattice .lattice-cell>.target .focused-dot{left:8px;top:8px;width:4px;height:4px}
+.lattice .lattice-window-status{position:absolute;bottom:13px;left:19px;font:8px ui-monospace,monospace;letter-spacing:.05em;color:#92b8a0;pointer-events:none}
+.lattice .lattice-empty{display:flex;flex-direction:column;justify-content:space-between;padding:26px 19px;color:#577964;min-height:155px;background:repeating-linear-gradient(135deg,transparent,transparent 8px,#a9d69902 8px,#a9d69902 9px)}
+.lattice .lattice-empty-key{align-self:flex-end;font:14px ui-monospace,monospace;border:1px dashed #5a80633f;border-radius:5px;padding:7px 9px}
+.lattice .lattice-empty>span:last-child{font-size:11px}
+.lattice .lattice-empty small{display:block;margin-top:6px;font-size:9px;color:#4d6d5c}
+.lattice .lattice-retired{color:#88a894}
+.lattice .lattice-retired small{color:#688672}
+.lattice .lattice-branch{text-align:left;padding:25px 19px 27px;display:flex;flex-direction:column;gap:10px;color:#a9bfad}
+.lattice .lattice-branch:disabled{cursor:default;opacity:.55}
+.lattice .lattice-branch-top{display:flex;align-items:center;justify-content:space-between;flex-direction:row-reverse;margin-bottom:auto;gap:10px;min-height:39px}
+.lattice .lattice-branch-top>span{font-size:27px;font-weight:300;color:#a7c993}
+.lattice .lattice-branch strong{font-size:12px;color:#d7edce;font-weight:500;margin-top:17px}
+.lattice .lattice-branch>span:last-child{font-size:10px;line-height:1.6;color:#8daa97;overflow-wrap:anywhere}
+.lattice .lattice-tab-overview{display:grid;grid-template-columns:repeat(var(--lattice-tab-columns),minmax(0,1fr));flex:1;overflow:auto;min-height:0;scrollbar-width:thin;scrollbar-color:#597660 transparent}
+.lattice .lattice-tab-group{padding:16px 16px 14px;border-right:1px solid #c2e3c424;min-width:0}
+.lattice .lattice-tab-group:last-child{border-right:0}
+.lattice .lattice-tab-entry{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:#acd59a0b;padding:12px;border:1px solid #a0cb8735;border-radius:6px;margin-bottom:12px}
+.lattice .lattice-tab-entry:hover{background:#acd59a18}
+.lattice .lattice-tab-entry:disabled{opacity:.5;cursor:default}
+.lattice .lattice-tab-entry strong{display:block;font-size:12px;font-weight:500;color:#deefd4}
+.lattice .lattice-tab-entry small{display:block;font-size:9px;margin-top:6px;color:#92ac98;line-height:1.4}
+.lattice .lattice-branch-arrow{margin-left:auto;color:#a7c993;font-size:22px}
+.lattice .lattice-inventory{display:flex;flex-direction:column;gap:2px}
+.lattice .lattice-inventory-target{width:100%;display:flex;align-items:center;gap:9px;background:transparent;text-align:left;border-radius:4px;padding:6px 5px;min-height:35px}
+.lattice .lattice-inventory-target:hover{background:#c8e5b70f}
+.lattice .lattice-inventory-target kbd{font-size:10px;min-width:30px;min-height:23px;padding:4px;background:#b3d18f1a;color:#b8d8a6;letter-spacing:1px}
+.lattice .lattice-inventory-target>span{font-size:10px;line-height:1.4;color:#b9cfbb;overflow-wrap:anywhere}
+.lattice .lattice-unavailable{font-size:11px;line-height:1.8;color:#7c9d86;margin:20px 6px}
+.lattice .lattice-search-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:5px 16px;padding:10px 16px;overflow:auto;flex:1;min-height:0;scrollbar-width:thin;scrollbar-color:#597660 transparent}
+.lattice .lattice-search-results .target{padding:12px;min-height:64px}
+.lattice .lattice-search-results .target kbd{order:-1}
+.lattice .lattice-search-results .target-title{font-size:12px}
+.lattice .lattice-search-results .target-meta{font-size:10px}
+.lattice .lattice-search-results .empty-results{grid-column:1/-1}
+@media(min-width:1500px){.lattice .lattice-cell>.target{padding:32px 24px 40px;gap:23px 14px}.lattice .lattice-cell>.target .target-title{font-size:14px}.lattice .lattice-cell>.target .app-icon{width:45px;height:45px}.lattice .lattice-cell>.target kbd{font-size:17px;min-width:36px;min-height:35px}.lattice .lattice-window-status{left:24px;bottom:17px}.lattice .lattice-inventory-target>span{font-size:11px}.lattice .lattice-inventory-target{min-height:39px}}
+@media(max-width:1050px){.lattice .lattice-field{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(170px,1fr)}.lattice .lattice-cell>.target{padding:19px 15px 30px;gap:14px}.lattice .lattice-cell>.target .target-title{font-size:12px}.lattice .lattice-tab-group{padding:12px 9px}.lattice .lattice-tab-entry{padding:10px 8px;gap:8px}.lattice .lattice-inventory-target{gap:7px;padding:6px 3px}.lattice .lattice-guide>span:last-child{font-size:8px}}
+@media(max-width:650px){.lattice .surface{inset:10px}.lattice .surface-head{padding:14px 14px 10px}.lattice .mode-strip{padding:0 14px 10px;font-size:9px}.lattice .surface-foot{padding:12px 14px;font-size:8px}.lattice .lattice-guide{padding:12px 14px}.lattice .lattice-guide>span:last-child{display:none}.lattice .lattice-guide strong{font-size:10px}.lattice .lattice-guide-next{font-size:9px}.lattice .lattice-field{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(190px,1fr)}.lattice .lattice-cell>.target{padding:18px 13px 31px;grid-template-columns:1fr 32px;gap:16px 8px}.lattice .lattice-cell>.target .app-icon{width:32px;height:32px}.lattice .lattice-cell>.target .target-title{font-size:11px}.lattice .lattice-cell>.target .target-meta{font-size:9px}.lattice .lattice-window-status{left:13px;font-size:7px}.lattice .lattice-branch{padding:19px 13px}.lattice .lattice-tab-overview{grid-template-columns:1fr}.lattice .lattice-tab-group{border-right:0;border-bottom:1px solid #c2e3c424;padding:14px}.lattice .lattice-inventory-target>span{font-size:11px}.lattice .lattice-search-results{grid-template-columns:1fr;padding:8px}.lattice .lattice-search-results .target-title{font-size:11px}.lattice .product-search{margin:0 13px 10px}.lattice .lattice-empty{padding:22px 13px}}
+
+</style>
+  <style>
+.fold .desktop-dim{background:linear-gradient(90deg,#15221d87,#14251c40)}
+.fold .surface{position:absolute;top:27px;left:clamp(14px,12%,150px);width:360px;max-width:calc(100% - 28px);max-height:calc(100% - 50px);display:flex;flex-direction:column;background:#20291f;border:1px solid #adbf9155;border-radius:13px;box-shadow:0 18px 50px #09160d55;overflow:hidden}
+.fold .surface:has(.fold-layout.is-branch){width:720px}
+.fold .surface:has(.fold-results){width:510px}
+.fold .surface-head{padding:15px 18px 9px}
+.fold .mode-strip{padding:2px 18px 12px;gap:7px;font-size:9px}
+.fold .surface-foot{flex-shrink:0;gap:10px;padding:12px 18px;font-size:9px}
+.fold .fold-layout{display:flex;min-height:0;overflow:auto;padding:0 11px 0;scrollbar-width:thin;scrollbar-color:#627450 transparent}
+.fold .fold-spine{min-width:0;flex:1;padding:0 0 8px}
+.fold .fold-layout.is-branch .fold-spine{flex:0 0 220px;border-right:1px solid #b8d59420;padding-right:11px}
+.fold .fold-section-label{display:block;font:8px ui-monospace,SFMono-Regular,monospace;letter-spacing:.1em;color:#96a88a;padding:10px 8px 8px}
+.fold .fold-family{display:flex;align-items:center;width:100%;gap:12px;padding:9px 9px;min-height:53px;background:transparent;text-align:left;border:1px solid transparent;border-radius:8px;color:#e9eedf}
+.fold .fold-family:hover{background:#ffffff08}
+.fold .fold-family.is-selected{background:#cceaa516;border-color:#cceaa547}
+.fold .fold-family.is-muted{opacity:.25}
+.fold .fold-family .app-icon{width:33px;height:33px;border-radius:8px}
+.fold .fold-family-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.fold .fold-family-text strong{font-size:12px;font-weight:500;color:#eef5e6;overflow-wrap:anywhere}
+.fold .fold-family-text small{font-size:9px;color:#94a588}
+.fold .fold-family kbd{font-size:14px;min-width:28px;min-height:28px}
+.fold .fold-chevron{font:19px sans-serif;color:#91a57b;margin:0 1px}
+.fold .fold-spine-note{font:9px/1.5 ui-monospace,SFMono-Regular,monospace;color:#839577;padding:5px 8px 1px;margin:8px 0 0}
+.fold .fold-detail{min-width:0;flex:1;padding:0 0 0 14px;align-self:stretch}
+.fold .fold-detail-heading{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:0 7px 16px;border-bottom:1px solid #b8d59418;margin-bottom:10px}
+.fold .fold-detail-heading .fold-section-label{padding-left:0}
+.fold .fold-detail-heading strong{font-size:20px;font-weight:450;letter-spacing:-.4px;color:#f0f7e8;display:block;line-height:1.2}
+.fold .fold-back{background:transparent;color:#abbc9d;font-size:9px;white-space:nowrap;padding:6px 0;align-self:flex-end}
+.fold .fold-back:hover{color:#dcf99e}
+.fold .fold-window-list{display:flex;flex-direction:column;gap:7px}
+.fold .fold-detail .target{padding:14px 9px;gap:10px;min-height:72px;align-items:flex-start;border:1px solid #d1e5b919;border-radius:8px;background:#ffffff03}
+.fold .fold-detail .target:hover,.fold .fold-detail .target.arrow-selected{background:#d8efb311;border-color:#d6f09555}
+.fold .fold-detail .target .app-icon{display:none}
+.fold .fold-detail .target kbd{order:-1;min-width:41px;min-height:31px;font-size:14px;padding:6px}
+.fold .fold-detail .target-title{font-size:13px;line-height:1.4}
+.fold .fold-detail .target-meta{font-size:10px;line-height:1.5}
+.fold .fold-detail .target .focused-dot{left:4px;top:5px}
+.fold .fold-detail-note{font:9px/1.7 ui-monospace,SFMono-Regular,monospace;color:#8c9f7e;margin:14px 8px 20px}
+.fold .fold-detail-note kbd{font-size:9px;min-width:17px;min-height:18px;padding:2px 4px;background:#3a4b2e;color:#b8d69a;vertical-align:baseline;margin-right:3px}
+.fold .fold-results{min-height:0;overflow:auto;padding:0 12px 12px;scrollbar-width:thin;scrollbar-color:#627450 transparent}
+.fold .fold-results .target{padding:10px 9px;min-height:56px;gap:10px}
+.fold .fold-results .target-title{font-size:12px;line-height:1.4}
+.fold .fold-results .target-meta{font-size:10px}
+.fold .fold-results .target kbd{font-size:13px}
+.fold .product-search{flex-shrink:0}
+@media(max-width:1050px){.fold .surface{left:18px}.fold .surface:has(.fold-layout.is-branch){width:calc(100% - 36px)}.fold .fold-layout.is-branch .fold-spine{flex-basis:196px}.fold .fold-family{gap:9px}.fold .fold-family .app-icon{width:29px;height:29px}.fold .fold-family-text strong{font-size:11px}}
+@media(max-width:650px){.fold .surface{left:11px;top:12px;max-width:calc(100% - 22px);max-height:calc(100% - 24px)}.fold .surface:has(.fold-layout.is-branch){width:calc(100% - 22px)}.fold .fold-layout.is-branch .fold-spine{flex-basis:81px;padding-right:7px}.fold .fold-layout.is-branch .fold-family{position:relative;justify-content:center;padding:8px 4px 22px;min-height:63px}.fold .fold-layout.is-branch .fold-family-text,.fold .fold-layout.is-branch .fold-chevron,.fold .fold-layout.is-branch .fold-spine>.fold-section-label,.fold .fold-layout.is-branch .fold-spine-note{display:none}.fold .fold-layout.is-branch .fold-family kbd{position:absolute;bottom:4px;min-width:20px;min-height:19px;font-size:10px;padding:2px 4px}.fold .fold-detail{padding-left:8px}.fold .fold-detail-heading{padding:1px 2px 12px;align-items:flex-start;flex-direction:column;gap:4px}.fold .fold-detail-heading strong{font-size:17px}.fold .fold-back{align-self:flex-start;padding:2px 0}.fold .fold-detail .target{padding:10px 7px;gap:7px;min-height:74px}.fold .fold-detail .target kbd{min-width:32px;min-height:27px;font-size:11px;padding:4px}.fold .fold-detail .target-title{font-size:11px}.fold .fold-detail .target-meta{font-size:9px}.fold .fold-detail-note{font-size:8px;margin:12px 2px}.fold .mode-strip{font-size:8px;padding-left:15px}.fold .surface-head{padding-left:15px}.fold .surface-foot{font-size:8px;gap:8px;padding:12px 15px}}
+
+</style>
+  <style>
+.relay .surface{position:absolute;inset:0}
+.relay .surface-head{position:absolute;top:14px;left:18px;background:#202b20;border:1px solid #879b6b55;border-radius:9px;padding:11px 15px;gap:28px;z-index:3}
+.relay .mode-strip{position:absolute;top:20px;right:18px;background:#202b20e8;border-radius:6px;padding:9px 12px;z-index:3}
+.relay .product-search{position:absolute;top:14px;right:18px;width:350px;z-index:4;margin:0}
+.relay .surface-foot{position:absolute;bottom:13px;right:18px;left:18px;padding:10px 13px;border:1px solid #879b6b33;border-radius:7px;background:#202b20eb;z-index:3}
+.relay .relay-content{position:absolute;inset:0;pointer-events:none;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:16px;padding:72px 18px 65px}
+.relay .relay-pair{position:relative;left:clamp(0px,var(--relay-x),calc(100% - 580px));align-self:center;width:580px;display:flex;align-items:center;gap:0;pointer-events:auto}
+.relay .relay-current{width:203px;display:flex;align-items:flex-start;gap:10px;border:1px solid #dbe9c929;border-radius:10px;background:#202b20e8;padding:14px;color:#bac9ae}
+.relay .relay-current .app-icon{width:28px;height:28px;border-radius:7px;margin-top:18px}
+.relay .relay-current-text{display:flex;flex-direction:column;gap:7px;min-width:0}
+.relay .relay-current-text small{font:8px ui-monospace,monospace;letter-spacing:.13em;color:#8c9e7f}
+.relay .relay-current-text strong{font-size:11px;line-height:1.5;font-weight:450;overflow-wrap:anywhere;color:#c5d0bc}
+.relay .relay-current-text>span{font-size:9px;color:#8fa280;display:flex;align-items:center;gap:8px}
+.relay .relay-current-address{font:10px ui-monospace,monospace;padding:2px 5px;border:1px solid #72875c66;border-radius:3px;color:#aac097}
+.relay .relay-thread{width:43px;flex-shrink:0;display:flex;align-items:center;color:#d9f68c;font:18px ui-monospace,monospace;margin-top:-13px}
+.relay .relay-thread i{height:1px;background:#d9f68c77;flex:1}
+.relay .relay-return{width:334px;padding:16px;border:1px solid #cfed8773;border-radius:13px;background:#202b20;box-shadow:0 12px 35px #10210e4d}
+.relay .relay-return-label{display:flex;align-items:center;justify-content:space-between;font:8px ui-monospace,monospace;letter-spacing:.13em;color:#d9f68c;margin-bottom:12px;gap:12px}
+.relay .relay-return-label>span:last-child:not(:first-child){font-size:7px;letter-spacing:.08em;color:#8c9f7a}
+.relay .relay-return-target .target{padding:4px 0 10px;gap:12px;align-items:center}
+.relay .relay-return-target .app-icon{width:40px;height:40px;border-radius:10px}
+.relay .relay-return-target .target-title{font-size:15px;line-height:1.35;font-weight:450}
+.relay .relay-return-target .target-meta{font-size:10px;line-height:1.5}
+.relay .relay-return-target .target kbd{font-size:15px;min-width:29px;min-height:29px}
+.relay .relay-return-action{width:100%;margin-top:9px;padding:10px 12px;border-radius:6px;background:#d9f68c;color:#283918;display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:550}
+.relay .relay-return-action:hover{background:#e8ffaa}
+.relay .relay-return-action kbd{color:#293d15;background:#c7e776;border:1px solid #64812d35;box-shadow:none;font:11px ui-monospace,monospace;min-height:24px;letter-spacing:0}
+.relay .relay-empty-pair strong{display:block;font-size:16px;font-weight:450;line-height:1.4;color:#f1f7e7}
+.relay .relay-empty-pair p{font-size:11px;line-height:1.7;color:#a6b799;margin:10px 0 2px}
+.relay .relay-shelf{position:relative;background:#202b20;border:1px solid #879b6b55;border-radius:11px;padding:12px 13px;pointer-events:auto}
+.relay .relay-shelf-label{display:flex;align-items:center;justify-content:space-between;font:8px ui-monospace,monospace;letter-spacing:.13em;color:#acbe99;gap:15px;margin:0 2px 10px}
+.relay .relay-shelf-label>span:last-child{color:#7e9270;font-size:8px;letter-spacing:.06em}
+.relay .relay-shelf-targets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.relay .relay-shelf .target{padding:9px 10px;gap:10px;border:1px solid #ffffff12;border-radius:7px;min-height:59px}
+.relay .relay-shelf .target-title{font-size:11px;line-height:1.3}
+.relay .relay-shelf .target-meta{font-size:9px;line-height:1.4}
+.relay .relay-shelf .app-icon{width:27px;height:27px;border-radius:7px}
+.relay .relay-shelf kbd{font-size:13px;min-height:27px;min-width:27px}
+.relay .relay-shelf-empty{font-size:12px;color:#97ab87;margin:8px}
+.relay .relay-index{position:absolute;top:86px;left:18px;right:18px;bottom:65px;border:1px solid #879b6b55;border-radius:11px;background:#202b20;padding:17px;display:flex;flex-direction:column}
+.relay .relay-index-label{font:9px/1.5 ui-monospace,monospace;letter-spacing:.09em;color:#a6b995;margin-bottom:15px}
+.relay .relay-index-targets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:8px;overflow:auto;min-height:0;scrollbar-width:thin;scrollbar-color:#566449 transparent}
+.relay .relay-index .target{padding:13px;border:1px solid #ffffff12;min-height:71px}
+.relay .relay-index .target.arrow-selected{border-color:#d9f68c80;background:#d9f68c14}
+.relay .relay-index .empty-results{grid-column:1/-1}
+@media(min-width:1500px){.relay .relay-pair{width:624px;left:clamp(0px,var(--relay-x),calc(100% - 624px))}.relay .relay-current{width:220px}.relay .relay-return{width:361px;padding:18px}.relay .relay-return-target .target-title{font-size:17px}.relay .relay-shelf .target{min-height:64px;padding:11px}.relay .relay-shelf .target-title{font-size:12px}}
+@media(max-width:1150px){.relay .relay-pair{left:clamp(0px,var(--relay-x),calc(100% - 550px));width:550px}.relay .relay-current{width:187px}.relay .relay-return{width:320px}.relay .relay-shelf .target{padding:8px;gap:8px}.relay .relay-shelf .target-title{font-size:10px}}
+@media(max-width:800px){.relay .relay-content{padding-top:101px}.relay .relay-pair{left:0;width:100%}.relay .relay-current{width:36%;min-width:0;padding:12px}.relay .relay-return{width:calc(64% - 32px);padding:14px}.relay .relay-thread{width:32px}.relay .relay-current .app-icon{display:none}.relay .relay-return-target .target-title{font-size:13px}.relay .relay-return-target .app-icon{width:33px;height:33px}.relay .mode-strip{top:65px;left:18px;right:auto;font-size:9px}.relay .product-search{top:65px;left:18px;right:18px;width:auto}.relay .relay-shelf-targets{grid-template-columns:repeat(2,minmax(0,1fr));max-height:232px;overflow:auto;scrollbar-width:thin}.relay .relay-shelf .target{min-height:57px}.relay .relay-index{top:117px}.relay .relay-index-targets{grid-template-columns:1fr}.relay .relay-index .target{min-height:64px}.relay .relay-shelf-label{font-size:8px}}
+@media(max-width:520px){.relay .surface-head{left:10px;right:10px;top:11px}.relay .mode-strip{left:10px;top:61px;padding:8px 10px}.relay .surface-foot{left:10px;right:10px;bottom:10px;font-size:9px;padding:10px}.relay .product-search{left:10px;right:10px;top:60px}.relay .relay-content{padding:101px 10px 61px;gap:14px}.relay .relay-pair{left:0;align-items:stretch}.relay .relay-current{width:32%;padding:11px 9px;align-items:center}.relay .relay-current-text small{font-size:7px;letter-spacing:.03em}.relay .relay-current-text strong{font-size:10px}.relay .relay-current-text>span{font-size:8px;flex-wrap:wrap;gap:5px}.relay .relay-thread{width:20px;font-size:15px;align-self:center}.relay .relay-return{width:calc(68% - 20px);padding:12px 10px}.relay .relay-return-label{font-size:7px;letter-spacing:.07em;flex-wrap:wrap;gap:5px;margin-bottom:9px}.relay .relay-return-label>span:last-child:not(:first-child){font-size:6px}.relay .relay-return-target .target{gap:8px;align-items:flex-start}.relay .relay-return-target .app-icon{display:none}.relay .relay-return-target .target-title{font-size:12px}.relay .relay-return-target .target-meta{font-size:8px}.relay .relay-return-target .target kbd{font-size:12px;min-width:25px;min-height:25px}.relay .relay-return-action{font-size:10px;padding:8px;gap:8px}.relay .relay-return-action kbd{font-size:9px}.relay .relay-empty-pair strong{font-size:13px}.relay .relay-empty-pair p{font-size:10px}.relay .relay-shelf{padding:10px 9px}.relay .relay-shelf-label{font-size:7px;letter-spacing:.04em;gap:10px}.relay .relay-shelf-label>span:last-child{font-size:6px}.relay .relay-shelf-targets{gap:5px;max-height:205px}.relay .relay-shelf .target{padding:8px 6px;gap:7px;min-height:67px;align-items:flex-start}.relay .relay-shelf .app-icon{display:none}.relay .relay-shelf .target-title{font-size:10px}.relay .relay-shelf .target-meta{font-size:8px}.relay .relay-shelf kbd{font-size:12px;min-width:24px;min-height:24px;padding:3px}.relay .relay-index{left:10px;right:10px;top:110px;bottom:60px;padding:12px}.relay .relay-index-label{font-size:8px}.relay .relay-index .target{padding:11px;min-height:70px}}
+
+</style>
+</head>
+<body>
+  <main class="gallery">
+    <header class="masthead"><a class="wordmark" href="./index.html" aria-label="Tabnax design exploration"><span class="brand-mark">↗</span> tabnax<span class="wordmark-dot">.</span></a><div>INTERACTION STUDIES <span class="edition">/ 01</span></div><span class="status-tag">Design exploration</span></header>
+    <section class="intro"><div><p class="eyebrow">A SMALLER DISTANCE BETWEEN THOUGHT & WINDOW</p><h1>Six ways back to work.</h1></div><p>Different switching habits. Different answers.<br>Try the interaction that fits yours.</p></section>
+
+    <div class="collection-label"><span>THE ORIGINAL STUDIES</span><span>Three spatial surfaces</span></div>
+    <nav class="concepts" aria-label="Design concepts">
+      <button type="button" class="concept active" data-concept="shore" aria-pressed="true"><span class="concept-number">01</span><span><strong>Shore</strong><small>A quiet edge. One clear scan.</small></span><span class="mini mini-shore" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+      <button type="button" class="concept" data-concept="beacons" aria-pressed="false"><span class="concept-number">02</span><span><strong>Beacons</strong><small>The desktop becomes the switcher.</small></span><span class="mini mini-beacons" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+      <button type="button" class="concept" data-concept="canopy" aria-pressed="false"><span class="concept-number">03</span><span><strong>Canopy</strong><small>Apps above. Windows beneath.</small></span><span class="mini mini-canopy" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+    </nav>
+
+    <div class="collection-label"><span>NEW DIRECTIONS</span><span>Three different ways to choose</span></div>
+    <nav class="concepts additions" aria-label="Additional design concepts">
+      <button type="button" class="concept" data-concept="lattice" aria-pressed="false"><span class="concept-number">04</span><span><strong>Lattice</strong><small>A grid of addresses. Room to narrow.</small></span><span class="mini mini-lattice" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+      <button type="button" class="concept" data-concept="fold" aria-pressed="false"><span class="concept-number">05</span><span><strong>Fold</strong><small>Choose the app. Unfold its windows.</small></span><span class="mini mini-fold" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+      <button type="button" class="concept" data-concept="relay" aria-pressed="false"><span class="concept-number">06</span><span><strong>Relay</strong><small>One move back to your last window.</small></span><span class="mini mini-relay" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+    </nav>
+
+    <section class="demo" aria-label="Interactive concept prototype">
+      <div class="demo-toolbar"><div class="demo-label"><span class="live-dot"></span> SIMULATED DESKTOP <span class="toolbar-divider">/</span><span id="scene-label">8 windows · 6 apps</span></div><div class="demo-actions"><button type="button" id="reset">Reset</button><button type="button" class="primary" id="activate">Try it <kbd>Space</kbd></button></div></div>
+      <div id="desktop" class="desktop shore" tabindex="0" role="region" aria-label="Simulated macOS desktop. Space opens the switcher, letters select, slash searches, Escape cancels." aria-describedby="keyboard-help">
+        <div class="wallpaper" aria-hidden="true"><div class="wallpaper-fold one"></div><div class="wallpaper-fold two"></div><div class="wallpaper-fold three"></div></div>
+        <div class="menubar" aria-hidden="true"><span class="apple">●</span><b id="menu-app">Visual Studio Code</b><span>File</span><span>Edit</span><span>View</span><span class="menu-right">◒ &nbsp; ▰ &nbsp; Thu 17 Sep &nbsp; 09:41</span></div>
+        <div id="windows" class="windows" aria-hidden="true"></div>
+        <div id="dock" class="dock" aria-hidden="true"></div>
+        <div class="desktop-dim" aria-hidden="true"></div>
+        <div id="switcher" class="switcher" aria-label="Tabnax switcher"></div>
+        <div id="idle-hint" class="idle-hint"><span>Back in your flow.</span><small><kbd>Space</kbd> to switch again</small></div>
+      </div>
+      <div class="demo-bottom"><div id="feedback" role="status" aria-live="polite">Ready. Type a displayed letter to focus its window.</div><span>Browser simulation · no system access</span></div>
+    </section>
+
+    <div class="keyboard-help" id="keyboard-help"><span><kbd>Space</kbd> open</span><span><kbd id="hold-key">Left Shift</kbd> hold to peek</span><span><kbd>A…Z</kbd> select</span><span><kbd>/</kbd> find</span><span><kbd>Esc</kbd> back / cancel</span><span><kbd>1</kbd> windows <kbd>2</kbd> apps <kbd id="tabs-key">3</kbd><span id="tabs-key-label"> tabs in Canopy / Lattice</span></span><span id="concept-extra-key" hidden><kbd>Enter</kbd> previous window</span></div>
+
+    <section class="concept-notes" aria-live="polite"><div><p class="eyebrow" id="concept-kicker">01 / SHORE</p><h2 id="concept-headline">A place for every window.<br>A letter that stays put.</h2></div><div><h3>How your eyes move</h3><p id="concept-scan"></p></div><div><h3>The tradeoff</h3><p id="concept-tradeoff"></p></div></section>
+
+    <details class="lab"><summary><span>Prototype lab</span><span>Window churn, handedness & motion <span class="plus">+</span></span></summary><div class="lab-content">
+      <div class="lab-column"><h3>Change the desktop</h3><label for="scenario">Window set</label><select id="scenario"><option value="8">Everyday · 8 windows</option><option value="6">Light · 6 windows</option><option value="10">Busy · 10 windows</option></select><div class="inline-controls"><button type="button" id="add-window">Open a window</button><button type="button" id="close-window">Close focused window</button></div><p>Try while the switcher is open. Existing letters stay assigned. Closed addresses retire until Reset.</p><div class="lab-readout" id="address-readout"></div></div>
+      <div class="lab-column"><h3>Change the selection hand</h3><label for="hand">Alphabet</label><select id="hand"><option value="right">Right hand · J K L U I O N M H P</option><option value="left">Left hand · A S D F W E R C V Q</option><option value="custom">Custom alphabet…</option></select><div id="custom-controls" hidden><label for="custom-alphabet">6–12 unique letters, in comfort order</label><div class="inline-controls"><input id="custom-alphabet" value="jkluionmhp" maxlength="12" spellcheck="false" autocomplete="off"><button type="button" id="apply-alphabet">Apply</button></div><p id="alphabet-error" role="alert"></p></div><p id="alphabet-note">Left thumb opens; right hand selects. P is reserved for overflow: PJ, PK… No existing key must become a prefix.</p></div>
+      <div class="lab-column"><h3>Try the edge cases</h3><label class="check-label"><input type="checkbox" id="reduce-motion"> Reduce motion</label><p id="motion-note">System reduced-motion preference is also respected.</p><button type="button" id="tab-experiment">Explore 28 Safari tabs ↗</button><p>Canopy and Lattice explore tabs: two-letter addresses, three browser windows, long titles and an explicit search mode.</p><p class="compact-warning">For spatial comparison, use a desktop-sized viewport. Compact screens stack Beacons labels.</p></div>
+    </div></details>
+
+    <section class="decision"><div><p class="eyebrow">CHOOSE BY SWITCHING HABIT</p><h2>Different strengths.<br>Separate modes.</h2></div><div><p>Shore remains the compact baseline for random window switching. Lattice tests whether learning a spatial address makes selection more natural. Fold trades an extra key for a smaller set of choices. Relay gives repeated back-and-forth work its own interaction.</p><p>There is no need to force these into one interface. Compare the situations below, then keep only the modes that reduce hesitation in your own work.</p><a href="ADDITIONAL-DIRECTIONS.md">Read the team’s rationale & interaction differences ↗</a></div></section>
+    <div class="comparison-wrap"><table class="comparison"><caption>Where each direction could earn its place</caption><thead><tr><th>Concept</th><th>Try it when…</th><th>What it costs</th></tr></thead><tbody><tr><td>Shore</td><td>You jump among 6–10 unrelated windows.</td><td>An eye movement to the edge; a vertical scan.</td></tr><tr><td>Beacons</td><td>You remember where the window sits.</td><td>Scattered labels; a second scan for hidden windows.</td></tr><tr><td>Canopy</td><td>You recognize the app before its window title.</td><td>A wide scan, then a downward scan.</td></tr><tr><td>Lattice</td><td>You like Mouseless-style addresses and spatial memory.</td><td>More screen area; a second key for a branch.</td></tr><tr><td>Fold</td><td>One app has several easily confused windows.</td><td>Always app → window, including singleton apps.</td></tr><tr><td>Relay</td><td>You keep alternating between two windows.</td><td>The prominent target changes with real switching history.</td></tr></tbody></table></div>
+    <section class="try-sequence"><h3>A useful comparison</h3><ol><li>Find <strong>Tabnax · Layout preview</strong> without search.</li><li>Switch to Terminal, then back to the same Safari window.</li><li>Open and close a window in the lab. Use a letter you remember.</li><li>In Canopy, press <kbd>3</kbd>, then <kbd>/</kbd> and type <strong>pronouns</strong>.</li></ol><p>Look for hesitations and wrong targets, not just fewer keystrokes. Keep the concept you can read before you consciously “read the UI”.</p></section>
+    <footer><span>Tabnax / Design discovery, September 2026 · <a href="DESIGN-NOTES.md">Original rationale</a></span><span>Local prototype. No native integration. No feature commitments.</span></footer>
+  </main>
+  <script>
+/* Lattice is a visual extension. All selection/focus remains in the shared simulator. */
+(() => {
+  'use strict';
+
+  function inventoryTarget(t, ctx) {
+    const key = ctx.address(t);
+    return `<button type="button" class="lattice-inventory-target" data-target="${ctx.escape(t.id)}" data-address="${ctx.escape(key)}" title="${ctx.escape(t.full || t.title)}" aria-label="${key.toUpperCase()}: ${ctx.escape(t.full || t.title)}. ${ctx.escape(t.context)}"><kbd aria-hidden="true">${key.toUpperCase()}</kbd><span>${ctx.escape(t.title)}</span></button>`;
+  }
+
+  function emptyCell(key, known, ctx) {
+    return `<div class="lattice-cell lattice-empty${known ? ' lattice-retired' : ''}" aria-label="${key.toUpperCase()}: ${known ? 'unavailable address' : 'unassigned address'}"><span class="lattice-empty-key">${ctx.escape(key.toUpperCase())}</span><span>${known ? 'Address held' : 'Unassigned'}<small>${known ? 'Other places stay put' : 'Ready for a new target'}</small></span></div>`;
+  }
+
+  function addressGrid(ctx) {
+    const {state, all, escape} = ctx;
+    const map = state.addresses[state.scope];
+    const prefix = state.prefix;
+    const allocated = [...map.values()];
+    return `<div class="lattice-field" style="--lattice-columns:${state.alphabet.length <= 9 ? 3 : state.alphabet.length <= 10 ? 5 : 4}">${[...state.alphabet].map(letter => {
+      const key = prefix + letter;
+      const target = all.find(t => ctx.address(t) === key);
+      if (target) {
+        const windowRecord = state.scope === 'windows' ? target : ctx.windows.find(w => w.id === (target.parent || target.windowId));
+        return `<div class="lattice-cell${windowRecord?.minimized ? ' lattice-minimized' : ''}">${ctx.item(target)}${windowRecord?.minimized ? '<span class="lattice-window-status">MINIMIZED · STILL HERE</span>' : ''}</div>`;
+      }
+      const descendants = all.filter(t => ctx.address(t).startsWith(key) && ctx.address(t).length > key.length);
+      const isWindowBranch = state.scope !== 'tabs' && letter === state.alphabet.at(-1);
+      if (descendants.length || isWindowBranch) {
+        return `<button type="button" class="lattice-cell lattice-branch" data-prefix="${escape(key)}" ${descendants.length ? '' : 'disabled'} aria-label="${key.toUpperCase()}: ${descendants.length ? `show ${descendants.length} more ${state.scope}` : 'reserved overflow branch'}"><span class="lattice-branch-top"><kbd aria-hidden="true">${escape(key.toUpperCase())}</kbd><span aria-hidden="true">↗</span></span><strong>${descendants.length ? `${descendants.length} more ${state.scope}` : 'Room to grow'}</strong><span>${descendants.length ? descendants.slice(0, 2).map(t => escape(t.title)).join('<br>') : 'Reserved for overflow.<br>Your other addresses stay put.'}</span></button>`;
+      }
+      return emptyCell(key, allocated.includes(key), ctx);
+    }).join('')}</div>`;
+  }
+
+  function tabOverview(ctx) {
+    const {state, all, escape} = ctx;
+    const allocated = [...state.addresses.tabs.values()];
+    const prefixes = [...state.alphabet].filter(letter => allocated.some(key => key.startsWith(letter)));
+    return `<div class="lattice-tab-overview" style="--lattice-tab-columns:${Math.min(prefixes.length, 5)}">${prefixes.map(prefix => {
+      const targets = all.filter(t => ctx.address(t).startsWith(prefix));
+      const parents = [...new Set(targets.map(t => t.parent))];
+      const context = parents.map(id => ({lesson:'Lesson editor',preview:'Learner preview',personal:'Personal'})[id] || id).join(' / ');
+      return `<section class="lattice-tab-group"><button type="button" class="lattice-tab-entry" data-prefix="${escape(prefix)}" ${targets.length ? '' : 'disabled'} aria-label="${prefix.toUpperCase()}: narrow to ${targets.length} tabs"><kbd aria-hidden="true">${escape(prefix.toUpperCase())}</kbd><span><strong>${targets.length} tabs</strong><small>${escape(context || 'Parent windows closed')}</small></span><span class="lattice-branch-arrow" aria-hidden="true">↗</span></button><div class="lattice-inventory">${targets.length ? targets.map(t => inventoryTarget(t, ctx)).join('') : '<p class="lattice-unavailable">This place is held.<br>Its windows are currently closed.</p>'}</div></section>`;
+    }).join('')}</div>`;
+  }
+
+  function render(ctx) {
+    const {state, list, escape} = ctx;
+    if (state.mode === 'search') {
+      return `<div class="lattice-search-results">${list.length ? list.map(ctx.item).join('') : '<div class="empty-results">No matching targets.<small>Change the search, or press Escape for the address grid.</small></div>'}</div>`;
+    }
+    const rootTabs = state.scope === 'tabs' && !state.prefix;
+    return `<div class="lattice-guide"><span>${state.prefix ? `<button type="button" data-clear-prefix class="lattice-breadcrumb">All ${escape(state.scope)}</button><span class="lattice-guide-divider">/</span><strong>${escape(state.prefix.toUpperCase())}</strong><span class="lattice-guide-next">Choose the next letter</span>` : rootTabs ? '<strong>One letter narrows. The next lands.</strong>' : '<strong>Every window gets a place.</strong>'}</span><span>${rootTabs ? 'Full addresses stay visible' : state.prefix ? '⌫ back' : 'Positions follow addresses'}</span></div>${rootTabs ? tabOverview(ctx) : addressGrid(ctx)}`;
+  }
+
+  window.TabnaxExtensions = window.TabnaxExtensions || {};
+  window.TabnaxExtensions.lattice = {
+    name:'Lattice',
+    kicker:'04 / LATTICE',
+    headline:'A field of windows.<br>A place you can learn.',
+    scan:'Every window occupies a fixed address cell, including covered and minimized windows. Press one letter to land; only overflow and optional tabs narrow into another grid. Closed windows leave holes, so the places you learn stay put.',
+    tradeoff:'The screen-wide scan can be slower than a short list. Grid positions follow your alphabet order, not physical keyboard geometry. Tab prefixes are arbitrary address groups; search may be faster when you do not know a tab’s address.',
+    tabs:true,
+    modeText:ctx => ctx.state.scope === 'tabs' ? (ctx.state.prefix ? 'Next letter goes immediately' : 'Type two letters, or narrow with the first') : ctx.state.prefix ? 'Next letter goes immediately' : 'One letter per window · overflow opens a grid',
+    render
+  };
+})();
+
+</script>
+  <script>
+/* Fold is a simulated two-stage app → window interaction. */
+(() => {
+  'use strict';
+  const extension = {
+    name: 'Fold',
+    kicker: '05 / FOLD',
+    headline: 'One app at a time.<br>Room for the difference.',
+    scan: 'Choose an app from a compact icon spine. Its window sheet unfolds beside it, giving similar titles room to separate. App address, then window address: even a single-window app takes both stages. You can type the full address without waiting for the sheet.',
+    tradeoff: 'Usually two selection keys replace one; overflow adds letters. The extra step may pay off when a few apps contain many similar windows; it is a cost when most apps have only one. Fold has its own stable app + window addresses. Search crosses all families and shows complete addresses.',
+    tabs: false,
+    address(target, ctx) {
+      if (ctx.state.scope !== 'windows') return ctx.baseAddress(target, ctx.state.scope);
+      const family = ctx.windows.filter(window => window.app === target.app);
+      const index = family.findIndex(window => window.id === target.id);
+      if (index < 0) return ctx.baseAddress(target, 'windows');
+      const alphabet = ctx.state.alphabet;
+      const child = alphabet.at(-1).repeat(Math.floor(index / (alphabet.length - 1))) + alphabet[index % (alphabet.length - 1)];
+      return ctx.appAddress(target.app) + child;
+    },
+    modeText(ctx) {
+      if (ctx.state.scope === 'apps') return 'One letter to an app';
+      const group = Object.keys(ctx.APPS).find(app => ctx.state.prefix.startsWith(ctx.appAddress(app)));
+      return group ? 'Choose a window · full address stays visible' : 'App letter, then window letter';
+    },
+    render(ctx) {
+      const {state, list, all, item, icon, escape, APPS} = ctx;
+      if (state.mode === 'search') {
+        return `<div class="fold-results"><div class="fold-section-label">ALL ${escape(state.scope.toUpperCase())} · SEARCH</div>${list.length ? list.map(item).join('') : '<div class="empty-results">No matching targets.<small>Change the search, or press Escape to return to app choices.</small></div>'}</div>`;
+      }
+      if (state.scope !== 'windows') {
+        return `<div class="fold-results fold-app-scope"><div class="fold-section-label">DIRECT APP SELECTION</div>${list.map(item).join('')}</div>`;
+      }
+      const groups = Object.keys(APPS).map(app => ({app, key: ctx.appAddress(app), windows: all.filter(window => window.app === app)})).filter(group => group.windows.length);
+      const selected = groups.find(group => state.prefix.startsWith(group.key));
+      const familyButton = group => {
+        const active = selected?.app === group.app;
+        const muted = state.prefix && !selected && !group.key.startsWith(state.prefix);
+        return `<button type="button" class="fold-family${active ? ' is-selected' : ''}${muted ? ' is-muted' : ''}" data-prefix="${escape(group.key)}" aria-pressed="${active}" aria-label="${escape(group.key.toUpperCase())}: choose ${escape(APPS[group.app].name)} windows">${icon(group.app)}<span class="fold-family-text"><strong>${escape(APPS[group.app].short)}</strong><small>${group.windows.length} ${group.windows.length === 1 ? 'window' : 'windows'}</small></span><kbd>${escape(group.key.toUpperCase())}</kbd><span class="fold-chevron" aria-hidden="true">›</span></button>`;
+      };
+      const detail = selected ? `<section class="fold-detail" aria-label="${escape(APPS[selected.app].name)} windows"><div class="fold-detail-heading"><div><span class="fold-section-label">02 / CHOOSE THE WINDOW</span><strong>${escape(APPS[selected.app].name)}</strong></div><button type="button" class="fold-back" data-clear-prefix aria-label="Back to all applications">← All apps</button></div><div class="fold-window-list">${selected.windows.map(item).join('')}</div><p class="fold-detail-note"><kbd>${escape(selected.key.toUpperCase())}</kbd> is already typed. Press the remaining letter.</p></section>` : '';
+      return `<div class="fold-layout ${selected ? 'is-branch' : 'is-root'}"><section class="fold-spine" aria-label="Application families"><div class="fold-section-label">01 / CHOOSE THE APP</div>${groups.map(familyButton).join('')}<p class="fold-spine-note">${selected ? '⌫ back to apps' : 'Every window has a two-stage address.'}</p></section>${detail}</div>`;
+    }
+  };
+  window.TabnaxExtensions = window.TabnaxExtensions || {};
+  window.TabnaxExtensions.fold = extension;
+})();
+
+</script>
+  <script>
+/* Relay is a simulated return-to-previous-window study, not native integration. */
+(() => {
+  'use strict';
+  const registry = window.TabnaxExtensions = window.TabnaxExtensions || {};
+
+  registry.relay = {
+    name: 'Relay',
+    kicker: '06 / RELAY',
+    headline: 'Keep the conversation<br>between two windows.',
+    scan: 'Your current window and the window you just left form a visible pair near the current work. Enter returns to the previous window; its normal letter still works. Every other window stays available below with the same stable address.',
+    tradeoff: 'Useful for editor–preview or terminal–editor alternation. The large return target spends attention on one prediction, so a less recent window can take longer to find. Enter means “previous window”; it is a changing command, never a stable target address.',
+    tabs: false,
+    modeText(ctx) {
+      if (ctx.state.scope !== 'windows') return 'Type a letter to go';
+      return ctx.recentWindow ? 'Enter returns · letters go anywhere' : 'Choose a window to start a return pair';
+    },
+    render(ctx) {
+      const { state, list, all, item, icon, escape, APPS, address, windows } = ctx;
+      if (state.mode === 'search' || state.scope !== 'windows') {
+        return `<div class="relay-index"><div class="relay-index-label">${state.mode === 'search' ? 'MATCHING TARGETS · ENTER SELECTS THE HIGHLIGHTED RESULT' : 'OPEN APPS · DIRECT ADDRESSES'}</div><div class="relay-index-targets">${list.length ? list.map(item).join('') : '<div class="empty-results">No matching targets.<small>Change the search, or press Escape to return to letters.</small></div>'}</div></div>`;
+      }
+
+      const current = all.find(target => target.id === state.focused);
+      const previous = ctx.recentWindow && all.find(target => target.id === ctx.recentWindow.id && target.id !== state.focused);
+      const rest = list.filter(target => target.id !== current?.id && target.id !== previous?.id);
+      const focusedWindow = windows.find(target => target.id === state.focused);
+      const anchorX = Number.isFinite(focusedWindow?.x) ? focusedWindow.x : 29;
+      const anchorY = Number.isFinite(focusedWindow?.y) ? focusedWindow.y : 37;
+      const currentMarkup = current ? `${icon(current.app)}<span class="relay-current-text"><small>YOU ARE HERE</small><strong>${escape(current.title)}</strong><span>${escape(APPS[current.app].short)} <span class="relay-current-address">${escape(address(current).toUpperCase())}</span></span></span>` : '<span class="relay-current-text"><small>YOUR CURRENT WORK</small></span>';
+      const returnMarkup = previous
+        ? `<div class="relay-return-label"><span>BACK TO</span><span>PREVIOUS WINDOW</span></div><div class="relay-return-target">${item(previous)}</div><button type="button" class="relay-return-action" data-return-window="true" aria-label="Return to ${escape(previous.title)}"><span>Return here</span><kbd>Enter ↵</kbd></button>`
+        : '<div class="relay-return-label"><span>YOUR NEXT RETURN</span></div><div class="relay-empty-pair"><strong>Start with any letter below.</strong><p>The window you leave will appear here. Enter brings it back.</p></div>';
+
+      return `<div class="relay-content"><div class="relay-pair" style="--relay-x:${anchorX}%;--relay-y:${anchorY}%"><div class="relay-current">${currentMarkup}</div><span class="relay-thread" aria-hidden="true"><i></i>↗</span><section class="relay-return${previous ? '' : ' relay-return-empty'}" aria-label="Previous window">${returnMarkup}</section></div><section class="relay-shelf" aria-label="All other open windows"><div class="relay-shelf-label"><span>ANYWHERE ELSE</span><span>${rest.length} WINDOWS · SAME LETTERS</span></div><div class="relay-shelf-targets">${rest.length ? rest.map(item).join('') : '<p class="relay-shelf-empty">These are your only open windows.</p>'}</div></section></div>`;
+    }
+  };
+})();
+
+</script>
+  <script>
+/* Local interaction study. All windows, focus and tabs below are simulated. */
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const escape = (value) => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const APPS = {
+    code: {name:'Visual Studio Code', short:'VS Code'}, safari:{name:'Safari',short:'Safari'}, finder:{name:'Finder',short:'Finder'},
+    figma:{name:'Figma',short:'Figma'}, terminal:{name:'Terminal',short:'Terminal'}, notes:{name:'Notes',short:'Notes'}
+  };
+  const initialWindows = [
+    {id:'code',app:'code',title:'Tabnax · switcher.ts',context:'tabnax / src',full:'switcher.ts — tabnax — Visual Studio Code',x:29,y:37,w:49,h:51,z:8},
+    {id:'lesson',app:'safari',title:'Tabnax · Keyboard guide',context:'Workspace guide · Work',full:'Tabnax — Workspace guide — Keyboard guide — Window shortcuts, draft 04',x:3,y:23,w:51,h:57,z:4},
+    {id:'preview',app:'safari',title:'Tabnax · Layout preview',context:'Workspace guide · Work',full:'Tabnax — Workspace guide — Layout preview — Window shortcuts, draft 04',x:12,y:29,w:55,h:61,z:1},
+    {id:'assets',app:'finder',title:'Tabnax · Assets',context:'Projects / tabnax',full:'Assets — /Example/Tabnax/design/assets',x:69,y:20,w:28,h:50,z:5},
+    {id:'design',app:'figma',title:'Tabnax · Interaction studies',context:'Exploration / 03',full:'Tabnax — Interaction studies — Comparison, revision 03',x:70,y:62,w:27,h:32,z:7},
+    {id:'dev',app:'terminal',title:'tabnax · pnpm dev',context:'Local development',full:'tabnax — pnpm dev — zsh',x:4,y:61,w:44,h:33,z:6},
+    {id:'ideas',app:'notes',title:'Switching · Interview notes',context:'Design research',full:'Switching ideas — Interview notes — Keyboard habits',x:24,y:35,w:39,h:53,z:2},
+    {id:'personal',app:'safari',title:'Weekend walks · Saved routes',context:'Personal · minimized',full:'Weekend walks — Saved routes near Warsaw — Personal',x:14,y:19,w:48,h:57,z:3,minimized:true},
+    {id:'review',app:'code',title:'Tabnax · Review diff',context:'tabnax-web / pull request',full:'Tabnax — Window shortcuts — Review diff — tabnax-web',x:20,y:25,w:62,h:64,z:1},
+    {id:'export',app:'finder',title:'Tabnax · Exports',context:'Projects / tabnax / exports',full:'Exports — /Example/Tabnax/design/exports',x:50,y:34,w:42,h:52,z:1}
+  ];
+  const tabSpecs = [
+    ['lesson','Tabnax · Window shortcuts — guide editor','tabnax.example'],['lesson','Tabnax · Window shortcuts — shortcut editor','tabnax.example'],
+    ['lesson','Tabnax · Browser tabs — guide editor','tabnax.example'],['lesson','Tabnax · Browser tabs — shortcut editor','tabnax.example'],
+    ['lesson','Keyboard guide · Stable letter addresses','tabnax.example'],['lesson','Keyboard guide · Windows and browser tabs','tabnax.example'],
+    ['lesson','Tabnax · Design brief','github.com'],['lesson','Tabnax · Keyboard interaction notes','github.com'],
+    ['lesson','AppKit · Window management','developer.apple.com'],['lesson','Human Interface Guidelines · Keyboards','developer.apple.com'],
+    ['lesson','Accessibility · Focus and navigation','developer.apple.com'],['lesson','Pull request · Preserve selection addresses','github.com'],
+    ['preview','Tabnax · Window shortcuts — layout preview','tabnax.example'],['preview','Tabnax · Window shortcuts — interaction preview','tabnax.example'],
+    ['preview','Tabnax · Browser tabs — layout preview','tabnax.example'],['preview','Tabnax · Browser tabs — interaction preview','tabnax.example'],
+    ['preview','Tabnax · Workspace overview','tabnax.example'],['preview','Tabnax · My shortcuts','tabnax.example'],
+    ['preview','Tabnax · Guide preview — desktop, signed out','tabnax.example'],['preview','Tabnax · Guide preview — mobile, signed in','tabnax.example'],
+    ['preview','Release notes · Shortcut library','tabnax.example'],['preview','Design review · Guide typography','figma.com'],
+    ['personal','Weekend walks · Kampinos forest','saved routes'],['personal','Weekend walks · Vistula river trail','saved routes'],
+    ['personal','A field guide to Warsaw architecture','reading list'],['personal','Coffee spots · Praga district','saved places'],
+    ['personal','Books to read · Autumn','reading list'],['personal','Rail connections · Weekend ideas','travel notes']
+  ];
+  const concepts = {
+    shore:{name:'Shore',kicker:'01 / SHORE',headline:'A place for every window.<br>A letter that stays put.',scan:'One vertical pass at the right edge. App icons identify the family; short, distinguishing titles identify the window. Letters sit in one predictable column. Familiar addresses bypass scanning entirely.',tradeoff:'The eye travels to the edge, and every window repeats an icon. Long titles have less room. It wins only if that compact scan is faster than recognizing a window in place.'},
+    beacons:{name:'Beacons',kicker:'02 / BEACONS',headline:'Don’t leave the desktop.<br>Give it an alphabet.',scan:'Read the label near a visible window’s title bar. Your existing memory of where a window lives becomes useful. Occluded and minimized windows collect in a bottom strip so nothing disappears.',tradeoff:'Overlapping windows force a second scan in the hidden-window strip. New positions break spatial memory. The most expressive concept is also the most fragile when the desktop is crowded.'},
+    canopy:{name:'Canopy',kicker:'03 / CANOPY',headline:'Find the app above.<br>Land on the exact window.',scan:'Scan the large app icons across the top, then read down within one family. Every window still has a direct address: there is no app-then-window key sequence. Optional tabs extend this surface into three browser-window columns.',tradeoff:'Two visual decisions: app, then window. A wide sweep replaces a short list, and large tab collections need search or scrolling. Better grouping may help duplicate windows, but it adds surface area.'}
+  };
+  const extensions=window.TabnaxExtensions||{};
+  Object.assign(concepts,extensions);
+  const state = {concept:'shore',scope:'windows',active:true,mode:'select',prefix:'',query:'',cursor:0,focused:'code',previousFocused:'lesson',alphabet:'jkluionmhp',hand:'right',hold:false,windows:[],tabs:[],addresses:{windows:new Map(),apps:new Map(),tabs:new Map()},retired:new Set(),nextWindow:0,z:10,notification:'',lastFocus:null};
+  const stage = $('desktop');
+  function icon(app) {
+    const shapes = {
+      code:'<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#188acf" d="M22 2 8 14 3 10 0 13 7 19 0 25 3 28 9 23 22 32 31 28V6Zm0 8v14l-9-6Z"/></svg>',
+      safari:'<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#299be5" stroke="#fff" stroke-width="1.5"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#d0f4ff" stroke-dasharray="1 2"/><path d="m11 21 3-8 7-2-3 8Z" fill="#fff"/><path d="m14 13 7-2-3 8Z" fill="#f35158"/></svg>',
+      finder:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M17 0 13 19h7v13M4 23q11 7 23-1" stroke="#255983" stroke-width="1.2" fill="none"/><path d="M8 9v4m16-4v4" stroke="#183751" stroke-width="2"/></svg>',
+      figma:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 1h5v10h-5a5 5 0 0 1 0-10" fill="#f24e1e"/><path d="M17 1h5a5 5 0 0 1 0 10h-5" fill="#ff7262"/><path d="M12 11h5v10h-5a5 5 0 0 1 0-10" fill="#a259ff"/><circle cx="22" cy="16" r="5" fill="#1abcfe"/><path d="M12 21h5v5a5 5 0 1 1-5-5" fill="#0acf83"/></svg>',
+      terminal:'&gt;_',notes:'☰'
+    };
+    return `<span class="app-icon ${app}" aria-hidden="true">${shapes[app]}</span>`;
+  }
+  function allocate(id,scope) {
+    const map = state.addresses[scope];
+    if(map.has(id)) return map.get(id);
+    const a=state.alphabet, n=map.size;
+    let key;
+    if(scope==='tabs') key=a[Math.floor(n/a.length)]+a[n%a.length];
+    else key=a.at(-1).repeat(Math.floor(n/(a.length-1)))+a[n%(a.length-1)];
+    // The final letter is always a branch, never a target. No silent remapping.
+    if(!key || key.includes('undefined')) throw new Error('Address capacity exceeded');
+    map.set(id,key);return key;
+  }
+  function extensionContext(list){return {state,list:list||filtered(),all:targets(),item,icon,escape,APPS,address,baseAddress:(t,scope=state.scope)=>allocate(t.id,scope),appAddress:app=>allocate('app-'+app,'apps'),windows:state.windows,recentWindow:alive().find(w=>w.id===state.previousFocused&&w.id!==state.focused)||null};}
+  function address(target){return extensions[state.concept]?.address?.(target,extensionContext())||allocate(target.id,state.scope);}
+  function hasTabs(){return state.concept==='canopy'||Boolean(extensions[state.concept]?.tabs);}
+  function alive(){return state.windows.filter(w=>w.alive);}
+  function targets(){
+    if(state.scope==='windows') return alive();
+    if(state.scope==='tabs') return state.tabs.filter(t=>state.windows.some(w=>w.id===t.parent&&w.alive));
+    return Object.keys(APPS).map(app=>{
+      const wins=alive().filter(w=>w.app===app);if(!wins.length)return null;
+      const recent=[...wins].sort((a,b)=>b.z-a.z)[0];
+      return {...recent,id:'app-'+app,title:APPS[app].name,full:APPS[app].name,context:`${wins.length} open window${wins.length===1?'':'s'} · most recent`,windowId:recent.id};
+    }).filter(Boolean);
+  }
+  function filtered(){const q=state.query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);return targets().filter(t=>q.every(part=>`${t.title} ${t.full} ${t.context} ${APPS[t.app].name}`.toLocaleLowerCase().includes(part)));}
+  function targetKeyLabel(t){const key=address(t);return [...key].map((c,i)=>`<span${state.prefix&&i<state.prefix.length?' class="typed"':''}>${escape(c.toUpperCase())}</span>`).join('');}
+  function item(t){
+    const key=address(t),matched=key.startsWith(state.prefix),list=filtered(),selected=state.mode==='search'&&list[state.cursor]?.id===t.id;
+    const current=state.scope==='apps'?t.windowId===state.focused:state.scope==='tabs'?state.lastFocus===t.id:t.id===state.focused;
+    return `<button type="button" class="target${!matched?' unmatched':''}${selected?' arrow-selected':''}" data-target="${escape(t.id)}" data-address="${key}" aria-label="${key.toUpperCase()}: ${escape(t.full||t.title)}. ${escape(t.context)}" title="${escape(t.full||t.title)}">${current?'<span class="focused-dot" aria-hidden="true"></span>':''}${icon(t.app)}<span class="target-text"><span class="target-title">${escape(t.title)}</span><span class="target-meta">${escape(t.context)}</span></span><kbd aria-hidden="true">${targetKeyLabel(t)}</kbd></button>`;
+  }
+  function head(){return `<div class="surface-head"><div class="scope-buttons">${['windows','apps',...(hasTabs()?['tabs']:[])].map((s,i)=>`<button type="button" data-scope="${s}" class="${state.scope===s?'selected':''}" aria-pressed="${state.scope===s}"><span>${i+1}</span>${s[0].toUpperCase()+s.slice(1)}</button>`).join('')}</div><span class="surface-count">${state.mode==='search'?filtered().length+'/':''}${targets().length}</span></div>`;}
+  function modeStrip(){
+    if(state.mode==='search')return `<div class="product-search"><span>/</span><input id="product-query" type="text" aria-label="Find ${state.scope}" placeholder="Find ${state.scope}…" value="${escape(state.query)}" autocomplete="off" spellcheck="false"></div>`;
+    return `<div class="mode-strip"><span class="mode-light"></span><span>${escape(extensions[state.concept]?.modeText?.(extensionContext())||(state.scope==='tabs'?'Two letters to a tab':'Type a letter to go'))}</span><span class="prefix">${state.prefix?escape(state.prefix.toUpperCase())+' _':''}</span></div>`;
+  }
+  function foot(){return `<div class="surface-foot"><span>${state.mode==='search'?'↑ ↓ choose · Enter go':'/ Find'}</span><span>${state.scope==='tabs'?'Safari · simulated tabs':state.prefix?'⌫ Undo prefix':state.concept==='relay'&&state.scope==='windows'?'Enter · Previous window':state.concept==='fold'&&state.scope==='windows'?'App → window':'Direct selection'}</span><button type="button" class="cancel-button" id="product-cancel">Esc ${state.mode==='search'||state.prefix?'Back':'Close'}</button></div>`;}
+  function noResults(){return '<div class="empty-results">No matching targets.<small>Change the search, or press Escape to return to letters.</small></div>';}
+  function isExposed(t){
+    const win=state.windows.find(w=>w.id===(t.windowId||t.id));if(!win||win.minimized)return false;
+    const anchor={x:win.x+3,y:win.y+2};
+    return !alive().some(w=>w.id!==win.id&&!w.minimized&&w.z>win.z&&anchor.x>=w.x&&anchor.x<=w.x+w.w&&anchor.y>=w.y&&anchor.y<=w.y+w.h);
+  }
+  function layout(list){
+    if(extensions[state.concept]?.render)return extensions[state.concept].render(extensionContext(list));
+    if(state.concept==='shore')return `<div class="target-list">${list.length?list.map(item).join(''):noResults()}</div>`;
+    if(state.concept==='beacons'){
+      const visible=list.filter(isExposed),hidden=list.filter(t=>!isExposed(t));
+      return `<div class="target-list">${list.length?'':noResults()}${visible.map(t=>`<div class="beacon-position" style="left:clamp(14px,${t.x}%,calc(100% - 258px));top:calc(${t.y}% - 70px)">${item(t)}</div>`).join('')}${hidden.length?`<div class="hidden-bank"><div class="bank-caption"><span>OUT OF SIGHT · ${hidden.length}</span><span>OCCLUDED / MINIMIZED</span></div><div class="bank-targets">${hidden.map(item).join('')}</div></div>`:''}</div>`;
+    }
+    if(state.scope==='apps')return `<div class="canopy-groups app-scope">${list.length?list.map(item).join(''):noResults()}</div>`;
+    const groups=state.scope==='tabs'?['lesson','preview','personal']:Object.keys(APPS);
+    const headings={lesson:'Work · Keyboard guide',preview:'Work · Layout preview',personal:'Personal · Saved routes'};
+    return `<div class="canopy-groups ${state.scope==='tabs'?'tab-groups':''}">${list.length?'':noResults()}${groups.map(group=>{
+      const groupList=list.filter(t=>state.scope==='tabs'?t.parent===group:t.app===group);if(!groupList.length)return '';
+      const app=state.scope==='tabs'?'safari':group;
+      return `<section class="canopy-group"><div class="group-heading">${icon(app)}<div><strong>${escape(state.scope==='tabs'?headings[group]:APPS[group].short)}</strong><small>${groupList.length} ${state.scope==='tabs'?'tabs':groupList.length===1?'window':'windows'}</small></div></div><div>${groupList.map(item).join('')}</div></section>`;
+    }).join('')}</div>`;
+  }
+  function renderSwitcher({focusSearch=false}={}){
+    stage.className=`desktop ${state.concept}${state.active?' is-open':''}`;
+    $('switcher').inert=!state.active;
+    $('switcher').setAttribute('aria-hidden',String(!state.active));
+    if(!state.active){$('switcher').innerHTML='';return;}
+    state.cursor=Math.max(0,Math.min(state.cursor,filtered().length-1));
+    const searchFocused=document.activeElement?.id==='product-query';
+    const selection=searchFocused?document.activeElement.selectionStart:null;
+    $('switcher').innerHTML=`<div class="surface">${head()}${modeStrip()}${layout(filtered())}${foot()}</div>`;
+    if(focusSearch||searchFocused){$('product-query')?.focus({preventScroll:true});if(selection!==null)$('product-query')?.setSelectionRange(selection,selection);}
+    if(state.prefix){const match=$('switcher').querySelector('.target:not(.unmatched)');match?.scrollIntoView({block:'nearest',inline:'nearest'});}
+  }
+  function windowContents(w){
+    if(w.app==='code')return '<div class="code-layout"><div class="code-sidebar"><strong>EXPLORER</strong>⌄ TABNAX<br> &nbsp;⌄ src<br> &nbsp; &nbsp; switcher.ts<br> &nbsp; &nbsp; addresses.ts<br> &nbsp; &nbsp; keyboard.ts<br> &nbsp; package.json</div><div class="code-body"><div class="code-tab">◇ &nbsp; switcher.ts</div><pre><span class="comment">// A smaller distance.</span>\n\n<b>type</b> Target = {\n  id: <em>WindowID</em>;\n  address: <em>string</em>;\n};\n\n<b>function</b> <em>select</em>(key: string) {\n  <b>const</b> target = addresses.get(key);\n  <b>if</b> (target) focus(target);\n}\n\n<span class="comment">// Keep the letter. Change the window.</span></pre></div></div>';
+    if(w.app==='safari')return `<div class="safari-url">◉ &nbsp; ${w.id==='personal'?'Saved places · Personal':'tabnax.example / guide / window-shortcuts'}</div><div class="website-body"><span class="sample-brand">${w.id==='personal'?'The weekend journal':'Tabnax'}</span><span class="site-nav">Explore &nbsp; Customize &nbsp; My shortcuts</span><p class="site-eyebrow">${w.id==='preview'?'Layout preview':w.id==='personal'?'OUTSIDE THE EVERYDAY':'TABNAX · KEYBOARD GUIDE'}</p><h4>${w.id==='personal'?'A little further<br>from the city.':'Familiar keys.<br>A calmer workspace.'}</h4><p>${w.id==='personal'?'Quiet trails, good coffee, and a route home.':'Find windows and tabs with a few familiar keys.'}</p><div class="lesson-line"></div><div class="lesson-line short"></div><span class="lesson-button">${w.id==='lesson'?'Explore shortcuts':'Continue exploring'} &nbsp; →</span></div>`;
+    if(w.app==='finder')return '<div class="finder-body"><div class="finder-side">Favourites<br>⌂ Home<br>▣ Projects<br>↓ Downloads<br>☁ iCloud</div><div class="finder-files"><span>📁 &nbsp; app-icons</span><span>📁 &nbsp; exploration</span><span>📁 &nbsp; references</span><span>▧ &nbsp; concept-shore.png</span><span>▧ &nbsp; concept-beacons.png</span><span>▧ &nbsp; concept-canopy.png</span></div></div>';
+    if(w.app==='terminal')return '<div class="terminal-body"><span class="terminal-green">➜ &nbsp; tabnax</span> git:(design) pnpm dev<br><br>Ready on localhost<br><span class="terminal-green">✓</span> Input handler ready<br><span class="terminal-green">✓</span> Window addresses retained<br><br>▊</div>';
+    if(w.app==='figma')return '<div class="figma-body"><div class="figma-artboard"><i></i><i></i><i></i><i></i></div><div class="figma-artboard"><i></i><i></i><i></i></div></div>';
+    return '<div class="note-body">17 SEPTEMBER<h4>What makes switching<br>feel effortless?</h4>01 &nbsp; Recognize before reading<br>02 &nbsp; Don’t make me cycle<br>03 &nbsp; Keep the letters where I left them<br><br>What if the edge of the desktop<br>could become an index?</div>';
+  }
+  function renderDesktop(){
+    $('windows').innerHTML=alive().filter(w=>!w.minimized).map(w=>`<div class="mac-window${w.id===state.focused?' focused':''}" data-window="${w.id}" style="left:${w.x}%;top:${w.y}%;width:${w.w}%;height:${w.h}%;z-index:${w.z}"><div class="window-bar"><div class="traffic"><i></i><i></i><i></i></div><span>${escape(w.full)}</span></div><div class="window-content">${windowContents(w)}</div></div>`).join('');
+    $('dock').innerHTML=Object.keys(APPS).filter(a=>alive().some(w=>w.app===a)).map(icon).join('');
+    $('menu-app').textContent=APPS[alive().find(w=>w.id===state.focused)?.app||'code'].name;
+    $('scene-label').textContent=`${alive().length} windows · ${new Set(alive().map(w=>w.app)).size} apps`;
+    $('close-window').disabled=alive().length<=1;
+    $('add-window').disabled=state.addresses.windows.size>=Math.min(16,state.alphabet.length*2-1);
+    $('address-readout').textContent=alive().map(w=>`${(extensions[state.concept]?.address?.(w,{...extensionContext(),state:{...state,scope:'windows'}})||allocate(w.id,'windows')).toUpperCase()} ${APPS[w.app].short}`).join(' · ');
+  }
+  function say(message){state.notification=message;$('feedback').textContent=message;}
+  function focusStage(){stage.focus({preventScroll:true});}
+  function focusInteraction(){if(state.active&&state.mode==='search')$('product-query')?.focus({preventScroll:true});else focusStage();}
+  function activate(hold=false){
+    state.active=true;state.mode='select';state.prefix='';state.query='';state.cursor=0;state.hold=hold;
+    focusStage();renderSwitcher();say(`Select ${state.scope} with ${state.scope==='tabs'?'two letters':'the displayed letters'}. / enters search; Escape cancels.`);
+  }
+  function cancel(){
+    if(state.mode==='search'){state.mode='select';state.query='';state.cursor=0;state.prefix='';renderSwitcher();focusStage();say('Direct selection. Letters select targets again.');return;}
+    if(state.prefix){state.prefix='';renderSwitcher();say('Prefix cleared. Choose any address.');return;}
+    state.active=false;renderSwitcher();focusStage();say('Cancelled. Focus did not change. Space opens again.');
+  }
+  function selectTarget(id){
+    const target=targets().find(t=>t.id===id);if(!target)return;
+    const winId=state.scope==='apps'?target.windowId:state.scope==='tabs'?target.parent:target.id;
+    const win=alive().find(w=>w.id===winId);if(!win)return;
+    const key=address(target).toUpperCase();
+    if(state.focused!==winId)state.previousFocused=state.focused;
+    state.focused=winId;state.lastFocus=target.id;win.minimized=false;win.context=win.context.replace(' · minimized','');win.z=++state.z;
+    if(state.scope==='tabs'){win.title=target.title;win.full=target.title+' — '+target.context;win.context=target.context+' · Safari';}
+    state.active=false;state.prefix='';state.query='';state.mode='select';
+    renderDesktop();renderSwitcher();focusStage();say(`Focused ${target.title} · ${key}. Space to switch again.`);
+  }
+  function setScope(scope){
+    if(scope==='tabs'&&!hasTabs()){say('Tabs are optional experiments in Canopy and Lattice. Choose either to explore them.');return;}
+    state.scope=scope;state.prefix='';state.query='';state.mode='select';state.cursor=0;state.active=true;
+    targets().forEach(address);renderSwitcher();focusStage();say(scope==='tabs'?'28 simulated Safari tabs. Type two letters, or / to search.':'Scope: '+scope+'. Displayed letters select directly.');
+  }
+  function setConcept(concept){
+    if(!concepts[concept])return;
+    state.concept=concept;if(state.scope==='tabs'&&!hasTabs())state.scope='windows';
+    const info=concepts[concept];$('concept-kicker').textContent=info.kicker;$('concept-headline').innerHTML=info.headline;$('concept-scan').textContent=info.scan;$('concept-tradeoff').textContent=info.tradeoff;
+    document.querySelectorAll('[data-concept]').forEach(b=>{const on=b.dataset.concept===concept;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+    $('tabs-key-label').textContent=hasTabs()?' tabs':' tabs in Canopy / Lattice';
+    $('concept-extra-key').hidden=concept!=='relay';
+    renderDesktop();
+    activate();say(`${info.name}. ${concept==='fold'&&state.scope==='windows'?'Choose an app letter, then a window letter.':concept==='relay'&&state.scope==='windows'?'Enter returns to the previous window; letters go directly to any window.':state.scope==='tabs'?'Two letters select a tab.':'Type a letter to focus a window.'}`);
+  }
+  function seed(count=8){
+    state.addresses={windows:new Map(),apps:new Map(),tabs:new Map()};state.retired.clear();state.focused='code';state.previousFocused='lesson';state.lastFocus=null;state.z=10;state.nextWindow=0;
+    state.windows=initialWindows.slice(0,count).map(w=>({...w,alive:true}));
+    state.tabs=tabSpecs.map(([parent,title,domain],i)=>({id:'tab-'+i,parent,title,full:title,context:domain,app:'safari'}));
+    state.windows.forEach(w=>allocate(w.id,'windows'));
+    Object.keys(APPS).forEach(app=>allocate('app-'+app,'apps'));
+    state.tabs.forEach(t=>allocate(t.id,'tabs'));
+    state.scope='windows';renderDesktop();activate();
+  }
+  function changeCount(count){
+    // Scenario presets preserve identity and addresses; only Reset starts a new session.
+    initialWindows.slice(0,count).forEach(spec=>{let w=state.windows.find(x=>x.id===spec.id);if(!w){w={...spec,alive:true};state.windows.push(w);}else w.alive=true;allocate(w.id,'windows');});
+    state.windows.forEach(w=>{if(!initialWindows.slice(0,count).some(x=>x.id===w.id))w.alive=false;});
+    if(!alive().some(w=>w.id===state.focused))state.focused=alive()[0].id;
+    state.prefix='';renderDesktop();renderSwitcher();focusInteraction();say(`${count} windows. Existing letters retained; scenario restoration keeps the same simulated identities.`);
+  }
+  function addWindow(){
+    if($('add-window').disabled)return;
+    const n=++state.nextWindow,id='new-'+n;
+    const win={id,app:n%2?'safari':'code',title:n%2?`Tabnax · Reference ${n}`:`Tabnax · Scratch ${n}`,context:n%2?'Research · New window':'tabnax / scratch',full:n%2?`Tabnax — Workspace guide — Additional reference window ${n}`:`Tabnax — Scratch window ${n}`,x:18+(n%3)*8,y:24+(n%3)*7,w:49,h:59,z:1,alive:true};
+    state.windows.push(win);allocate(id,'windows');state.prefix='';renderDesktop();renderSwitcher();focusInteraction();say(`Opened ${win.title} at ${allocate(id,'windows').toUpperCase()}. Every existing address stayed unchanged.`);
+  }
+  function closeWindow(){
+    if(alive().length<=1)return;
+    const win=alive().find(w=>w.id===state.focused),key=allocate(win.id,'windows').toUpperCase();win.alive=false;state.retired.add(key);
+    state.focused=[...alive()].sort((a,b)=>b.z-a.z)[0].id;state.prefix='';state.cursor=0;renderDesktop();renderSwitcher();focusInteraction();say(`Closed ${win.title}. ${key} is retired until Reset; other addresses stayed unchanged.`);
+  }
+  function applyAlphabet(a){
+    if(!/^[a-z]{6,12}$/.test(a)||new Set(a).size!==a.length){$('alphabet-error').textContent='Use 6–12 unique letters A–Z. Six keys allow all 28 tabs to keep two-letter addresses.';return false;}
+    $('alphabet-error').textContent='';state.alphabet=a;state.hand=$('hand').value;
+    $('hold-key').textContent=state.hand==='left'?'Right Shift':'Left Shift';
+    $('alphabet-note').textContent=`${state.hand==='left'?'Right thumb opens; left hand selects.':state.hand==='right'?'Left thumb opens; right hand selects.':'Keys follow your chosen order.'} ${a.at(-1).toUpperCase()} is reserved for overflow: ${(a.at(-1)+a[0]).toUpperCase()}, ${(a.at(-1)+a[1]).toUpperCase()}… Applying an alphabet starts a new address session.`;
+    seed(Number($('scenario').value));say('Alphabet applied. A new address session started.');return true;
+  }
+  function directKey(key){
+    const next=state.prefix+key,matches=targets().filter(t=>address(t).startsWith(next));
+    if(!matches.length){say(`No target at ${next.toUpperCase()}. ${state.prefix?'Backspace clears the prefix.':'Use a displayed address, or / to search.'}`);return;}
+    const exact=matches.find(t=>address(t)===next);
+    if(exact){selectTarget(exact.id);return;}
+    state.prefix=next;renderSwitcher();say(`${next.toUpperCase()} prefix. Type the next letter; Backspace undoes.`);
+  }
+  function keydown(event){
+    if(event.isComposing||event.metaKey||event.ctrlKey||event.altKey)return;
+    let key=event.key;const queryField=event.target.id==='product-query';
+    const inStage=stage.contains(event.target)||event.target===stage;
+    if(!inStage)return;
+    if(event.repeat&&key!=='Backspace'&&key!=='ArrowDown'&&key!=='ArrowUp')return;
+    if(key==='Shift'&&event.code===(state.hand==='left'?'ShiftRight':'ShiftLeft')){if(!state.active){event.preventDefault();activate(true);}return;}
+    if(queryField){
+      if(key==='Escape'){event.preventDefault();cancel();}
+      else if(key==='Enter'){event.preventDefault();const t=filtered()[state.cursor];if(t)selectTarget(t.id);}
+      else if(key==='ArrowDown'||key==='ArrowUp'){event.preventDefault();const list=filtered();state.cursor=list.length?(state.cursor+(key==='ArrowDown'?1:-1)+list.length)%list.length:0;renderSwitcher({focusSearch:true});$('switcher').querySelector('.arrow-selected')?.scrollIntoView({block:'nearest'});}
+      return;
+    }
+    // Held Shift is a demo trigger; recognize command positions despite shifted glyphs.
+    if(state.hold){if(event.code==='Slash')key='/';else if(/^Digit[123]$/.test(event.code))key=event.code.slice(-1);}
+    // Native button activation remains usable after navigating with Tab.
+    if((key==='Enter'||key===' ')&&event.target.closest('button'))return;
+    // Tab retains normal browser focus navigation. Scope keys never form target addresses.
+    if(key===' '){event.preventDefault();state.active?cancel():activate();return;}
+    if(!state.active)return;
+    if(key==='Escape'){event.preventDefault();cancel();return;}
+    if(key==='/'){event.preventDefault();state.mode='search';state.query='';state.prefix='';state.cursor=0;renderSwitcher({focusSearch:true});say('Search mode. Letters now type text. Enter selects; Escape returns to direct letters.');return;}
+    if(['1','2','3'].includes(key)){event.preventDefault();setScope({1:'windows',2:'apps',3:'tabs'}[key]);return;}
+    if(key==='Backspace'){event.preventDefault();state.prefix=state.prefix.slice(0,-1);renderSwitcher();return;}
+    if(key==='Enter'&&state.mode==='select'&&state.concept==='relay'&&state.scope==='windows'){event.preventDefault();const previous=extensionContext().recentWindow;if(previous)selectTarget(previous.id);else say('No previous window is available. Choose a displayed address.');return;}
+    if(state.mode==='select'&&/^[a-z]$/i.test(key)){event.preventDefault();directKey(key.toLowerCase());}
+  }
+  document.addEventListener('keydown',keydown);
+  document.addEventListener('keyup',event=>{
+    if(event.code===(state.hand==='left'?'ShiftRight':'ShiftLeft')&&state.hold){state.hold=false;if(state.active){state.active=false;renderSwitcher();say('Peek released. Focus did not change.');}}
+  });
+  window.addEventListener('blur',()=>{if(state.active){state.active=false;state.hold=false;renderSwitcher();say('Demo lost focus. Space opens the switcher again.');}});
+  document.addEventListener('click',event=>{
+    const concept=event.target.closest('[data-concept]');if(concept){setConcept(concept.dataset.concept);return;}
+    const scope=event.target.closest('[data-scope]');if(scope){setScope(scope.dataset.scope);return;}
+    const target=event.target.closest('[data-target]');if(target){selectTarget(target.dataset.target);return;}
+    const branch=event.target.closest('[data-prefix]');if(branch){state.prefix=branch.dataset.prefix;renderSwitcher();focusStage();say(`Prefix ${state.prefix.toUpperCase()}. Choose the next letter.`);return;}
+    if(event.target.closest('[data-clear-prefix]')){state.prefix='';renderSwitcher();focusStage();return;}
+    if(event.target.closest('[data-return-window]')){const previous=extensionContext().recentWindow;if(previous)selectTarget(previous.id);return;}
+    if(event.target.id==='product-cancel'){cancel();return;}
+    if(event.target===stage||event.target.closest('.wallpaper,.windows,.dock,.menubar,.desktop-dim,.idle-hint'))focusStage();
+  });
+  document.addEventListener('input',event=>{if(event.target.id==='product-query'){state.query=event.target.value;state.cursor=0;renderSwitcher({focusSearch:true});}});
+  $('activate').addEventListener('click',()=>activate());
+  $('reset').addEventListener('click',()=>{seed(Number($('scenario').value));say('Reset to a fresh address session. Type a displayed letter.');});
+  $('scenario').addEventListener('change',event=>changeCount(Number(event.target.value)));
+  $('add-window').addEventListener('click',addWindow);$('close-window').addEventListener('click',closeWindow);
+  $('hand').addEventListener('change',event=>{const custom=event.target.value==='custom';$('custom-controls').hidden=!custom;if(!custom)applyAlphabet(event.target.value==='right'?'jkluionmhp':'asdfwercvq');});
+  $('apply-alphabet').addEventListener('click',()=>applyAlphabet($('custom-alphabet').value.toLowerCase()));
+  $('custom-alphabet').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();applyAlphabet(event.target.value.toLowerCase());}});
+  $('reduce-motion').addEventListener('change',event=>document.body.classList.toggle('reduce-motion',event.target.checked));
+  $('tab-experiment').addEventListener('click',()=>{setConcept('canopy');setScope('tabs');stage.scrollIntoView({block:'center',behavior:'instant'});});
+  // Read-only snapshot for browser verification; it never changes the simulation.
+  window.tabnaxSnapshot=()=>({concept:state.concept,scope:state.scope,active:state.active,mode:state.mode,prefix:state.prefix,query:state.query,focused:state.focused,previousFocused:state.previousFocused,lastFocus:state.lastFocus,alphabet:state.alphabet,targets:targets().map(t=>({id:t.id,address:address(t),title:t.title})),windows:alive().map(w=>({id:w.id,address:allocate(w.id,'windows'),title:w.title})),retired:[...state.retired],message:state.notification});
+  const info=concepts.shore;$('concept-scan').textContent=info.scan;$('concept-tradeoff').textContent=info.tradeoff;
+  seed(8);
+  say('Ready. Type a displayed letter to focus its window.');
+  const requested=new URLSearchParams(location.search).get('concept');if(requested&&concepts[requested])setConcept(requested);
+})();
+
+</script>
+</body>
+</html>

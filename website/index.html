@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f7f0" />
+    <meta
+      name="description"
+      content="A little shortcut. A lot more flow. Tabnax brings your Mac’s windows, browser tabs and apps together, with stable letters and six ways to switch. Try the interactive demo."
+    />
+    <title>Tabnax — A little shortcut. A lot more flow.</title>
+    <link rel="icon" href="assets/tabnax-icon.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js?v=tabnax-samples" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header wrap">
+      <a class="wordmark" href="#" aria-label="Tabnax home"
+        ><img
+          src="assets/tabnax-icon.png"
+          width="32"
+          height="32"
+          alt=""
+        />tabnax</a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#playground">The playground</a
+        ><a href="#features">Why Tabnax</a><a href="#inside">Inside the app</a>
+      </nav>
+      <a class="button button-small button-dark" href="#get-started"
+        >Meet your new shortcut <span aria-hidden="true">↗</span></a
+      >
+    </header>
+
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="hero-heading">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="live-dot"></span> MADE FOR YOUR MAC. AND YOUR MOMENTUM.
+          </p>
+          <h1 id="hero-heading">
+            A little shortcut.<br />A lot more <em>flow.</em>
+          </h1>
+          <p class="hero-description">
+            Your windows, tabs and apps. One quiet place.<br />Give them a
+            letter. Get right back to what matters.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#playground" id="hero-try"
+              >Find your flow <span aria-hidden="true">↓</span></a
+            ><span class="platform"
+              >macOS 15+ · Apple silicon<br /><span
+                >Native app, thoughtfully in development</span
+              ></span
+            >
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="orbit orbit-three"></div>
+          <span class="art-note note-one">a thought.</span
+          ><span class="art-note note-two">a keystroke.</span
+          ><span class="art-note note-three">you’re there.</span>
+          <div class="floating-key key-command">
+            <span>⌘</span><small>command</small>
+          </div>
+          <div class="key-trail"></div>
+          <div class="floating-key key-letter">
+            <span>J</span><small>just like that</small>
+          </div>
+          <span class="art-spark spark-one">✳</span
+          ><span class="art-spark spark-two">+</span>
+        </div>
+      </section>
+
+      <section
+        class="playground-section wrap"
+        id="playground"
+        aria-labelledby="playground-heading"
+      >
+        <div class="section-overline">
+          <h2 id="playground-heading">LESS TALK. MORE TRY.</h2>
+          <span
+            ><span class="live-dot"></span> A live playground, right in your
+            browser</span
+          >
+        </div>
+        <div class="demo-shell">
+          <div class="demo-topbar">
+            <div class="mode-tabs" role="group" aria-label="Switcher layout">
+              <button type="button" data-mode="shore" aria-pressed="true">
+                <span class="mode-symbol" aria-hidden="true">☷</span>Shore
+              </button>
+              <button type="button" data-mode="beacons" aria-pressed="false">
+                <span class="mode-symbol" aria-hidden="true">⌖</span>Beacons
+              </button>
+              <button type="button" data-mode="canopy" aria-pressed="false">
+                <span class="mode-symbol" aria-hidden="true">▥</span>Canopy
+              </button>
+              <button type="button" data-mode="lattice" aria-pressed="false">
+                <span class="mode-symbol" aria-hidden="true">▦</span>Lattice
+              </button>
+              <button type="button" data-mode="fold" aria-pressed="false">
+                <span class="mode-symbol" aria-hidden="true">◫</span>Fold
+              </button>
+              <button type="button" data-mode="relay" aria-pressed="false">
+                <span class="mode-symbol" aria-hidden="true">⇄</span>Relay
+              </button>
+            </div>
+            <button
+              class="icon-button"
+              id="reset-demo"
+              type="button"
+              aria-label="Reset demo"
+              title="Reset demo"
+            >
+              ↺
+            </button>
+          </div>
+          <div
+            class="desktop"
+            id="desktop"
+            tabindex="0"
+            role="region"
+            aria-label="Interactive Tabnax demo"
+            aria-describedby="demo-instructions"
+            data-mode="shore"
+            data-theme="tabnax"
+            data-tone="dark"
+          >
+            <div class="wallpaper" aria-hidden="true">
+              <div class="landscape ridge-back"></div>
+              <div class="landscape ridge-middle"></div>
+              <div class="landscape ridge-front"></div>
+              <div class="wallpaper-grain"></div>
+            </div>
+            <div class="mac-menubar" aria-hidden="true">
+              <span class="apple-mark">●</span><b id="menu-app">Xcode</b
+              ><span>File</span><span>Edit</span><span>View</span
+              ><span class="menubar-right"
+                >◐ &nbsp; ◉ &nbsp; ▰ &nbsp; Sun 20 Sep &nbsp; 9:41</span
+              >
+            </div>
+            <div class="scene-windows" aria-hidden="true">
+              <div class="scene-window browser-window" id="browser-window">
+                <div class="window-chrome">
+                  <span class="traffic-lights"><i></i><i></i><i></i></span
+                  ><span class="address-bar"
+                    >tabnax.example / keyboard guide</span
+                  ><span>+</span>
+                </div>
+                <div class="browser-content">
+                  <div class="sample-site-nav">
+                    <b>Tabnax<span>•</span></b
+                    ><span>Your workspace, within reach.</span>
+                  </div>
+                  <div class="sample-site-body">
+                    <span class="sample-eyebrow">A LITTLE LESS SWITCHING</span>
+                    <h3>Make room<br />for <em>focus.</em></h3>
+                    <p>
+                      Your windows. Your tabs.<br />A familiar shortcut
+                      back to your work.
+                    </p>
+                    <span class="sample-link"
+                      >Pick up where you left off &nbsp; ↗</span
+                    >
+                  </div>
+                  <div class="sample-flower">
+                    <i></i><i></i><i></i><i></i><i></i><i></i><b></b>
+                  </div>
+                  <div class="sample-site-footer">
+                    <span>01 — FIND YOUR FLOW</span><span>✳</span>
+                  </div>
+                </div>
+              </div>
+              <div class="scene-window code-window" id="code-window">
+                <div class="window-chrome">
+                  <span class="traffic-lights"><i></i><i></i><i></i></span
+                  ><span>Tabnax · InputRouter.swift</span>
+                </div>
+                <div class="code-body">
+                  <span class="code-gutter"
+                    >1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9</span
+                  ><code
+                    ><span class="code-comment">// A shorter way back.</span
+                    ><br /><span class="code-purple">func</span>
+                    <span class="code-blue">findYourFlow</span>() {<br />&nbsp;
+                    <span class="code-purple">let</span> next =
+                    <span class="code-green">"a little closer"</span
+                    ><br /><br />&nbsp;
+                    <span class="code-purple">with</span> Tabnax {<br />&nbsp;
+                    &nbsp; open()<br />&nbsp; &nbsp; select(<span
+                      class="code-green"
+                      >"J"</span
+                    >)<br />&nbsp; }<br />}</code
+                  >
+                </div>
+                <div class="code-status">
+                  ⎇ main <span>Swift &nbsp; UTF-8 &nbsp; ✓</span>
+                </div>
+              </div>
+            </div>
+            <div class="desktop-caption" aria-hidden="true">
+              <span>ROOM TO THINK.</span><span>SPACE TO DO.</span>
+            </div>
+            <div
+              id="switcher"
+              class="switcher"
+              aria-label="Sample destinations"
+            ></div>
+            <div class="selection-card" id="selection-card" hidden>
+              <span class="selection-check" aria-hidden="true">↗</span>
+              <p id="selection-title">Back in your flow.</p>
+              <span id="selection-detail"></span
+              ><button type="button" id="reopen" class="button button-dark">
+                Switch again <kbd>Space</kbd>
+              </button>
+            </div>
+            <div class="demo-dock" id="demo-dock" aria-hidden="true"></div>
+            <div class="demo-focus-hint" id="focus-hint">
+              Click a destination, or click here and type its letter
+              <span aria-hidden="true">↗</span>
+            </div>
+          </div>
+          <div class="demo-controlbar">
+            <div class="key-guide" id="demo-instructions">
+              <span><kbd>Space</kbd> open</span
+              ><span><kbd>A–Z</kbd> switch</span
+              ><button id="search-demo" type="button">
+                <kbd>/</kbd> search</button
+              ><span><kbd>Esc</kbd> back</span>
+            </div>
+            <div class="demo-appearance">
+              <label for="demo-theme">Make it yours</label
+              ><select id="demo-theme">
+                <option value="tabnax">Tabnax</option>
+                <option value="graphite">Graphite</option>
+                <option value="sage">Sage</option>
+                <option value="iris">Iris</option>
+                <option value="frosted">Frosted Glass</option>
+                <option value="macos">macOS Glass</option></select
+              ><button
+                type="button"
+                class="icon-button"
+                id="demo-tone"
+                aria-label="Use light appearance"
+                title="Use light appearance"
+              >
+                ☼
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="demo-under">
+          <div>
+            <span class="mode-index" id="mode-index">01 / SHORE</span>
+            <h3 id="mode-headline">A quiet edge. One clear scan.</h3>
+            <p id="mode-description">
+              All your destinations in a compact list. A familiar letter for
+              every window, tab and app.
+            </p>
+          </div>
+          <div class="demo-options">
+            <label
+              ><input type="checkbox" id="include-tabs" checked /> Browser
+              tabs</label
+            ><label
+              ><input type="checkbox" id="include-apps" checked /> Fixed app
+              letters + launching</label
+            ><button type="button" class="text-button" id="restore-demo">
+              Try minimized-window restore
+              <span aria-hidden="true">↗</span></button
+            ><button type="button" class="text-button" id="native-capture">
+              See the native Shore view <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </div>
+        <div class="demo-statusline">
+          <p id="demo-status" role="status" aria-live="polite">
+            Ready when you are. Try K to open the keyboard guide.
+          </p>
+          <span>Sample workspace · browser simulation · no system access</span>
+        </div>
+        <noscript
+          ><p class="noscript-note">
+            The interactive playground needs JavaScript. Explore the native
+            screenshots and app details below, or enable JavaScript to try the
+            layouts.
+          </p></noscript
+        >
+      </section>
+
+      <section
+        class="flow-section wrap"
+        id="features"
+        aria-labelledby="flow-heading"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">YOUR ATTENTION HAS BETTER PLACES TO BE.</p>
+          <h2 id="flow-heading">
+            Keep the thought.<br /><span>Skip the window hunt.</span>
+          </h2>
+          <p>
+            That tiny pause to find the right window adds up.<br />Tabnax gives
+            everything a place you can remember.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card feature-letters">
+            <div class="letter-visual" aria-hidden="true">
+              <span class="small-app safari">◈</span><kbd>K</kbd
+              ><span class="letter-line"></span
+              ><span class="letter-label"
+                >Your keyboard guide.<br /><b>Still K.</b></span
+              ><span class="ghost-key">K</span>
+            </div>
+            <p class="feature-number">01 / MUSCLE MEMORY, MEET YOUR MAC</p>
+            <h3>A letter that stays put.</h3>
+            <p>
+              Open, close, filter, switch. Existing addresses hold their
+              meaning. Your fingers learn the way back.
+            </p>
+          </article>
+          <article class="feature-card feature-together">
+            <div class="together-visual" aria-hidden="true">
+              <span><i>▱</i>Windows</span><span><i>⊞</i>Apps</span
+              ><span><i>◎</i>Browser tabs</span>
+              <div>one place. <b>zero hunting.</b></div>
+            </div>
+            <p class="feature-number">02 / ALL TOGETHER NOW</p>
+            <h3>Less in the way.</h3>
+            <p>
+              Your windows, browser tabs and assigned apps share one view.
+              Search across them whenever a title comes to mind first.
+            </p>
+          </article>
+          <article class="feature-card feature-native">
+            <div class="native-visual" aria-hidden="true">
+              <span class="native-line"></span
+              ><img
+                src="assets/tabnax-icon.png"
+                alt=""
+                width="76"
+                height="76"
+              /><span class="native-line"></span
+              ><span class="native-caption">AT HOME ON YOUR MAC</span>
+            </div>
+            <p class="feature-number">03 / NATIVE FROM THE FIRST KEYSTROKE</p>
+            <h3>Quiet by design.</h3>
+            <p>
+              Built with Swift and AppKit. A small menu-bar home, native
+              controls, and no Screen Recording permission.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="detail-band" aria-labelledby="details-heading">
+        <div class="wrap detail-band-inner">
+          <div>
+            <p class="eyebrow">SMALL DETAILS. A SMOOTHER DAY.</p>
+            <h2 id="details-heading">
+              It’s the little things<br />that keep you moving.
+            </h2>
+          </div>
+          <div class="detail-list">
+            <article>
+              <span class="detail-icon">⌥</span>
+              <div>
+                <h3>Bring it back.</h3>
+                <p>
+                  Press Option to restore the highlighted minimized window. Its
+                  letter stays the same.
+                </p>
+                <button
+                  type="button"
+                  class="text-button"
+                  data-demo-action="restore"
+                >
+                  Try restoring a window ↗
+                </button>
+              </div>
+            </article>
+            <article>
+              <span class="detail-icon">F</span>
+              <div>
+                <h3>Your apps. Your alphabet.</h3>
+                <p>
+                  Assign a fixed letter to an app. Turn on launching to open it
+                  even when it isn’t running.
+                </p>
+                <button
+                  type="button"
+                  class="text-button"
+                  data-demo-action="launch"
+                >
+                  Try an app shortcut ↗
+                </button>
+              </div>
+            </article>
+            <article>
+              <span class="detail-icon">/</span>
+              <div>
+                <h3>A name works, too.</h3>
+                <p>
+                  Press slash to search by app, window title or browser context.
+                  Then Enter takes you there.
+                </p>
+                <button
+                  type="button"
+                  class="text-button"
+                  data-demo-action="search"
+                >
+                  Find something in the demo ↗
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="inside-section wrap"
+        id="inside"
+        aria-labelledby="inside-heading"
+      >
+        <div class="section-heading inside-heading">
+          <div>
+            <p class="eyebrow">A CLOSER LOOK</p>
+            <h2 id="inside-heading">
+              Feels like your Mac.<br /><span>Works like your mind.</span>
+            </h2>
+          </div>
+          <p>
+            Six focused settings panes. A preview that uses the actual switcher.
+            Every detail, right where you expect it.
+          </p>
+        </div>
+        <div class="native-gallery">
+          <div class="native-gallery-toolbar">
+            <div
+              class="settings-tabs"
+              role="group"
+              aria-label="Native settings screenshots"
+            >
+              <button type="button" data-pane="general" aria-pressed="false">
+                General</button
+              ><button type="button" data-pane="letters" aria-pressed="false">
+                Letters</button
+              ><button type="button" data-pane="apps" aria-pressed="false">
+                Apps</button
+              ><button type="button" data-pane="position" aria-pressed="false">
+                Position</button
+              ><button type="button" data-pane="appearance" aria-pressed="true">
+                Appearance</button
+              ><button type="button" data-pane="browsers" aria-pressed="false">
+                Browser tabs
+              </button>
+            </div>
+            <button
+              type="button"
+              class="icon-button"
+              id="capture-tone"
+              aria-label="Show dark settings screenshot"
+              title="Show dark settings screenshot"
+            >
+              ◐
+            </button>
+          </div>
+          <div class="native-gallery-stage">
+            <button
+              type="button"
+              id="expand-settings"
+              aria-label="Enlarge native Appearance screenshot"
+            >
+              <img
+                id="settings-image"
+                src="assets/native/appearance-light.png?v=tabnax-samples"
+                alt="Native Tabnax Appearance settings in light mode, showing six theme choices and the live switcher preview"
+                width="1040"
+                height="760"
+                loading="lazy"
+              /></button
+            ><span class="capture-tag"
+              ><span class="live-dot"></span> ACTUAL NATIVE APP · SEPTEMBER
+              2026</span
+            >
+          </div>
+          <div class="native-gallery-caption">
+            <div>
+              <h3 id="pane-title">Make it feel like you.</h3>
+              <p id="pane-description">
+                Six themes, light and dark appearances, readable labels, and
+                per-theme colors. Native glass where your macOS version supports
+                it.
+              </p>
+            </div>
+            <span
+              >App-owned view render<br />Sample data · click to enlarge</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="browser-section wrap" aria-labelledby="browser-heading">
+        <div>
+          <p class="eyebrow">YES, THAT TAB TOO.</p>
+          <h2 id="browser-heading">
+            From “where was that?”<br />to right there.
+          </h2>
+          <p>
+            Bring browser tabs into the same flow as your windows.<br />Choose
+            your browsers and keep private tabs private.
+          </p>
+        </div>
+        <div
+          class="browser-collection"
+          aria-label="Supported browser integrations"
+        >
+          <span><i class="browser-icon arc">A</i>Arc</span
+          ><span><i class="browser-icon zen">◌</i>Zen</span
+          ><span><i class="browser-icon safari">◈</i>Safari</span
+          ><span><i class="browser-icon chrome">◉</i>Chrome</span
+          ><span><i class="browser-icon firefox">◉</i>Firefox</span
+          ><span><i class="browser-icon edge">e</i>Edge</span
+          ><span><i class="browser-icon brave">♜</i>Brave</span>
+        </div>
+      </section>
+
+      <section class="faq-section wrap" aria-labelledby="faq-heading">
+        <div>
+          <p class="eyebrow">GOOD TO KNOW</p>
+          <h2 id="faq-heading">A few little details.</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>
+              Can I use Tabnax on my Mac?<span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Tabnax is a native app for macOS 15 or later on Apple silicon. The
+              current project builds locally with Xcode. A signed public
+              download is not available yet.
+            </p>
+          </details>
+          <details>
+            <summary>
+              How do I open the switcher?<span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              The default shortcut is Control–Option–Space. You can use
+              Command–Tab or record your own shortcut, and choose press-to-open
+              or hold-to-show. In this browser demo, click the desktop and use
+              Space.
+            </p>
+          </details>
+          <details>
+            <summary>
+              What permissions does it need?<span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Accessibility lets the native app discover and focus windows and
+              handle its keyboard shortcuts. It does not request Screen
+              Recording or additional Input Monitoring. Browser connections
+              require their own Automation or extension approval. This page only
+              uses sample data.
+            </p>
+          </details>
+          <details>
+            <summary>
+              How do browser connections work?<span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Arc, Chrome, Edge and Brave use built-in adapters with
+              browser-specific Automation approval. Firefox and Zen use a
+              companion extension; permanent installation needs a signed add-on.
+              Safari uses its embedded extension with Safari approval.
+              Production signing and browser-store publication are still
+              pending. Private tabs are excluded.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Is this the actual app, or a demo?<span aria-hidden="true"
+                >+</span
+              >
+            </summary>
+            <p>
+              The playground is a browser simulation of the current six layouts
+              and selected features. It cannot switch real windows or launch
+              apps. The settings gallery and “native view” images are actual
+              app-owned renders from the September 20, 2026 reviews. Glass in
+              the playground is a CSS approximation.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section
+        class="get-started wrap"
+        id="get-started"
+        aria-labelledby="start-heading"
+      >
+        <div class="cta-mark" aria-hidden="true">t</div>
+        <p class="eyebrow">A SMALLER DISTANCE BETWEEN THOUGHT & WINDOW.</p>
+        <h2 id="start-heading">Your flow is<br />one letter away.</h2>
+        <p>
+          Explore the playground. Make yourself at home.<br />Or run the native
+          app from this project.
+        </p>
+        <div class="cta-actions">
+          <a href="#playground" class="button button-dark"
+            >One more try <span aria-hidden="true">↗</span></a
+          ><button type="button" class="button button-outline" id="open-build">
+            Run the native app <span aria-hidden="true">⌘</span>
+          </button>
+        </div>
+        <span class="development-note"
+          ><span class="live-dot"></span> In active development · macOS 15+ ·
+          Apple silicon</span
+        >
+      </section>
+    </main>
+
+    <footer class="site-footer wrap">
+      <a class="wordmark" href="#" aria-label="Back to top"
+        ><img
+          src="assets/tabnax-icon.png"
+          width="28"
+          height="28"
+          alt=""
+        />tabnax</a
+      ><span>A little less switching. A little more doing.</span>
+      <div>
+        <a href="#playground">Explore the six layouts ↗</a
+        ><a href="guide.html">Build &amp; browser guide ↗</a>
+      </div>
+    </footer>
+
+    <dialog id="image-dialog" class="image-dialog">
+      <div class="dialog-heading">
+        <h2 id="image-dialog-title">Native Tabnax view</h2>
+        <button
+          type="button"
+          class="icon-button"
+          data-close-dialog
+          aria-label="Close image"
+        >
+          ×
+        </button>
+      </div>
+      <div class="image-dialog-body"><img id="dialog-image" alt="" /></div>
+      <p>Actual native renderer · sample data · September 20, 2026</p>
+    </dialog>
+    <dialog id="build-dialog" class="build-dialog">
+      <div class="dialog-heading">
+        <h2>Run Tabnax on your Mac.</h2>
+        <button
+          type="button"
+          class="icon-button"
+          data-close-dialog
+          aria-label="Close setup instructions"
+        >
+          ×
+        </button>
+      </div>
+      <p>
+        The native app is ready to build from this project. You’ll need an Apple
+        silicon Mac, macOS 15 or later, and Xcode.
+      </p>
+      <ol>
+        <li>Open this project’s <strong>macos</strong> folder.</li>
+        <li>
+          Double-click <strong>Run Tabnax.command</strong> to build and open the
+          app.
+        </li>
+        <li>
+          Follow Settings → General to allow Accessibility, then try
+          <kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>Space</kbd>.
+        </li>
+      </ol>
+      <p>Or run this from the project directory:</p>
+      <div class="copy-command">
+        <code>./macos/scripts/dev.sh</code
+        ><button type="button" id="copy-command">Copy</button>
+      </div>
+      <p id="copy-status" role="status"></p>
+      <p class="build-note">
+        Development build. A signed public download and browser-store releases
+        are not available yet.
+      </p>
+      <a class="text-button" href="guide.html"
+        >Read the full build and browser setup guide ↗</a
+      >
+    </dialog>
+  </body>
+</html>
