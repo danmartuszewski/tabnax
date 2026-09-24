@@ -44,7 +44,9 @@ Download **[Tabnax.dmg](https://github.com/danmartuszewski/tabnax/releases/lates
 brew install --cask danmartuszewski/tap/tabnax
 ```
 
-Releases are signed with Developer ID and notarized by Apple. Tabnax checks for updates with Sparkle and asks before checking automatically. After the first launch, enable Accessibility when prompted and press **Control–Option–Space**.
+Releases are signed with the project's own certificate but are **not notarized by Apple**, so macOS blocks the first launch of a downloaded DMG. After the warning, open **System Settings → Privacy & Security**, scroll down and click **Open Anyway**, or run `xattr -dr com.apple.quarantine /Applications/Tabnax.app`. The Homebrew cask does this for you. You approve it once; updates keep working and keep the Accessibility permission.
+
+Tabnax checks for updates with Sparkle and asks before checking automatically. After the first launch, enable Accessibility when prompted and press **Control–Option–Space**. The Safari companion requires an Apple-signed app, so for now it works only with Safari's **Allow unsigned extensions** developer setting, which resets when Safari quits. The Chrome, Firefox and Zen companions are unaffected.
 
 ## Try it locally
 
@@ -73,7 +75,7 @@ Enable Accessibility for the build you run in **Settings → General**, then pre
 | --- | --- | --- |
 | Arc, Chrome, Edge, Brave | Built-in Apple Events | Per-browser macOS Automation consent. |
 | Firefox, Zen | Companion extension + native messaging | Temporary development installation; permanent distribution needs a signed add-on. |
-| Safari | Embedded Safari web extension | Safari extension approval; development builds may require unsigned-extension mode. |
+| Safari | Embedded Safari web extension | Safari extension approval; current releases are not Apple-signed and require unsigned-extension mode. |
 
 Private tabs are excluded. Connections expose tab metadata for switching; they do not inject content scripts or read page contents. The [privacy overview](docs/PRIVACY.md) describes the data and permissions involved.
 

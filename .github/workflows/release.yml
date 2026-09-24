@@ -1,8 +1,10 @@
 name: Release
 
 # Pushes to main let Release Please maintain a release PR. Merging that PR tags the
-# version and creates the GitHub release; the package job then attaches the notarized
-# DMG, checksum and Sparkle appcast, and updates the Homebrew cask.
+# version and creates the GitHub release; the package job then attaches the signed
+# DMG, checksum and Sparkle appcast, and updates the Homebrew cask. With APPLE_TEAM_ID
+# set the build is Developer ID signed and notarized; otherwise it is signed with the
+# project's self-signed certificate and not notarized.
 # Pipeline overview: docs/RELEASING.md.
 
 on:
@@ -40,7 +42,7 @@ jobs:
           manifest-file: .release-please-manifest.json
 
   package:
-    name: Sign, notarize and publish
+    name: Sign and publish
     needs: release-please
     if: ${{ !cancelled() && (github.event_name == 'workflow_dispatch' || needs.release-please.outputs.created == 'true') }}
     runs-on: macos-26
@@ -50,6 +52,7 @@ jobs:
       contents: write
     env:
       TAG: ${{ needs.release-please.outputs.tag || inputs.tag }}
+      NOTARIZE: ${{ secrets.APPLE_TEAM_ID != '' && '1' || '0' }}
       SPARKLE_VERSION: 2.10.0
       SPARKLE_SHA256: c2bf58aa8387266ac179357b1415d6f2635f044da8be41042af32425dae6da0c
     steps:
@@ -63,28 +66,35 @@ jobs:
           [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Unexpected tag: $TAG"; exit 1; }
           echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
 
-      - name: Import Developer ID certificate
+      - name: Import signing certificate
         env:
-          DEVELOPER_ID_P12_BASE64: ${{ secrets.DEVELOPER_ID_P12_BASE64 }}
-          DEVELOPER_ID_P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+          SIGNING_P12_BASE64: ${{ secrets.SIGNING_P12_BASE64 }}
+          SIGNING_P12_PASSWORD: ${{ secrets.SIGNING_P12_PASSWORD }}
         run: |
           keychain="$RUNNER_TEMP/tabnax-release.keychain-db"
           password="$(openssl rand -base64 32)"
-          printf '%s' "$DEVELOPER_ID_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/developer-id.p12"
+          printf '%s' "$SIGNING_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/signing.p12"
           security create-keychain -p "$password" "$keychain"
           security set-keychain-settings -lut 3600 "$keychain"
           security unlock-keychain -p "$password" "$keychain"
-          security import "$RUNNER_TEMP/developer-id.p12" -k "$keychain" -f pkcs12 \
-            -P "$DEVELOPER_ID_P12_PASSWORD" -T /usr/bin/codesign -T /usr/bin/security
-          rm "$RUNNER_TEMP/developer-id.p12"
+          security import "$RUNNER_TEMP/signing.p12" -k "$keychain" -f pkcs12 \
+            -P "$SIGNING_P12_PASSWORD" -T /usr/bin/codesign -T /usr/bin/security
+          rm "$RUNNER_TEMP/signing.p12"
           security set-key-partition-list -S apple-tool:,apple: -k "$password" "$keychain" > /dev/null
           security list-keychains -d user -s "$keychain" $(security list-keychains -d user | tr -d '"')
-          identity="$(security find-identity -v -p codesigning "$keychain" | grep -o '"Developer ID Application: [^"]*"' | head -1 | tr -d '"')"
-          [[ -n "$identity" ]] || { echo "No Developer ID Application identity in the certificate"; exit 1; }
-          echo "TABNAX_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
           echo "RELEASE_KEYCHAIN=$keychain" >> "$GITHUB_ENV"
+          if [[ "$NOTARIZE" == 1 ]]; then
+            identity="$(security find-identity -v -p codesigning "$keychain" | grep -o '"Developer ID Application: [^"]*"' | head -1 | tr -d '"')"
+            [[ -n "$identity" ]] || { echo "APPLE_TEAM_ID is set but the certificate is not Developer ID Application"; exit 1; }
+          else
+            # Self-signed: not trusted by macOS, so it is picked by SHA-1 hash rather than by -v.
+            identity="$(security find-identity -p codesigning "$keychain" | awk '/\)/ {print $2; exit}')"
+            [[ -n "$identity" ]] || { echo "No code-signing identity in the certificate"; exit 1; }
+          fi
+          echo "TABNAX_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
 
       - name: Prepare notarization key
+        if: env.NOTARIZE == '1'
         env:
           NOTARY_KEY_P8_BASE64: ${{ secrets.NOTARY_KEY_P8_BASE64 }}
         run: |
@@ -93,12 +103,12 @@ jobs:
 
       - run: xcodebuild -version
 
-      - name: Build, sign, notarize and package
+      - name: Build, sign and package
         id: package
         env:
           TABNAX_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           TABNAX_EXPECTED_VERSION: ${{ env.VERSION }}
-          TABNAX_NOTARIZE: "1"
+          TABNAX_NOTARIZE: ${{ env.NOTARIZE }}
           NOTARY_KEY_ID: ${{ secrets.NOTARY_KEY_ID }}
           NOTARY_ISSUER_ID: ${{ secrets.NOTARY_ISSUER_ID }}
         run: ./macos/scripts/release.sh
@@ -142,7 +152,7 @@ jobs:
           git clone --depth 1 "https://x-access-token:${RELEASE_TOKEN}@github.com/danmartuszewski/homebrew-tap.git" "$tap"
           python3 macos/scripts/release_metadata.py cask --version "$VERSION" \
             --sha256 "$(shasum -a 256 "$DMG" | cut -d' ' -f1)" --output "$tap/Casks/tabnax.rb" \
-            --repository "$GITHUB_REPOSITORY"
+            --repository "$GITHUB_REPOSITORY" $([[ "$NOTARIZE" == 1 ]] || echo --not-notarized)
           cd "$tap"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -155,4 +165,4 @@ jobs:
         if: always()
         run: |
           [[ -n "${RELEASE_KEYCHAIN:-}" ]] && security delete-keychain "$RELEASE_KEYCHAIN" || true
-          rm -f "$RUNNER_TEMP/notary.p8" "$RUNNER_TEMP/developer-id.p12"
+          rm -f "$RUNNER_TEMP/notary.p8" "$RUNNER_TEMP/signing.p12"

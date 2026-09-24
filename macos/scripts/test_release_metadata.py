@@ -54,6 +54,16 @@ class CaskTests(unittest.TestCase):
         self.assertIn('url "https://github.com/danmartuszewski/tabnax/releases/download/v#{version}/Tabnax-#{version}.dmg"', cask)
         self.assertIn("auto_updates true", cask)
 
+    def test_notarized_cask_keeps_quarantine(self):
+        cask = metadata.cask("0.1.0", "a" * 64)
+        self.assertNotIn("quarantine", cask)
+        self.assertNotIn("caveats", cask)
+
+    def test_unnotarized_cask_clears_quarantine(self):
+        cask = metadata.cask("0.1.0", "a" * 64, notarized=False)
+        self.assertIn('args: ["-dr", "com.apple.quarantine", "#{appdir}/Tabnax.app"]', cask)
+        self.assertIn("caveats <<~EOS", cask)
+
     def test_cask_rejects_bad_checksum(self):
         with self.assertRaises(ValueError):
             metadata.cask("0.1.0", "ABC")

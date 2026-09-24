@@ -1,6 +1,17 @@
 # Releasing Tabnax
 
-Tabnax ships outside the Mac App Store. It needs cross-app Accessibility, Apple Events and a keyboard event tap, which the App Store sandbox does not allow. Direct distribution works like other menu-bar utilities (Rectangle, Raycast, Ice): a notarized DMG on GitHub Releases, a Homebrew cask, and Sparkle for in-app updates.
+Tabnax ships outside the Mac App Store. It needs cross-app Accessibility, Apple Events and a keyboard event tap, which the App Store sandbox does not allow. Direct distribution works like other menu-bar utilities (Rectangle, Raycast, Ice): a DMG on GitHub Releases, a Homebrew cask, and Sparkle for in-app updates.
+
+## Signing modes
+
+| Mode | When | What users see |
+|---|---|---|
+| **Self-signed** (current) | `APPLE_TEAM_ID` secret is unset | macOS blocks the first launch until the user clicks **Open Anyway** in Privacy & Security (the Homebrew cask clears the quarantine instead). The certificate never changes, so Accessibility permission survives updates. The Safari companion needs Safari's unsigned-extension setting. |
+| **Developer ID** | `APPLE_TEAM_ID` and the notarization secrets are set | Opens normally; Safari companion works. Needs the paid Apple Developer Program. |
+
+The self-signed certificate (`Tabnax Release Signing`, valid until 2046) is stored as the `SIGNING_P12_BASE64` / `SIGNING_P12_PASSWORD` secrets and in the maintainer's password manager. Losing it is recoverable: Sparkle accepts a new certificate because updates are also verified with the EdDSA key, but every user grants Accessibility again once.
+
+To move to Developer ID: export the Developer ID Application certificate as a `.p12`, replace the two `SIGNING_P12_*` secrets, and add `APPLE_TEAM_ID`, `NOTARY_KEY_P8_BASE64`, `NOTARY_KEY_ID` and `NOTARY_ISSUER_ID`. The next release is notarized, the cask drops its quarantine step, and users update through Sparkle (granting Accessibility once more, since the signature changes).
 
 ```text
 feat:/fix: commits on main
@@ -13,7 +24,7 @@ Tag vX.Y.Z + GitHub release
         │
         ▼
 package job (macos-26, environment "release")
-  archive → Developer ID signing → notarize + staple app → DMG → notarize + staple DMG
+  archive → sign (self-signed, or Developer ID + notarize and staple) → DMG
   → Sparkle EdDSA signature → appcast.xml
         │
         ├─ Release assets: Tabnax-X.Y.Z.dmg, .sha256, Tabnax.dmg (stable name), appcast.xml
@@ -31,7 +42,7 @@ The website and README link to `https://github.com/danmartuszewski/tabnax/releas
 
 ## Verifying a download
 
-`spctl -a -vv /Applications/Tabnax.app` should report `source=Notarized Developer ID`. Each release also carries a `.sha256` file for its DMG.
+Each release carries a `.sha256` file for its DMG. `codesign -dvv /Applications/Tabnax.app` should show `Authority=Tabnax Release Signing` (or, once notarized, `spctl -a -vv` reports `source=Notarized Developer ID`).
 
 ## Local builds
 
@@ -39,7 +50,7 @@ The website and README link to `https://github.com/danmartuszewski/tabnax/releas
 make dmg        # ad-hoc DMG in macos/build/release/, for local install testing only
 ```
 
-Local DMGs are ad-hoc signed and are not suitable for distribution. The environment variables for a signed, notarized local build are listed at the top of [`macos/scripts/release.sh`](../macos/scripts/release.sh).
+Local DMGs are ad-hoc signed and are not suitable for distribution. The environment variables for signed local builds are listed at the top of [`macos/scripts/release.sh`](../macos/scripts/release.sh).
 
 ## Not yet covered
 
