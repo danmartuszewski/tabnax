@@ -16,7 +16,7 @@ It is built for people who move repeatedly between editors, browsers, documents,
 
 | Area | Implemented behavior |
 | --- | --- |
-| Activation | Control–Option–Space default; configurable chords including Command–Tab; modifier-side selection; press-to-open and hold-to-show; optional quiet quick return to the previous window in hold mode. |
+| Activation | Command–Tab default; one-click Control–Option–Space alternative that keeps the macOS app switcher; recorded custom chords; modifier-side selection; press-to-open and hold-to-show; optional quiet quick return to the previous window in hold mode. |
 | Addresses | Stable labels, initials-first or pairs, hand presets, custom alphabet/order, physical or typed-character interpretation, overflow, explicit reset. |
 | Navigation | Direct final-key selection, prefix/back, arrows/Tab, Enter, Escape, slash search with native text/IME handling. |
 | Windows | Exact AX identities, normal/minimized targets, restore on selection, Option restore, minimized badges. |

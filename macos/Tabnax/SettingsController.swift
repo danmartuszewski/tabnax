@@ -605,7 +605,7 @@ private struct SettingsView: View {
                 }
                 HStack {
                     Button("Use ⌘ Tab") { model.stopRecorder(); model.change(preview:false) { $0.activation.useCommandTab() } }.disabled(doc.activation.isCommandTab)
-                    Button("Use suggested shortcut") { model.stopRecorder(); model.change(preview:false) { $0.activation.restoreChord() } }.disabled(doc.activation.keyCode == 49 && doc.activation.modifiers == ActivationPreferences().modifiers)
+                    Button("Use ⌃⌥ Space") { model.stopRecorder(); model.change(preview:false) { $0.activation.restoreChord() } }.disabled(doc.activation.isChord)
                 }
                 if doc.activation.isCommandTab { help(String(localized:"Command–Tab replaces the macOS app switcher while Tabnax has keyboard access. It may be unavailable during Secure Input, such as in a password field.")) }
                 Picker("Behavior",selection:binding(\.activation.behavior)) { Text("Press to open").tag(ActivationBehavior.latch); Text("Hold to show").tag(ActivationBehavior.hold) }.accessibilityIdentifier("activation-behavior")

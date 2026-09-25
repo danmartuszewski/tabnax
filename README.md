@@ -10,7 +10,7 @@ Tabnax is a native macOS switcher that brings windows, browser tabs, and apps in
 
 [Install](#install) · [Product overview](docs/PRODUCT.md) · [Build the app](macos/README.md) · [Website](website/README.md) · [Documentation](docs/README.md) · [Security](SECURITY.md)
 
-[![Tabnax demo: press Control–Option–Space, type a letter, and the window comes forward; search finds tabs by URL; pinned letters launch closed apps](website/assets/tabnax-demo.gif)](website/assets/tabnax-demo.mp4)
+[![Tabnax demo: press Command–Tab, type a letter, and the window comes forward; search finds tabs by URL; pinned letters launch closed apps](website/assets/tabnax-demo.gif)](website/assets/tabnax-demo.mp4)
 
 ▶ **[Watch the full walkthrough](website/assets/tabnax-demo.mp4)** (1 min): switching, search, launching, restoring minimized windows, the six layouts and themes. The walkthrough is recorded from the website's interactive demo and ends with the native app.
 
@@ -66,7 +66,7 @@ Why the extra step: releases are signed with the project's own certificate but a
 ### First launch
 
 1. Tabnax lives in the menu bar and opens its Settings on first launch. Click **Allow access…** and turn Tabnax on in **System Settings → Privacy & Security → Accessibility**. It needs this to list and focus windows.
-2. Press **Control–Option–Space** to open the switcher, then type a letter. Change the shortcut, layout and theme in **Settings**.
+2. Hold **Command** and press **Tab** to open the switcher, then type a letter while still holding Command. A quick ⌘Tab jumps back to your previous window. Prefer to keep the macOS app switcher? Choose **Use ⌃⌥ Space** in **Settings → General**, or record any shortcut. Layout and theme live in **Settings** too.
 3. Browser tabs: Arc, Chrome, Edge and Brave work after you allow the macOS **Automation** prompt for each browser. Firefox, Zen and Safari need a companion extension; see [Browser connections](#browser-connections).
 
 Tabnax checks for updates with Sparkle and asks before checking automatically. Homebrew users can also run `brew upgrade --cask tabnax`.
@@ -94,7 +94,7 @@ open macos/build/DerivedData/Build/Products/Debug/Tabnax.app --args --settings
 make dev
 ```
 
-Enable Accessibility for the build you run in **Settings → General**, then press **Control–Option–Space**. The shared project uses ad-hoc signing; no private certificate is required. See the [native guide](macos/README.md) for local signing overrides and browser setup.
+Enable Accessibility for the build you run in **Settings → General**, then press **Command–Tab**. The shared project uses ad-hoc signing; no private certificate is required. See the [native guide](macos/README.md) for local signing overrides and browser setup.
 
 ## Browser connections
 

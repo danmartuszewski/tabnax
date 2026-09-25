@@ -127,8 +127,12 @@ struct Shortcut: Sendable, Equatable {
                 let hand = [HandPreset.right,.left,.both].first { $0.alphabet == saved }
                 value.selection.hand = hand ?? .custom; value.selection.baseHand = hand ?? (saved == "asdfwercvq" ? .left : .right)
             }
-            let index = min(2,max(0,defaults.integer(forKey:"shortcut")))
-            value.activation.modifiers = Shortcut.choices[index].1.modifiers.rawValue
+            // Only a pre-document install chose a Space chord; a fresh one keeps Command–Tab.
+            if defaults.object(forKey:"shortcut") != nil {
+                let index = min(2,max(0,defaults.integer(forKey:"shortcut")))
+                value.activation.keyCode = Shortcut.choices[index].1.keyCode
+                value.activation.modifiers = Shortcut.choices[index].1.modifiers.rawValue
+            }
         }
         document = value
         if value.rememberSearchChoices && !readOnly {

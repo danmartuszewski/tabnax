@@ -112,9 +112,10 @@ public struct SelectionPreferences: Codable, Equatable, Sendable {
     public static func normalize(_ value: String) -> String { value.lowercased().filter { !$0.isWhitespace } }
 }
 public struct ActivationPreferences: Codable, Equatable, Sendable {
-    public var keyCode: UInt16 = 49
-    // Core values use the same documented CGEvent flag bits; no AppKit dependency.
-    public var modifiers: UInt64 = (1 << 18) | (1 << 19)
+    // Command–Tab by default: the switcher people already reach for. Core values use the
+    // same documented CGEvent flag bits; no AppKit dependency.
+    public var keyCode: UInt16 = 48
+    public var modifiers: UInt64 = 1 << 20
     public var behavior: ActivationBehavior = .latch
     public var side: ModifierSide = .either
     /// Hold-behavior only: a quick tap and release swaps straight to the previous window
@@ -122,7 +123,9 @@ public struct ActivationPreferences: Codable, Equatable, Sendable {
     /// which fall back to off (the panel keeps showing, as it always did).
     public var quietReturn: Bool?
     public init() {}
-    public mutating func restoreChord() { keyCode = 49; modifiers = Self().modifiers }
+    /// Control–Option–Space: the alternative for people who keep the macOS app switcher.
+    public mutating func restoreChord() { keyCode = 49; modifiers = (1 << 18) | (1 << 19) }
+    public var isChord: Bool { keyCode == 49 && modifiers == (1 << 18) | (1 << 19) }
     public mutating func useCommandTab() { keyCode = 48; modifiers = 1 << 20 }
     public var isCommandTab: Bool { keyCode == 48 && modifiers == 1 << 20 }
     public var quietReturnEnabled: Bool { quietReturn ?? false }
@@ -147,7 +150,7 @@ public struct SearchActivationPreferences: Codable, Equatable, Sendable {
     public var enabled = false
     public var shortcut = suggestedShortcut
     public static var suggestedShortcut: ActivationPreferences {
-        var value = ActivationPreferences(); value.modifiers = (1 << 18) | (1 << 17); return value
+        var value = ActivationPreferences(); value.keyCode = 49; value.modifiers = (1 << 18) | (1 << 17); return value
     }
     public init() {}
     private enum CodingKeys: String, CodingKey { case enabled, shortcut }

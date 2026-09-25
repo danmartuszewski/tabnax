@@ -30,6 +30,8 @@ import Testing
     #expect(appearance.overrides["tabnax"]?["light"]?["keyBg"] == "#abcdef")
 }
 @Test func commandTabIsValidPersistsAndRestoresWithoutChangingBehavior() throws {
+    #expect(ActivationPreferences().isCommandTab && ActivationPreferences().valid)
+    #expect(SearchActivationPreferences.suggestedShortcut.valid && !SearchActivationPreferences.suggestedShortcut.overlaps(ActivationPreferences()))
     var settings = SettingsDocument()
     settings.activation.behavior = .hold; settings.activation.side = .right
     settings.activation.useCommandTab()
@@ -37,7 +39,7 @@ import Testing
     let data = try JSONEncoder().encode(settings)
     #expect(try JSONDecoder().decode(SettingsDocument.self,from:data).validated() == settings)
     settings.activation.restoreChord()
-    #expect(settings.activation == { var a = ActivationPreferences(); a.behavior = .hold; a.side = .right; return a }())
+    #expect(settings.activation == { var a = ActivationPreferences(); a.restoreChord(); a.behavior = .hold; a.side = .right; return a }())
     for (code, flags): (UInt16, UInt64) in [(48,0),(48,1 << 17),(48,1 << 19),(49,1 << 20),(53,(1 << 18) | (1 << 19))] {
         settings.activation.keyCode = code; settings.activation.modifiers = flags
         #expect(!settings.activation.valid)
@@ -403,7 +405,7 @@ func nameBasedLettersFallBackWithoutCollisions(policy: AssignmentPolicy) throws 
         settings.activation.behavior = .hold; settings.activation.side = .right
         #expect(throws: (any Error).self) { try settings.validated() }
         let migrated = try JSONDecoder().decode(SettingsDocument.self, from: JSONEncoder().encode(settings)).validated()
-        #expect(migrated.activation.keyCode == 49 && migrated.activation.modifiers == ActivationPreferences().modifiers)
+        #expect(migrated.activation.isChord)
         #expect(migrated.activation.behavior == .hold && migrated.activation.side == .right)
         #expect(migrated.mode == .relay && !migrated.includeHidden && !migrated.searchActivation.enabled)
         settings = .init(); settings.searchActivation.shortcut.keyCode = key; settings.searchActivation.shortcut.modifiers = 1 << 17

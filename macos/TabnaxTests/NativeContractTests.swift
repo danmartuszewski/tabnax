@@ -396,7 +396,7 @@ final class NativeContractTests: XCTestCase {
         let actions = Locked<[TargetID]>([])
         let router = InputRouter(onState: { _ in }, onSelect: { _ in XCTFail("Menu must not select") }, onCancel: {},
             onAction: { _, target in actions.withValue { $0.append(target) } }, onHealth: { _ in })
-        _ = router.replayForTesting(snapshot: snapshot, events: [event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(125), event(125, false)])
+        _ = router.replayForTesting(snapshot: snapshot, settings: .chord, events: [event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(125), event(125, false)])
         router.markRunningForTesting()
         defer { router.clearRunningForTesting() }
         router.menuAction(.minimizeWindow, target: first.id, session: 1)
@@ -455,7 +455,7 @@ final class NativeContractTests: XCTestCase {
         let id = TargetID(process: UUID(), window: UUID()), actions = Locked<[TargetID]>([])
         let router = InputRouter(onState: { _ in }, onSelect: { _ in XCTFail("Search must not select") }, onCancel: {},
             onAction: { _, id in actions.withValue { $0.append(id) } }, onHealth: { _ in })
-        let consumed = router.replayForTesting(snapshot: .init(windows: [Target(id: id, app: "Fixture", title: "Window", address: "q")]), events: [
+        let consumed = router.replayForTesting(snapshot: .init(windows: [Target(id: id, app: "Fixture", title: "Window", address: "q")]), settings: .chord, events: [
             event(12, flags: .maskCommand), event(12, false),
             event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(44), event(44, false),
             event(12), event(12, false), event(12, flags: .maskCommand), event(12, false)
@@ -483,7 +483,7 @@ final class NativeContractTests: XCTestCase {
         let id = TargetID(process: UUID(), window: UUID()), actions = Locked<[TargetID]>([])
         let router = InputRouter(onState: { _ in }, onSelect: { _ in }, onCancel: {},
             onAction: { _, id in actions.withValue { $0.append(id) } }, onHealth: { _ in })
-        _ = router.replayForTesting(snapshot: .init(windows: [Target(id: id, app: "Fixture", title: "Window", address: "j", minimized: true)]), events: [
+        _ = router.replayForTesting(snapshot: .init(windows: [Target(id: id, app: "Fixture", title: "Window", address: "j", minimized: true)]), settings: .chord, events: [
             modifierEvent(58, flags: [.maskControl, .maskAlternate]),
             event(49, flags: [.maskControl, .maskAlternate]), event(49, false, flags: [.maskControl, .maskAlternate]),
             modifierEvent(59, flags: .maskAlternate), modifierEvent(58, flags: []),
@@ -538,9 +538,9 @@ final class NativeContractTests: XCTestCase {
         let snapshot = CatalogueSnapshot(windows: [Target(id: id, app: "Fixture", title: "Window", address: "q")])
         let router = InputRouter(onState: { _ in }, onSelect: { id in selected.withValue { $0.append(id) } }, onCancel: {},
             onAction: { _, _ in XCTFail("No quit shortcut") }, onHealth: { _ in })
-        _ = router.replayForTesting(snapshot: snapshot, events: [event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(12), event(12, false)])
+        _ = router.replayForTesting(snapshot: snapshot, settings: .chord, events: [event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(12), event(12, false)])
         XCTAssertEqual(selected.withValue { $0 }, [id])
-        let consumed = router.replayForTesting(snapshot: snapshot, events: [
+        let consumed = router.replayForTesting(snapshot: snapshot, settings: .chord, events: [
             event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(12, flags: [.maskCommand, .maskShift]), event(12, false)
         ])
         XCTAssertEqual(consumed, [true, true, false, false])
@@ -550,19 +550,37 @@ final class NativeContractTests: XCTestCase {
         let router = InputRouter(onState: { _ in }, onSelect: { id in selected.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
         let id = TargetID(process: UUID(), window: UUID())
         let snapshot = CatalogueSnapshot(windows: [Target(id: id, app: "Fixture", title: "Same title", address: "pj")])
-        let consumed = router.replayForTesting(snapshot: snapshot, events: [
+        let consumed = router.replayForTesting(snapshot: snapshot, settings: .chord, events: [
             event(49, flags: [.maskControl, .maskAlternate]), event(49, false),
             event(35), event(35, false), event(38), event(38, repeatKey: true), event(38, false), event(0), event(0, false)
         ])
         XCTAssertEqual(consumed, [true, true, true, true, true, true, true, false, false])
         XCTAssertEqual(selected.withValue { $0 }, [id])
     }
+    func testDefaultCommandTabSelectsALetterTypedWithCommandHeldAndReturnsOnAQuickTap() {
+        let a = TargetID(process: UUID(), window: UUID()), b = TargetID(process: UUID(), window: UUID())
+        let snapshot = CatalogueSnapshot(windows: [Target(id: a, app: "A", title: "A", address: "j"), Target(id: b, app: "B", title: "B", address: "k")])
+        XCTAssertTrue(SettingsDocument().activation.isCommandTab)
+        for behavior in ActivationBehavior.allCases {
+            var settings = SettingsDocument(); settings.activation.behavior = behavior
+            let typed = Locked<[TargetID]>([])
+            let router = InputRouter(onState: { _ in }, onSelect: { id in typed.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
+            _ = router.replayForTesting(snapshot: snapshot, settings: settings, events: [
+                event(48, flags: .maskCommand), event(48, false, flags: .maskCommand), event(40, flags: .maskCommand), event(40, false, flags: .maskCommand), modifierEvent(55, flags: [])
+            ])
+            XCTAssertEqual(typed.withValue { $0 }, [b], "\(behavior): a letter typed with Command held selects its window")
+            let tapped = Locked<[TargetID]>([])
+            let quick = InputRouter(onState: { _ in }, onSelect: { id in tapped.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
+            _ = quick.replayForTesting(snapshot: snapshot, settings: settings, events: [event(48, flags: .maskCommand), event(48, false, flags: .maskCommand), modifierEvent(55, flags: [])])
+            XCTAssertEqual(tapped.withValue { $0 }.count, 1, "\(behavior): a quick Command–Tab commits the highlighted window like the macOS switcher")
+        }
+    }
     func testShiftTabIsNavigationUnderTheDefaultShortcut() {
         let selected = Locked<[TargetID]>([])
         let a = TargetID(process: UUID(), window: UUID()), b = TargetID(process: UUID(), window: UUID())
         let router = InputRouter(onState: { _ in }, onSelect: { id in selected.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
         let snapshot = CatalogueSnapshot(windows: [Target(id: a, app: "A", title: "A", address: "j"), Target(id: b, app: "B", title: "B", address: "k")])
-        let consumed = router.replayForTesting(snapshot: snapshot, events: [
+        let consumed = router.replayForTesting(snapshot: snapshot, settings: .chord, events: [
             event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(48, flags: [.maskShift]), event(48, false), event(36), event(36, false)
         ])
         XCTAssertTrue(consumed.allSatisfy { $0 }); XCTAssertEqual(selected.withValue { $0 }, [b])
@@ -577,7 +595,7 @@ final class NativeContractTests: XCTestCase {
             var events = [event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(38), event(38, false)]
             // Fold and Canopy address a window by its app-prefixed code, so both need the second key.
             if mode == .fold || mode == .canopy { events += [event(38), event(38, false)] }
-            let consumed = router.replayForTesting(snapshot: snapshot, mode: mode, events: events)
+            let consumed = router.replayForTesting(snapshot: snapshot, mode: mode, settings: .chord, events: events)
             XCTAssertTrue(consumed.allSatisfy { $0 }, mode.rawValue)
             XCTAssertEqual(selected.withValue { $0 }, [id], mode.rawValue)
         }
@@ -586,7 +604,7 @@ final class NativeContractTests: XCTestCase {
         let selected = Locked<[TargetID]>([])
         let id = TargetID(process: UUID(), window: UUID())
         let router = InputRouter(onState: { _ in }, onSelect: { id in selected.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
-        let consumed = router.replayForTesting(snapshot: CatalogueSnapshot(windows: [Target(id: id, app: "Fixture", title: "Title", address: "j")]), events: [
+        let consumed = router.replayForTesting(snapshot: CatalogueSnapshot(windows: [Target(id: id, app: "Fixture", title: "Title", address: "j")]), settings: .chord, events: [
             event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(44), event(44, false),
             event(38), event(38, false), event(0, flags: [.maskCommand]), event(0, false), event(36), event(36, false)
         ])
@@ -599,13 +617,13 @@ final class NativeContractTests: XCTestCase {
         var history = FocusHistory(); history.observe(a); history.observe(b)
         let snapshot = CatalogueSnapshot(windows: [Target(id: a, app: "A", title: "A", address: "j"), Target(id: b, app: "B", title: "B", address: "k")], history: history)
         let router = InputRouter(onState: { _ in }, onSelect: { id in selected.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
-        let consumed = router.replayForTesting(snapshot: snapshot, mode: .relay, events: [event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(36), event(36, false)])
+        let consumed = router.replayForTesting(snapshot: snapshot, mode: .relay, settings: .chord, events: [event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(36), event(36, false)])
         XCTAssertTrue(consumed.allSatisfy { $0 }); XCTAssertEqual(selected.withValue { $0 }, [a])
     }
     func testRealRouterCancellationAndModifiedTypingPassThrough() {
         let selected = Locked(0)
         let router = InputRouter(onState: { _ in }, onSelect: { _ in selected.withValue { $0 += 1 } }, onCancel: {}, onHealth: { _ in })
-        let consumed = router.replayForTesting(snapshot: CatalogueSnapshot(), events: [
+        let consumed = router.replayForTesting(snapshot: CatalogueSnapshot(), settings: .chord, events: [
             event(49), event(49, false), // ordinary Space is never an activation
             event(49, flags: [.maskControl, .maskAlternate]), event(49, false),
             event(53), event(53, false), event(38), event(38, false),
@@ -745,7 +763,7 @@ final class NativeContractTests: XCTestCase {
         for (name, snapshot, events, expected) in cases {
             let selected = Locked<[TargetID]>([])
             let router = InputRouter(onState: { _ in }, onSelect: { id in selected.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
-            var settings = SettingsDocument(); settings.activation.behavior = .hold
+            var settings = SettingsDocument.chord; settings.activation.behavior = .hold
             _ = router.replayForTesting(snapshot: snapshot, settings: settings, events: events)
             XCTAssertEqual(selected.withValue { $0 }, expected, name)
         }
@@ -780,9 +798,9 @@ final class NativeContractTests: XCTestCase {
         let tap = [event(49, flags: chord), event(49, false)]
         let selected = Locked<[TargetID]>([])
         let router = InputRouter(onState: { _ in }, onSelect: { id in selected.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
-        _ = router.replayForTesting(snapshot: snapshot, events: tap + tap + [modifiers([])])
+        _ = router.replayForTesting(snapshot: snapshot, settings: .chord, events: tap + tap + [modifiers([])])
         XCTAssertEqual(selected.withValue { $0 }, [b], "A second trigger tap with the modifiers still held cycles; the release commits")
-        let closing = router.replayForTesting(snapshot: snapshot, events: tap + [modifiers([])] + tap + [event(38), event(38, false)])
+        let closing = router.replayForTesting(snapshot: snapshot, settings: .chord, events: tap + [modifiers([])] + tap + [event(38), event(38, false)])
         XCTAssertEqual(closing, [true, true, false, true, true, false, false], "After the modifiers were let go, the chord closes the latch and typing passes through")
         XCTAssertEqual(selected.withValue { $0 }, [b])
     }
@@ -791,7 +809,7 @@ final class NativeContractTests: XCTestCase {
         let snapshot = CatalogueSnapshot(windows: [Target(id: a, app: "A", title: "A", address: "j")])
         let selected = Locked<[TargetID]>([])
         let router = InputRouter(onState: { _ in }, onSelect: { id in selected.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
-        let consumed = router.replayForTesting(snapshot: snapshot, events: [
+        let consumed = router.replayForTesting(snapshot: snapshot, settings: .chord, events: [
             event(49, flags: [.maskControl, .maskAlternate]), event(49, false),
             event(124), event(124, false), event(123), event(123, false), // arrows
             event(50), event(50, false),                                  // a key with no meaning here
@@ -814,7 +832,7 @@ final class NativeContractTests: XCTestCase {
         let selected = Locked<[TargetID]>([])
         let router = InputRouter(onState: { _ in }, onSelect: { id in selected.withValue { $0.append(id) } }, onCancel: {}, onHealth: { _ in })
         let lost: (CGEventType, CGEvent) = (.tapDisabledByTimeout, CGEvent(keyboardEventSource: nil, virtualKey: 0, keyDown: true)!)
-        let consumed = router.replayForTesting(snapshot: snapshot, events: [
+        let consumed = router.replayForTesting(snapshot: snapshot, settings: .chord, events: [
             event(49, flags: [.maskControl, .maskAlternate]), lost, // closes the open session, keeps routing
             event(49, flags: [.maskControl, .maskAlternate]), event(49, false), event(38), event(38, false)])
         XCTAssertEqual(consumed, [true, false, true, true, true, true]); XCTAssertEqual(selected.withValue { $0 }, [a])
@@ -823,12 +841,12 @@ final class NativeContractTests: XCTestCase {
         let captured = Locked<[Shortcut]>([])
         let router = InputRouter(onState:{_ in},onSelect:{_ in XCTFail("Recording must never select")},onCancel:{},onHealth:{_ in})
         router.recordShortcut { chord in captured.withValue { $0.append(chord) } }
-        XCTAssertEqual(router.replayForTesting(snapshot:.init(),events:[event(48,flags:[.maskCommand,.maskAlphaShift]),event(48,flags:.maskCommand,repeatKey:true)]),[true,true])
+        XCTAssertEqual(router.replayForTesting(snapshot:.init(),settings: .chord,events:[event(48,flags:[.maskCommand,.maskAlphaShift]),event(48,flags:.maskCommand,repeatKey:true)]),[true,true])
         XCTAssertEqual(captured.withValue { $0 },[Shortcut(keyCode:48,modifiers:.maskCommand)])
         router.recordShortcut(using:nil)
-        XCTAssertEqual(router.replayForTesting(snapshot:.init(),events:[event(48,flags:.maskCommand,repeatKey:true),event(48,false),event(48,flags:.maskCommand),event(48,false)]),[true,true,false,false])
+        XCTAssertEqual(router.replayForTesting(snapshot:.init(),settings: .chord,events:[event(48,flags:.maskCommand,repeatKey:true),event(48,false),event(48,flags:.maskCommand),event(48,false)]),[true,true,false,false])
         // Default activation resumes immediately after the recorder stops.
-        XCTAssertEqual(router.replayForTesting(snapshot:.init(),events:[event(49,flags:[.maskControl,.maskAlternate]),event(49,false)]),[true,true])
+        XCTAssertEqual(router.replayForTesting(snapshot:.init(),settings: .chord, events:[event(49,flags:[.maskControl,.maskAlternate]),event(49,false)]),[true,true])
     }
 }
 
@@ -1133,7 +1151,7 @@ final class SettingsContractTests: XCTestCase {
         func event(_ code:UInt16,_ down:Bool=true,flags:CGEventFlags = []) -> (CGEventType,CGEvent) {
             let e = CGEvent(keyboardEventSource:nil,virtualKey:code,keyDown:down)!; e.flags=flags; return (down ? .keyDown : .keyUp,e)
         }
-        var p = SettingsDocument(); p.activation.behavior = .hold
+        var p = SettingsDocument.chord; p.activation.behavior = .hold
         let router = InputRouter(onState:{_ in},onSelect:{id in selected.withValue{$0.append(id)}},onCancel:{},onHealth:{_ in})
         let consumed = router.replayForTesting(snapshot:snapshot,settings:p,events:[event(49,flags:[.maskControl,.maskAlternate]),event(49,false),event(38),event(38,false)])
         XCTAssertEqual(consumed,[true,true,false,false]); XCTAssertTrue(selected.withValue{$0.isEmpty})
@@ -1261,9 +1279,9 @@ extension SettingsContractTests {
         let down = CGEvent(keyboardEventSource:nil,virtualKey:49,keyDown:true)!,up = CGEvent(keyboardEventSource:nil,virtualKey:49,keyDown:false)!
         down.flags = [.maskControl,.maskAlternate]
         router.suspendActivation(true)
-        XCTAssertEqual(router.replayForTesting(snapshot:.init(),events:[(.keyDown,down),(.keyUp,up)]),[false,false])
+        XCTAssertEqual(router.replayForTesting(snapshot:.init(),settings: .chord, events:[(.keyDown,down),(.keyUp,up)]),[false,false])
         router.suspendActivation(false)
-        XCTAssertEqual(router.replayForTesting(snapshot:.init(),events:[(.keyDown,down),(.keyUp,up)]),[true,true])
+        XCTAssertEqual(router.replayForTesting(snapshot:.init(),settings: .chord, events:[(.keyDown,down),(.keyUp,up)]),[true,true])
     }
 }
 
@@ -1384,7 +1402,7 @@ final class AppShortcutContractTests: XCTestCase {
         XCTAssertNil(ApplicationShortcuts.resolve(wrongPath))
     }
     func testAppsAreReachableWithBrowsersDisabledAndConsumesLaunchKeyup() {
-        var settings = SettingsDocument(); settings.browsers.enabled = false
+        var settings = SettingsDocument.chord; settings.browsers.enabled = false
         let id = TargetID(process:UUID()), selected = Locked<[TargetID]>([])
         let router = InputRouter(onState:{_ in},onSelect:{ id in selected.withValue{$0.append(id)} },onCancel:{},onHealth:{_ in})
         func event(_ code:UInt16,_ down:Bool=true,flags:CGEventFlags = []) -> (CGEventType,CGEvent) {
@@ -1432,7 +1450,7 @@ final class AppShortcutContractTests: XCTestCase {
 
 extension NativeContractTests {
     func testTypedCharactersSelectFixedLettersAndOverflowOutsideAlphabet() throws {
-        var settings = SettingsDocument(); settings.selection.interpretation = .characters
+        var settings = SettingsDocument.chord; settings.selection.interpretation = .characters
         settings.selection.appShortcuts.enabled = true
         let fixed = AppAssignment(bundleID:"test.editor",name:"Editor",path:"/Applications/Editor.app",letter:"e")
         settings.selection.appShortcuts.assignments = [fixed]
@@ -1944,7 +1962,7 @@ final class ExclusionContractTests: XCTestCase {
         var held = false, registered = 0, unregistered = 0, fires = 0
         let fallback = HotKeyFallback(keyIsDown: { _ in held }, register: { _ in registered += 1; return true }, unregister: { unregistered += 1 })
         fallback.onFire = { fires += 1 }
-        let activation = ActivationPreferences()
+        let activation = SettingsDocument.chord.activation
         held = true; fallback.configure(activation)
         XCTAssertFalse(fallback.isRegistered, "A launch while the chord is held must not reserve its remaining events")
         held = false; fallback.reconcile()
@@ -2002,7 +2020,7 @@ final class ExclusionContractTests: XCTestCase {
         let fallback = HotKeyFallback(keyIsDown: { _ in false }, register: { _ in
             registers += 1; current = .init(pid: 3, bundleID: "test.VM"); return true
         }, unregister: { unregisters += 1 })
-        let router = ShortcutExceptionRouter(ownPID: 1, sample: { current }, isPreview: { _ in false }, configureFallback: { fallback.configure($0 ? .init() : nil) })
+        let router = ShortcutExceptionRouter(ownPID: 1, sample: { current }, isPreview: { _ in false }, configureFallback: { fallback.configure($0 ? SettingsDocument.chord.activation : nil) })
         var rules = ExclusionPreferences(); rules.shortcutExceptions = [.init(bundleID: "test.VM")]
         router.configure(rules, enabled: true)
         XCTAssertEqual(registers, 1); XCTAssertEqual(unregisters, 1)
@@ -2327,7 +2345,7 @@ final class SearchShortcutContractTests: XCTestCase {
         defaults.set(try JSONEncoder().encode(doc),forKey:"settingsDocument.v1")
         let migrated = Preferences(defaults:defaults)
         XCTAssertFalse(migrated.readOnly); XCTAssertEqual(migrated.document.mode,.fold)
-        XCTAssertEqual(migrated.document.activation,ActivationPreferences())
+        XCTAssertTrue(migrated.document.activation.isChord)
         let model = SettingsModel(preferences:migrated)
         var enabled = migrated.document; enabled.searchActivation.enabled = true
         XCTAssertTrue(migrated.commit(enabled))
@@ -2343,7 +2361,7 @@ final class SearchShortcutContractTests: XCTestCase {
         model.recordShortcut(.main); let cancelled = try XCTUnwrap(model.recordingSession)
         model.acceptRecordedShortcut(.init(keyCode:53,modifiers:[]),session:cancelled)
         model.acceptRecordedShortcut(.init(keyCode:1,modifiers:.maskCommand),session:cancelled)
-        XCTAssertEqual(migrated.document.activation,ActivationPreferences())
+        XCTAssertTrue(migrated.document.activation.isChord)
         model.restoreDefaults(); XCTAssertFalse(migrated.document.searchActivation.enabled)
         migrated.undo(); XCTAssertTrue(migrated.document.searchActivation.enabled)
     }
@@ -2458,7 +2476,7 @@ extension SearchShortcutContractTests {
 
 extension SearchShortcutContractTests {
     func testOppositeModifierSidesRouteToDifferentActivationModes() throws {
-        var settings = SettingsDocument(); settings.activation.side = .left
+        var settings = SettingsDocument.chord; settings.activation.side = .left
         settings.searchActivation.enabled = true; settings.searchActivation.shortcut = settings.activation
         settings.searchActivation.shortcut.side = .right
         _ = try settings.validated()
@@ -2743,4 +2761,9 @@ extension MultiDisplayContractTests {
         _ = state.handle(.query("Beta")); p.present(state,icons:[:],status:"")
         XCTAssertEqual(destination.string,"Beta"); XCTAssertEqual(try field(first).stringValue,"Beta")
     }
+}
+
+private extension SettingsDocument {
+    /// Control–Option–Space: the chord these router contracts exercise, now that the default is Command–Tab.
+    static var chord: Self { var settings = Self(); settings.activation.restoreChord(); return settings }
 }

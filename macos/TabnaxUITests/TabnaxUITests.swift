@@ -105,7 +105,7 @@ final class NativeSettingsUITests: XCTestCase {
         app.terminate(); app.launch()
         XCTAssertTrue(app.staticTexts["activation-shortcut"].waitForExistence(timeout:5))
         XCTAssertEqual(app.staticTexts["activation-shortcut"].value as? String,"⌘ Tab")
-        app.buttons["Use suggested shortcut"].click()
+        app.buttons["Use ⌃⌥ Space"].click()
         XCTAssertEqual(app.staticTexts["activation-shortcut"].value as? String,"⌃⌥ Space")
         let recorder = app.buttons["record-shortcut"]
         recorder.click(); app.staticTexts["activation-shortcut"].typeKey("k",modifierFlags:[.control,.shift])
@@ -604,7 +604,7 @@ extension NativeSettingsUITests {
         app.terminate(); app.launch(); reveal(enabled,in:app)
         XCTAssertEqual((enabled.value as? NSNumber)?.intValue,0)
         reveal(app.staticTexts["activation-shortcut"],in:app,down:false)
-        XCTAssertEqual(app.staticTexts["activation-shortcut"].value as? String,"⌃⌥ Space")
+        XCTAssertEqual(app.staticTexts["activation-shortcut"].value as? String,"⌘ Tab")
         app.terminate()
     }
 }
