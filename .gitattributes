@@ -5,3 +5,5 @@
 *.webp binary
 *.icns binary
 *.pdf binary
+*.gif binary
+*.mp4 binary
