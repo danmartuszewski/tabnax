@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/danmartuszewski/tabnax/compare/v0.1.0...v0.2.0) (2026-09-25)
+
+
+### Features
+
+* made Command–Tab the default activation shortcut ([95fed08](https://github.com/danmartuszewski/tabnax/commit/95fed08a5424b66f7c2ef5f36148e4274f23f3b6))
+
 ## 0.1.0 (2026-09-25)
 
 

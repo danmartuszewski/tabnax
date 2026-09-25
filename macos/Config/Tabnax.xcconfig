@@ -1,6 +1,6 @@
 // Shared by every target. Release Please bumps MARKETING_VERSION on release;
 // the release script derives CURRENT_PROJECT_VERSION from it for Sparkle.
-MARKETING_VERSION = 0.1.0 // x-release-please-version
+MARKETING_VERSION = 0.2.0 // x-release-please-version
 CURRENT_PROJECT_VERSION = 1
 
 // Sparkle update feed. The `/$()/` keeps xcconfig from reading `//` as a comment.
