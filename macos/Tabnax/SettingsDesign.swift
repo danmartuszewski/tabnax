@@ -6,8 +6,14 @@ struct DesktopSpotlightPreview: NSViewRepresentable {
     var preferences: DesktopSpotlightPreferences
     var accent: NSColor
     var replayToken = 0
+    /// Last configured inputs: `configure` always relayouts the sample, and SwiftUI reruns
+    /// this for every unrelated settings-model change while the Appearance pane is visible.
+    final class Coordinator { var last: (DesktopSpotlightPreferences, NSColor, Int)? }
+    func makeCoordinator() -> Coordinator { Coordinator() }
     func makeNSView(context: Context) -> DesktopSpotlightSampleView { DesktopSpotlightSampleView() }
     func updateNSView(_ view: DesktopSpotlightSampleView, context: Context) {
+        if let last = context.coordinator.last, last.0 == preferences, last.1 == accent, last.2 == replayToken { return }
+        context.coordinator.last = (preferences, accent, replayToken)
         view.configure(preferences: preferences, accent: accent, replayToken: replayToken)
     }
 }

@@ -179,11 +179,19 @@ final class FocusCoordinator: @unchecked Sendable {
     func inspectActions(_ items: [SwitcherActionItem], completion: @escaping @MainActor @Sendable ([SwitcherActionItem]) -> Void) {
         let captured = state.withValue { $0.registry }
         let work: @Sendable () -> Void = { [self] in
+            // Most rows share one window and process. Resolve each of those, and the
+            // window's identity/minimized state, once per menu rather than once per row.
+            var apps: [pid_t: NSRunningApplication?] = [:]
+            var windows: [TargetID: (reason: String?, access: WindowActionAccess?)] = [:]
             let checked = items.map { original -> SwitcherActionItem in
                 var item = original
                 guard item.disabledReason == nil, let id = item.target else { return item }
-                guard let target = captured[id], state.withValue({ $0.registry[id] != nil }),
-                      let app = NSRunningApplication(processIdentifier: target.process.pid), !app.isTerminated,
+                guard let target = captured[id], state.withValue({ $0.registry[id] != nil }) else {
+                    item.disabledReason = "App is no longer running"; return item
+                }
+                let pid = target.process.pid
+                if apps[pid] == nil { apps[pid] = .some(NSRunningApplication(processIdentifier: pid)) }
+                guard let app = apps[pid] ?? nil, !app.isTerminated,
                       target.process.launchDate == nil || target.process.launchDate == app.launchDate else {
                     item.disabledReason = "App is no longer running"; return item
                 }
@@ -192,9 +200,13 @@ final class FocusCoordinator: @unchecked Sendable {
                 case .hideApplication, .unhideApplication:
                     item = SwitcherActionItem(action: app.isHidden ? .unhideApplication : .hideApplication, target: id)
                 default:
-                    item.disabledReason = windowActionUnavailable(target, id: id)
-                    if item.disabledReason == nil, let window = target.window {
-                        item.disabledReason = WindowActionAccess(window: window.handle.element).disabledReason(for: item.action, hidden: app.isHidden)
+                    if windows[id] == nil {
+                        let reason = windowActionUnavailable(target, id: id)
+                        windows[id] = (reason, reason == nil ? target.window.map { WindowActionAccess(window: $0.handle.element).memoized() } : nil)
+                    }
+                    item.disabledReason = windows[id]?.reason
+                    if item.disabledReason == nil, let access = windows[id]?.access {
+                        item.disabledReason = access.disabledReason(for: item.action, hidden: app.isHidden)
                     }
                 }
                 return item
@@ -349,11 +361,17 @@ final class FocusCoordinator: @unchecked Sendable {
               current(generation, id), repairArmed(generation), let window = target.window else { return }
         // Read live geometry after restoring/focusing. AX and Quartz cursor coordinates
         // both use screen points with the origin at the primary display's top left.
-        let (positionError, positionValue) = axValue(window.handle.element, kAXPositionAttribute)
-        let (sizeError, sizeValue) = axValue(window.handle.element, kAXSizeAttribute)
-        guard positionError == .success, sizeError == .success,
-              let positionValue, CFGetTypeID(positionValue) == AXValueGetTypeID(),
-              let sizeValue, CFGetTypeID(sizeValue) == AXValueGetTypeID() else { return }
+        // One round trip for both; a failed attribute comes back as an error AXValue,
+        // which the typed AXValueGetValue below rejects.
+        var values: CFArray?
+        let interval = Trace.signposter.beginInterval("axCall")
+        let error = AXUIElementCopyMultipleAttributeValues(window.handle.element, [kAXPositionAttribute, kAXSizeAttribute] as CFArray,
+                                                           AXCopyMultipleAttributeOptions(), &values)
+        Trace.signposter.endInterval("axCall", interval)
+        guard error == .success,
+              let values = values as? [CFTypeRef], values.count == 2 else { return }
+        let positionValue = values[0], sizeValue = values[1]
+        guard CFGetTypeID(positionValue) == AXValueGetTypeID(), CFGetTypeID(sizeValue) == AXValueGetTypeID() else { return }
         var position = CGPoint.zero, size = CGSize.zero
         guard AXValueGetValue(unsafeDowncast(positionValue, to: AXValue.self), .cgPoint, &position),
               AXValueGetValue(unsafeDowncast(sizeValue, to: AXValue.self), .cgSize, &size),

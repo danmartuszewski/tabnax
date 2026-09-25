@@ -38,7 +38,8 @@ async function select(message) {
     const confirmed = await api.tabs.get(id), focused = await api.windows.get(confirmed.windowId);
     const selected = confirmed.active && focused.focused && !confirmed.incognito && !focused.incognito;
     if (intent === newestSelection) port?.postMessage({version:1,kind:'result',connection,request:message.request,selected});
-    snapshot();
+    // Activation/focus events from this selection already schedule a snapshot; join that one.
+    scheduleSnapshot();
   } catch (error) {
     port?.postMessage({version:1,kind:'result',connection,request:message.request,selected:false,error:String(error.message).slice(0,300)});
   }

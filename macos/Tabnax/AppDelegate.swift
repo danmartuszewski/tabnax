@@ -184,10 +184,17 @@ import TabnaxCore
             guard let self else { return }
             input.dismiss(); focus.cancel(); launcher.cancel(); presenter.dismiss(); presenter.settings = new
             focus.configureCursorMovement(new.moveCursorToSelectedWindow)
-            input.configureSettings(new); configureShortcutExceptions(); input.configureMode(new.mode); catalogue.setMode(new.mode); browsers?.configure(new.browsers)
+            input.configureSettings(new); configureShortcutExceptions()
+            // Settings sliders and color wells commit continuously while dragging. Only
+            // reconfigure what actually changed: a browser reconfigure refreshes every
+            // connected browser, and a mode publish re-presents the switcher state.
+            if new.mode != old.mode { input.configureMode(new.mode) }
+            catalogue.setMode(new.mode)
+            if new.browsers != old.browsers { browsers?.configure(new.browsers) }
             catalogue.setDesktopSpotlightEnabled(new.appearance.desktopSpotlight.previewsWindows)
             if new.selection != old.selection { labelSession = (try? labelSession.changing(to:new.selection,source:rawSnapshot)) ?? labelSession }
-            publishCatalogue()
+            if Self.affectsOnlyPresentation(new,old) { presenter.prepare(mappedSnapshot, icons: presentationIcons) }
+            else { publishCatalogue() }
         }
         preferences.onSearchMemoryChange = { [weak self] memory in self?.input.configureSearchMemory(memory) }
         input.onSearchMemory = { [weak self] memory in self?.preferences.saveSearchChoices(memory) }
@@ -550,6 +557,14 @@ import TabnaxCore
         // The settings preview re-runs the whole labelling pipeline; a closed window has no
         // use for that, and showSettings() brings it up to date before reopening.
         if settingsVisible { settings?.model.receive(rawSnapshot,session:labelSession,icons:presentationIcons) }
+    }
+    /// Appearance and placement never change the mapped catalogue or the settings preview's
+    /// targets, so rerunning the labelling pipeline (and the settings preview's copy of it)
+    /// for them is wasted work; the presenter only needs its warmed rows restyled.
+    private static func affectsOnlyPresentation(_ new: SettingsDocument, _ old: SettingsDocument) -> Bool {
+        var unchanged = new
+        unchanged.appearance = old.appearance; unchanged.positions = old.positions; unchanged.display = old.display
+        return unchanged == old
     }
     /// A minimized window counts: it comes back without passing through showSettings().
     private var settingsVisible: Bool { settings?.window.map { $0.isVisible || $0.isMiniaturized } ?? false }

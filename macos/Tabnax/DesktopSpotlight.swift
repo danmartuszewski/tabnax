@@ -46,7 +46,8 @@ import TabnaxCore
             panels.append(panel)
         }
         for (panel, screen) in zip(panels, screens) {
-            panel.setFrame(screen, display: false)
+            // Called for every highlight change; the display inventory rarely moves.
+            if panel.frame != screen { panel.setFrame(screen, display: false) }
             let view = panel.contentView as! DesktopSpotlightView
             view.configure(windowFrame: frame.offsetBy(dx: -screen.minX, dy: -screen.minY),
                            opacity: preferences.activeOpacity, accent: accent, strong: strong,

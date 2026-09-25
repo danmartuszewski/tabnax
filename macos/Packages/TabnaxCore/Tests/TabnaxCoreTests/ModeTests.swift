@@ -363,3 +363,27 @@ private func modeFixture(_ count: Int = 10, alphabet: String = AddressBook.right
     _ = searching.handle(.beginSearch)
     #expect(searching.commitHighlight() == .none)
 }
+
+@Test func memoizedNavigationFollowsEveryInputAndNeverLeaksBetweenCopies() throws {
+    var book = try AddressBook(); let process = UUID()
+    let targets = try (0..<14).map { i -> Target in
+        let id = TargetID(process: process, window: UUID())
+        return Target(id: id, app: "Fixture", title: "Window \(i)", address: try book.address(for: id))
+    }
+    for mode in DisplayMode.allCases {
+        var state = SelectionState(); state.configure(mode: mode); state.update(.init(windows: targets)); state.open()
+        let items = state.navigationItems, shown = state.displayMatches
+        var copy = state
+        let overflow = try #require(targets.first { $0.address.count > 1 }?.address.first).description
+        _ = copy.handle(.letter(overflow))
+        #expect(state.navigationItems == items && state.displayMatches == shown)
+        // A state rebuilt from scratch by the same steps reads identical lists.
+        var fresh = SelectionState(); fresh.configure(mode: mode); fresh.update(.init(windows: targets)); fresh.open()
+        _ = fresh.handle(.letter(overflow))
+        #expect(copy.navigationItems == fresh.navigationItems && copy.displayMatches == fresh.displayMatches)
+        #expect(copy.highlightedAction == fresh.highlightedAction && copy == fresh)
+        _ = copy.handle(.beginSearch); _ = copy.handle(.query("window 3"))
+        #expect(copy.displayMatches.first?.title == "Window 3")
+        #expect(copy.navigationItems.first == NavigationItem(.target(targets[3].id)))
+    }
+}

@@ -4,19 +4,31 @@ import CryptoKit
 /// Search never joins fields or drops meaningful symbols. Formatting separators are
 /// optional, but a separator-only term still has to occur literally in one field.
 enum SearchText {
+    static let locale = Locale(identifier: "en_US_POSIX")
     static func fold(_ text: String) -> String {
-        text.folding(options: [.caseInsensitive, .diacriticInsensitive, .widthInsensitive],
-                     locale: Locale(identifier: "en_US_POSIX"))
+        text.folding(options: [.caseInsensitive, .diacriticInsensitive, .widthInsensitive], locale: locale)
     }
     static func isSeparator(_ c: Character) -> Bool { c.isWhitespace || "-_./\\'’‐‑‒–—−".contains(c) }
     static func compact(_ text: String) -> String { text.filter { !isSeparator($0) } }
     static func terms(_ query: String) -> [String] { fold(query).split(whereSeparator: \.isWhitespace).map(String.init) }
 }
 
+/// A query term with its separator-free needle, derived once per query instead of once
+/// per target field on every keystroke.
+struct SearchTerm: Sendable {
+    let text: String
+    let needle: [Character]
+    init(_ text: String) { self.text = text; needle = Array(SearchText.compact(text)) }
+}
+
 struct SearchField: Equatable, Sendable {
     let text: String
     let compact: [Character]
     let starts: Set<Int>
+    /// Per-character lookups for the scorer's inner loop, derived from `compact`/`starts`.
+    private let isStart: [Bool]
+    private let isSymbol: [Bool]
+    private let initials: [Character]
     init(_ value: String) {
         text = SearchText.fold(value)
         var characters: [Character] = [], boundaries = Set<Int>(), segment = ""
@@ -27,7 +39,7 @@ struct SearchField: Equatable, Sendable {
             characters.append(contentsOf: SearchText.fold(segment))
             segment = ""
         }
-        let widthFolded = value.folding(options: [.widthInsensitive], locale: Locale(identifier: "en_US_POSIX"))
+        let widthFolded = value.folding(options: [.widthInsensitive], locale: SearchText.locale)
         for character in widthFolded {
             if SearchText.isSeparator(character) { appendSegment(); previous = character; continue }
             // Camel-case initials work alongside ordinary word initials. Fold words,
@@ -37,17 +49,21 @@ struct SearchField: Equatable, Sendable {
         }
         appendSegment()
         compact = characters; starts = boundaries
+        isStart = characters.indices.map { boundaries.contains($0) }
+        isSymbol = characters.map { !$0.isLetter && !$0.isNumber }
+        initials = characters.indices.filter { boundaries.contains($0) }.map { characters[$0] }
     }
-    func score(_ term: String) -> Int? {
-        let needle = Array(SearchText.compact(term))
-        guard !needle.isEmpty else { return text.contains(term) ? 5_000 : nil }
+    func score(_ term: String) -> Int? { score(SearchTerm(term)) }
+    func score(_ term: SearchTerm) -> Int? {
+        let needle = term.needle
+        guard !needle.isEmpty else { return text.contains(term.text) ? 5_000 : nil }
         guard needle.count <= compact.count else { return nil }
         if needle == compact { return 8_000 }
         // Best contiguous occurrence: whole field, prefix, word prefix, then substring.
         var contiguous: Int?
         for start in compact.indices where compact[start] == needle[0] && start + needle.count <= compact.count {
             if compact[start..<(start + needle.count)].elementsEqual(needle) {
-                let score = start == 0 ? 7_000 : starts.contains(start) ? 6_000 : 5_000
+                let score = start == 0 ? 7_000 : isStart[start] ? 6_000 : 5_000
                 contiguous = max(contiguous ?? 0, score)
             }
         }
@@ -55,8 +71,13 @@ struct SearchField: Equatable, Sendable {
         // A lone character is already covered above. Never treat symbols as omissions:
         // c# cannot become c++, nor can cp skip the ++ in C++ Primer.
         guard needle.count >= 2 else { return nil }
+        // Every scored match is an ordered subsequence; most fields fail that linear check,
+        // so they skip the quadratic scorer below entirely.
+        var matched = 0
+        for character in compact where matched < needle.count && character == needle[matched] { matched += 1 }
+        guard matched == needle.count else { return nil }
         var previous = Array(repeating: Int.min, count: compact.count)
-        for i in compact.indices where compact[i] == needle[0] { previous[i] = (starts.contains(i) ? 100 : 0) - min(i, 100) }
+        for i in compact.indices where compact[i] == needle[0] { previous[i] = (isStart[i] ? 100 : 0) - min(i, 100) }
         for character in needle.dropFirst() {
             var next = Array(repeating: Int.min, count: compact.count), best = Int.min
             for i in compact.indices {
@@ -64,17 +85,16 @@ struct SearchField: Equatable, Sendable {
                     let p = i - 1
                     if previous[p] != Int.min { best = max(best, previous[p] + p) }
                     // Gaps may contain letters/digits only, never meaningful symbols.
-                    if !compact[p].isLetter && !compact[p].isNumber { best = previous[p] == Int.min ? Int.min : previous[p] + p }
+                    if isSymbol[p] { best = previous[p] == Int.min ? Int.min : previous[p] + p }
                 }
                 if compact[i] == character, best != Int.min {
-                    next[i] = best - i + (starts.contains(i) ? 100 : 0)
+                    next[i] = best - i + (isStart[i] ? 100 : 0)
                     if i > 0, previous[i-1] != Int.min { next[i] = max(next[i], previous[i-1] + 30) }
                 }
             }
             previous = next
         }
         guard let best = previous.max(), best != Int.min else { return nil }
-        let initials = compact.indices.filter { starts.contains($0) }.map { compact[$0] }
         var index = 0
         for initial in initials where index < needle.count { if initial == needle[index] { index += 1 } }
         return (index == needle.count ? 4_000 : 2_000) + max(0, min(500, best))

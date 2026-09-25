@@ -83,6 +83,19 @@ struct WindowActionAccess {
         self.minimized = minimized; self.canSetMinimized = canSetMinimized
         self.canPress = canPress; self.setMinimized = setMinimized; self.press = press
     }
+    /// A menu probe asks several rows about one window. Read its shared state once per
+    /// probe; `perform` uses the live access so execution still repeats every check.
+    func memoized() -> WindowActionAccess {
+        let live = self
+        var minimized: Bool??, settable: Bool?
+        return WindowActionAccess(minimized: {
+            if let minimized { return minimized }
+            let value = live.minimized(); minimized = .some(value); return value
+        }, canSetMinimized: {
+            if let settable { return settable }
+            let value = live.canSetMinimized(); settable = value; return value
+        }, canPress: live.canPress, setMinimized: live.setMinimized, press: live.press)
+    }
     func disabledReason(for action: SwitcherAction, hidden: Bool) -> String? {
         switch action {
         case .minimizeWindow, .restoreWindow:

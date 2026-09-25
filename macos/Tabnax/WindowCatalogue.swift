@@ -323,11 +323,17 @@ private struct Discovery: Sendable {
         let generation = observationGeneration
         // The reads are IPC to the dragged app, which may be busy; keep them off the main thread.
         workers.addOperation { [weak self] in
+            let attributes = [kAXPositionAttribute, kAXSizeAttribute] as CFArray
             let measured = pending.compactMap { entry -> (TargetID, pid_t, CGRect)? in
-                let (posError, posValue) = axValue(entry.handle.element, kAXPositionAttribute)
-                let (sizeError, sizeValue) = axValue(entry.handle.element, kAXSizeAttribute)
-                guard posError == .success, let posValue, sizeError == .success, let sizeValue,
-                      let point = decodePoint(posValue), let size = decodeSize(sizeValue), size.width > 0, size.height > 0 else { return nil }
+                // One round trip per window; errors come back in place as AXValue-wrapped AXErrors,
+                // which the decoders reject like a failed single-attribute read.
+                var values: CFArray?
+                let interval = Trace.signposter.beginInterval("axCall")
+                let result = AXUIElementCopyMultipleAttributeValues(entry.handle.element, attributes, [], &values)
+                Trace.signposter.endInterval("axCall", interval)
+                guard result == .success,
+                      let list = values as? [Any], list.count == 2,
+                      let point = decodePoint(list[0]), let size = decodeSize(list[1]), size.width > 0, size.height > 0 else { return nil }
                 return (entry.id, entry.pid, CGRect(origin: point, size: size))
             }
             Task { @MainActor [weak self] in
@@ -564,10 +570,11 @@ private struct Discovery: Sendable {
         // Addresses determine the index, not focus recency or changing titles.
         var rank: [Character: Int] = [:]
         for (index, character) in windowAddresses.alphabet.enumerated() { rank[character] = index }
-        windows.sort { a, b in
-            if a.address.count != b.address.count { return a.address.count < b.address.count }
-            return a.address.map { rank[$0]! }.lexicographicallyPrecedes(b.address.map { rank[$0]! })
-        }
+        // Rank each address once rather than on both sides of every comparison.
+        windows = windows.map { (key: $0.address.map { rank[$0]! }, target: $0) }.sorted { a, b in
+            if a.key.count != b.key.count { return a.key.count < b.key.count }
+            return a.key.lexicographicallyPrecedes(b.key)
+        }.map(\.target)
         let allocated = windowAddresses.allocated.union(appAddresses.allocated)
         // Most triggers (activation, on-open refresh of every process, geometry passes) end up
         // describing the same windows. Handles are reused per window id, so equal targets mean an

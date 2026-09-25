@@ -97,6 +97,9 @@ private func iconsEqual(_ lhs: [UUID:NSImage], _ rhs: [UUID:NSImage]) -> Bool {
     @Published private(set) var changedLabelsCount = 0
     var changedLabels: Int { changedLabelsCount }
     private func updateChangedLabelsCount() {
+        // The count is only shown for a draft; skip two full label mappings on every
+        // catalogue update while Settings is open without one.
+        guard dirty else { if changedLabelsCount != 0 { changedLabelsCount = 0 }; return }
         var old = liveSession, next = candidate
         let before = old.map(ApplicationShortcuts.includingClosedApps(raw,preferences:old.selection.appShortcuts))
         let after = next.map(ApplicationShortcuts.includingClosedApps(raw,preferences:next.selection.appShortcuts))

@@ -203,3 +203,64 @@ private func target(_ title: String, app: String = "Browser", group: String = ""
     _ = state.handle(.escape); _ = state.handle(.query("ignored"))
     #expect(state.queryRevision == 4)
 }
+
+/// The scorer as it was before its lookup tables and subsequence pre-check; kept as an oracle.
+private func referenceScore(_ field: SearchField, _ term: String) -> Int? {
+    let compact = field.compact, starts = field.starts, needle = Array(SearchText.compact(term))
+    guard !needle.isEmpty else { return field.text.contains(term) ? 5_000 : nil }
+    guard needle.count <= compact.count else { return nil }
+    if needle == compact { return 8_000 }
+    var contiguous: Int?
+    for start in compact.indices where compact[start] == needle[0] && start + needle.count <= compact.count {
+        if compact[start..<(start + needle.count)].elementsEqual(needle) {
+            contiguous = max(contiguous ?? 0, start == 0 ? 7_000 : starts.contains(start) ? 6_000 : 5_000)
+        }
+    }
+    if let contiguous { return contiguous }
+    guard needle.count >= 2 else { return nil }
+    var previous = Array(repeating: Int.min, count: compact.count)
+    for i in compact.indices where compact[i] == needle[0] { previous[i] = (starts.contains(i) ? 100 : 0) - min(i, 100) }
+    for character in needle.dropFirst() {
+        var next = Array(repeating: Int.min, count: compact.count), best = Int.min
+        for i in compact.indices {
+            if i > 0 {
+                let p = i - 1
+                if previous[p] != Int.min { best = max(best, previous[p] + p) }
+                if !compact[p].isLetter && !compact[p].isNumber { best = previous[p] == Int.min ? Int.min : previous[p] + p }
+            }
+            if compact[i] == character, best != Int.min {
+                next[i] = best - i + (starts.contains(i) ? 100 : 0)
+                if i > 0, previous[i-1] != Int.min { next[i] = max(next[i], previous[i-1] + 30) }
+            }
+        }
+        previous = next
+    }
+    guard let best = previous.max(), best != Int.min else { return nil }
+    let initials = compact.indices.filter { starts.contains($0) }.map { compact[$0] }
+    var index = 0
+    for initial in initials where index < needle.count { if initial == needle[index] { index += 1 } }
+    return (index == needle.count ? 4_000 : 2_000) + max(0, min(500, best))
+}
+
+@Test func cachedScorerMatchesReferenceScoresExactly() {
+    let fields = ["C++ Primer", "Pull request #42 — TabnaxCore", "iTerm2", "Café menu", "ＷＩＤＥ　ｔｅｘｔ", "readme.md",
+                  "SearchField.swift", "a-b_c.d/e", "", "c#", "Design review: Q3 roadmap", "xYz", "ÅngströmLab"]
+    let terms = ["c", "cp", "c++", "prc", "tc", "tabnax", "pr42", "#", "--", "cafe", "wide", "rmd", "sfs", "sf",
+                 "q3", "dr", "rv", "ångström", "al", "xz", "zz", "ab", "abcde", "rea", "ts", "ter2"]
+    for value in fields {
+        let field = SearchField(value)
+        for term in SearchText.terms(terms.joined(separator: " ")) {
+            #expect(field.score(term) == referenceScore(field, term), "\(value) / \(term)")
+        }
+    }
+}
+
+@Test func targetEqualityIgnoresDerivedSearchCacheButNotMetadata() {
+    let original = target("Report", app: "Pages")
+    var renamed = original; renamed.title = "Report 2"
+    var restored = renamed; restored.title = "Report"
+    #expect(renamed != original)
+    #expect(restored == original)
+    #expect(restored.searchText == original.searchText)
+    #expect(search("rep", in: [restored]) == [restored.id])
+}

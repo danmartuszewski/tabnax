@@ -41,8 +41,10 @@ public extension SelectionState {
             return mode == .fold ? snapshot.apps.first { $0.foldAddress == code } : nil
         }
     }
-    func actionTarget(for action: SwitcherAction) -> TargetID? {
-        guard let target = highlightedTarget, target.available, target.isRunning else { return nil }
+    func actionTarget(for action: SwitcherAction) -> TargetID? { actionTarget(for: action, highlighted: highlightedTarget) }
+    /// Takes the highlight so a whole menu resolves it (a full navigation pass) only once.
+    private func actionTarget(for action: SwitcherAction, highlighted: Target?) -> TargetID? {
+        guard let target = highlighted, target.available, target.isRunning else { return nil }
         switch action {
         case .quitApplication, .hideApplication, .unhideApplication:
             // Browser connections have their own lifetime identity. Never confuse it
@@ -71,12 +73,13 @@ public extension SelectionState {
     }
 
     var actionMenuItems: [SwitcherActionItem] {
+        let highlightedTarget = highlightedTarget
         let hidden = highlightedTarget?.hidden == true || snapshot.apps.contains { $0.id.process == highlightedTarget?.groupOwner && $0.hidden }
         let actions: [SwitcherAction] = [.closeWindow, .minimizeWindow, .restoreWindow,
             hidden ? .unhideApplication : .hideApplication,
             .zoomWindow, .toggleFullscreen, .quitApplication]
         return actions.map { action in
-            let id = actionTarget(for: action)
+            let id = actionTarget(for: action, highlighted: highlightedTarget)
             let reason: String?
             if id != nil { reason = nil }
             else if highlightedTarget == nil { reason = "Highlight a single window or app" }
@@ -90,14 +93,15 @@ public extension SelectionState {
         }
     }
 
-    var navigationItems: [NavigationItem] {
+    var navigationItems: [NavigationItem] { memoized(\.navigationItems) { computeNavigationItems() } }
+    private func computeNavigationItems() -> [NavigationItem] {
         // Search keeps each mode's layout, so its results are walked in that layout's order.
         if query != nil {
             return displayMatches.filter(\.available).map { .init(.target($0.id)) }
         }
         if mode == .fold && foldFamily == nil {
-            let currentMatches = matches
-            return foldFamilies.filter { app in app.isRunning && currentMatches.contains { $0.groupOwner == app.id.process && $0.available } }.map { .init(.branch($0.foldAddress)) }
+            let owners = Set(matches.lazy.filter(\.available).map(\.groupOwner))
+            return foldFamilies.filter { app in app.isRunning && owners.contains(app.id.process) }.map { .init(.branch($0.foldAddress)) }
         }
         if mode == .lattice {
             let cells = latticeCells.compactMap { cell -> NavigationItem? in

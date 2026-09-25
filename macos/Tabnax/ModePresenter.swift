@@ -97,14 +97,18 @@ import TabnaxCore
     func dismiss()
 }
 private final class Canvas: NSView {
-    var fill = NSColor.windowBackgroundColor
+    // Every present() reassigns these, usually to the same values. Redraw only on a real
+    // change: the panel canvas spans the whole window, so repainting it per keystroke is costly.
+    var fill = NSColor.windowBackgroundColor { didSet { if fill != oldValue { needsDisplay = true } } }
     /// Non-zero only for a canvas that is a borderless panel's whole surface: the window is
     /// transparent there, so the rounded shape (and the shadow AppKit derives from it) is drawn.
-    var cornerRadius: CGFloat = 0
-    var outline: NSColor?
-    var outlineWidth: CGFloat = 1
+    var cornerRadius: CGFloat = 0 { didSet { if cornerRadius != oldValue { needsDisplay = true } } }
+    var outline: NSColor? { didSet { if outline != oldValue { needsDisplay = true } } }
+    var outlineWidth: CGFloat = 1 { didSet { if outlineWidth != oldValue { needsDisplay = true } } }
     /// Hairline rules in this view's coordinates, drawn over the fill.
-    var rules: [(rect: CGRect, color: NSColor)] = []
+    var rules: [(rect: CGRect, color: NSColor)] = [] {
+        didSet { if !rules.elementsEqual(oldValue, by: { $0.rect == $1.rect && $0.color == $1.color }) { needsDisplay = true } }
+    }
     var onAppearanceChanged: (() -> Void)?
     override var isFlipped: Bool { true }
     override func viewDidChangeEffectiveAppearance() { super.viewDidChangeEffectiveAppearance(); onAppearanceChanged?() }
@@ -496,6 +500,14 @@ struct SwitcherDisplay: Equatable {
     private var frameMatchIDs = Set<TargetID>()
     private var frameMinimizedOwners = Set<UUID>()
     private var frameHighlight: NavigationAction?
+    /// Shared stand-in for apps without an icon, so a frame never reassigns a fresh image.
+    private static let placeholderIcon = NSImage(systemSymbolName: "app", accessibilityDescription: nil)
+    /// Also derived once per present(): these SelectionState properties re-filter and re-sort
+    /// every target on each read, and the layout reads them several times per frame.
+    private var frameDisplayTargets: [Target] = []
+    private var frameLatticeCells: [AddressCell] = []
+    /// Collected while laying out, then handed to the body in one assignment.
+    private var frameRules: [(rect: CGRect, color: NSColor)] = []
     /// Where the pointer rested when the keyboard last owned the highlight. Rebuilding or
     /// scrolling rows under a resting pointer raises mouseEntered without the mouse moving,
     /// so hover is ignored until the pointer has actually left this spot.
@@ -897,6 +909,8 @@ struct SwitcherDisplay: Equatable {
         if opening || lastState.prefix != state.prefix || lastState.query != state.query { wheel.reset() }
         lastState = state
         frameMatches = state.displayMatches; frameMatchIDs = Set(frameMatches.map(\.id)); frameHighlight = state.highlightedAction
+        frameDisplayTargets = state.displayTargets
+        frameLatticeCells = state.mode == .lattice ? state.latticeCells : []
         frameMinimizedOwners = Set(state.snapshot.windows.filter { $0.minimized && $0.available && $0.isRunning }.map(\.groupOwner))
         let appearance = settings.appearance.source
         let nativeAppearance: NSAppearance? = appearance == .system ? nil : NSAppearance(named: appearance == .dark ? .darkAqua : .aqua)
@@ -934,21 +948,21 @@ struct SwitcherDisplay: Equatable {
         // to the full-strength text token when the system asks for increased contrast.
         let secondaryText = NSColor(NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast ? tokens.text : tokens.secondary)
         hint.textColor = secondaryText; footer.textColor = secondaryText
-        content.needsDisplay = true; body.needsDisplay = true
         var safe = displayBounds ?? display?.visibleFrame ?? CGRect(x: 0, y: 0, width: 1000, height: 700)
         if let previewSize { safe.size.width = min(safe.width, previewSize.width); safe.size.height = min(safe.height, previewSize.height) }
         let searchMode = state.query != nil
         let mode = state.mode
         let targetName = "windows, tabs & apps"
-        search.placeholderString = String(localized: "Search \(targetName)")
-        search.setAccessibilityLabel(String(localized: "Search \(targetName)"))
+        let searchLabel = String(localized: "Search \(targetName)")
+        if search.placeholderString != searchLabel { search.placeholderString = searchLabel }
+        if search.accessibilityLabel() != searchLabel { search.setAccessibilityLabel(searchLabel) }
         // Search filters inside the mode's own layout, so the panel keeps that mode's size too.
-        var geometry = SwitcherGeometry.size(mode:mode,count:state.displayTargets.count,rowStride:rowStride)
+        var geometry = SwitcherGeometry.size(mode:mode,count:frameDisplayTargets.count,rowStride:rowStride)
         if mode != .shore { geometry.height = max(180, geometry.height-100) }
         if mode == .shore {
             // Size the narrow index to its actual chrome. Keep its full-session row
             // allowance while filtering so the panel does not jump with every letter.
-            let rowsHeight: CGFloat = state.displayTargets.isEmpty ? 66 : CGFloat(min(12, state.displayTargets.count))*rowStride
+            let rowsHeight: CGFloat = frameDisplayTargets.isEmpty ? 66 : CGFloat(min(12, frameDisplayTargets.count))*rowStride
             let searchHeight: CGFloat = searchMode ? 36 : 0
             let warningHeight: CGFloat = status.isEmpty ? 0 : 44
             geometry.height = rowsHeight + 64 + searchHeight + warningHeight
@@ -958,7 +972,7 @@ struct SwitcherDisplay: Equatable {
             // to whatever the screen allows, but never narrower than fold's layout.
             // Sized off the full target set (not the prefix-filtered matches) so typing
             // a letter dims non-matching tiles in place instead of reflowing the grid.
-            let columns = max(1, canopyOrder(state.displayTargets).count)
+            let columns = max(1, canopyOrder(frameDisplayTargets).count)
             let columnWidth: CGFloat = 260, gap: CGFloat = 12, margins: CGFloat = 36
             let gutter = NSScroller.scrollerWidth(for: .regular, scrollerStyle: .legacy)
             let natural = CGFloat(columns)*columnWidth + CGFloat(columns-1)*gap + margins + gutter
@@ -971,7 +985,7 @@ struct SwitcherDisplay: Equatable {
             // row/column math lattice(width:) below; an underestimate self-corrects in the
             // same present() call via the grow-to-fit block further down, so this only needs
             // to be a close approximation, not exact.
-            let cells = state.latticeCells.count
+            let cells = frameLatticeCells.count
             let columns = max(1, min((cells+1)/2, Int(geometry.width/190)))
             let rows = max(1, Int((Double(cells)/Double(columns)).rounded(.up)))
             geometry.height = max(180, CGFloat(rows)*(tileHeight+10)+64)
@@ -1013,14 +1027,17 @@ struct SwitcherDisplay: Equatable {
         footer.font = .systemFont(ofSize: 11)
         footer.maximumNumberOfLines = 1
         footer.stringValue = mode == .relay && !searchMode ? String(localized: "↑ ↓ Choose · ↵ Previous") : String(localized: "↑ ↓ Choose · ↵ Select")
-        footer.toolTip = searchMode ? String(localized: "Use the arrows or Tab to move the highlight, then Return to select.") : String(localized: "Type an item's letters to select it immediately. Use the arrows or Tab to move the highlight.")
+        let footerTip = searchMode ? String(localized: "Use the arrows or Tab to move the highlight, then Return to select.") : String(localized: "Type an item's letters to select it immediately. Use the arrows or Tab to move the highlight.")
+        if footer.toolTip != footerTip { footer.toolTip = footerTip }
         func placeControls(at height: CGFloat) {
             for view in [footer, searchButton, helpButton, closeButton] { view.isHidden = embedded }
             footer.frame = CGRect(x: 110, y: height-32, width: max(0,width-230), height: 18)
             // Compact previews already provide controls in Settings, outside the renderer.
             footer.isHidden = embedded || width < 390
-            searchButton.title = searchMode ? String(localized: "Done") : String(localized: "Search  /")
-            searchButton.toolTip = searchMode ? String(localized: "Exit search (Esc)") : String(localized: "Search windows, tabs and apps (/)")
+            let searchTitle = searchMode ? String(localized: "Done") : String(localized: "Search  /")
+            let searchTip = searchMode ? String(localized: "Exit search (Esc)") : String(localized: "Search windows, tabs and apps (/)")
+            if searchButton.title != searchTitle { searchButton.title = searchTitle }
+            if searchButton.toolTip != searchTip { searchButton.toolTip = searchTip }
             searchButton.frame = CGRect(x: 14, y: height-37, width: 86, height: 26)
             helpButton.frame = CGRect(x: width-74, y: height-37, width: 28, height: 26)
             actionsButton.isHidden = embedded || !settings.windowActionsEnabled
@@ -1030,7 +1047,7 @@ struct SwitcherDisplay: Equatable {
         }
         placeControls(at: height)
         desiredBodyViews.removeAll(keepingCapacity: true)
-        body.rules = []
+        frameRules.removeAll(keepingCapacity: true)
         labelCursor = 0; imageCursor = 0
         let liveIDs = Set(state.targets.map(\.id))
         rows = rows.filter { liveIDs.contains($0.key) }
@@ -1042,7 +1059,7 @@ struct SwitcherDisplay: Equatable {
         var bodyHeight: CGFloat = 0
         var wantedPlaques = Set<TargetID>()
         // Filtering narrows what each mode shows; it never swaps the mode for a plain list.
-        let shown = searchMode ? frameMatches : state.displayTargets
+        let shown = searchMode ? frameMatches : frameDisplayTargets
         if !(searchMode && frameMatches.isEmpty) {
             switch mode {
             case .shore: bodyHeight = list(frameMatches, width: bodyWidth, state: state, icons: icons)
@@ -1114,13 +1131,15 @@ struct SwitcherDisplay: Equatable {
                     if row.superview !== wrapper { wrapper.addSubview(row) }
                     row.frame = CGRect(origin: .zero, size: plaqueFrame.size)
                     plaqueSurface.frame = CGRect(origin: .zero, size: plaqueFrame.size)
-                    plaqueSurface.appearance = nativeAppearance
+                    if plaqueSurface.appearance?.name != nativeAppearance?.name { plaqueSurface.appearance = nativeAppearance }
                     let plaqueMaterial = plaqueSurface.configure(tokens: tokens, embedded: false, cornerRadius: 12)
                     wrapper.fill = NSColor(tokens.surface).withAlphaComponent(plaqueMaterial == .solid ? 1 : 0.12)
-                    plaque.appearance = nativeAppearance
-                    plaque.contentView = plaqueSurface; plaque.setFrame(plaqueFrame, display: false)
+                    if plaque.appearance?.name != nativeAppearance?.name { plaque.appearance = nativeAppearance }
+                    if plaque.contentView !== plaqueSurface { plaque.contentView = plaqueSurface }
+                    plaque.setFrame(plaqueFrame, display: false)
                     let orderStart = CACurrentMediaTime()
-                    if !previewOnly { plaque.orderFront(nil) }
+                    // Ordering is a WindowServer round trip; a plaque already on screen keeps its place.
+                    if !previewOnly && !plaque.isVisible { plaque.orderFront(nil) }
                     Trace.log.info("perf: plaque \(target.app, privacy: .public) new=\(isNewPlaque, privacy: .public) orderFront elapsed=\(CACurrentMediaTime()-orderStart, privacy: .public)")
                 }
                 Trace.log.info("perf: beacons loop done t=\(CACurrentMediaTime(), privacy: .public)")
@@ -1139,7 +1158,7 @@ struct SwitcherDisplay: Equatable {
             }
         }
         for (id, plaque) in plaques where !wantedPlaques.contains(id) { plaque.close(); plaques[id] = nil }
-        if state.displayTargets.isEmpty || (searchMode && frameMatches.isEmpty) {
+        if frameDisplayTargets.isEmpty || (searchMode && frameMatches.isEmpty) {
             if searchMode {
                 label(String(localized: "No matching \(targetName)."), x: 0, y: 0, width: bodyWidth); bodyHeight = 48
             } else {
@@ -1151,6 +1170,7 @@ struct SwitcherDisplay: Equatable {
             }
         }
         reconcileBodyViews()
+        body.rules = frameRules
         // Fit the initial content, then retain that height while searching or moving
         // between Fold families. Fewer results should not move the panel under the pointer.
         let requiredHeight = min(safe.height, max(140, sessionHeight, bodyHeight+top+bottomMargin))
@@ -1201,7 +1221,7 @@ struct SwitcherDisplay: Equatable {
         // instead of relying on incidental focus-change announcements.
         if ownsInput && !previewOnly {
             if opening {
-                announce(String(localized: "Tabnax \(mode.title) switcher, \(state.displayTargets.count) targets"))
+                announce(String(localized: "Tabnax \(mode.title) switcher, \(frameDisplayTargets.count) targets"))
             } else if previousMode != nil && previousMode != state.mode {
                 announce(String(localized: "\(mode.title) mode"))
             } else if previousStatus != status && !status.isEmpty {
@@ -1295,9 +1315,9 @@ struct SwitcherDisplay: Equatable {
         }
         return y + CGFloat((targets.count+columns-1)/columns)*rowStride
     }
-    private func canopyGroupKey(_ target: Target) -> String { target.groupOwner.uuidString }
+    private func canopyGroupKey(_ target: Target) -> UUID { target.groupOwner }
     private func canopyOrder(_ matches: [Target]) -> [Target] {
-        var seen = Set<String>()
+        var seen = Set<UUID>()
         return matches.filter { seen.insert(canopyGroupKey($0)).inserted }
     }
     private func canopy(_ state: SelectionState, width: CGFloat, icons: [UUID: NSImage]) -> CGFloat {
@@ -1306,11 +1326,11 @@ struct SwitcherDisplay: Equatable {
         // tiles and reflowing the grid underneath the user.
         // A search drops the apps and windows that don't match, but columns keep the width
         // they had before filtering.
-        let shown = state.query != nil ? frameMatches : state.displayTargets
+        let shown = state.query != nil ? frameMatches : frameDisplayTargets
         let groups = Dictionary(grouping: shown, by: canopyGroupKey)
-        let order = canopyOrder(state.query != nil ? frameMatches : state.displayTargets).filter { groups[canopyGroupKey($0)] != nil }
+        let order = canopyOrder(state.query != nil ? frameMatches : frameDisplayTargets).filter { groups[canopyGroupKey($0)] != nil }
         let matchedGroups = Set(frameMatches.map(canopyGroupKey))
-        let columns = max(1, min(canopyOrder(state.displayTargets).count, Int(width/260))), w = (width-CGFloat(columns-1)*12)/CGFloat(columns)
+        let columns = max(1, min(canopyOrder(frameDisplayTargets).count, Int(width/260))), w = (width-CGFloat(columns-1)*12)/CGFloat(columns)
         let iconSize: CGFloat = (embedded ? 32 : 36) + (settings.appearance.scale.factor-1)*12
         let header = max(iconSize+8,sectionHeight+8)
         var y: CGFloat = 0
@@ -1324,7 +1344,8 @@ struct SwitcherDisplay: Equatable {
                 if imageCursor < imagePool.count { image = imagePool[imageCursor] } else { image = NSImageView(); imagePool.append(image) }
                 imageCursor += 1
                 image.frame = CGRect(x:x+iconX,y:y,width:iconSize,height:iconSize)
-                image.image = icons[app.groupOwner] ?? NSImage(systemSymbolName:"app",accessibilityDescription:nil)
+                let appImage = icons[app.groupOwner] ?? Self.placeholderIcon
+                if image.image !== appImage { image.image = appImage }
                 image.imageScaling = .scaleProportionallyUpOrDown; attachToBody(image)
                 let groupMatches = matchedGroups.contains(canopyGroupKey(app))
                 image.alphaValue = groupMatches ? 1 : 0.4
@@ -1345,7 +1366,7 @@ struct SwitcherDisplay: Equatable {
                 let nameHeight = ceil(name.intrinsicContentSize.height)
                 name.frame = CGRect(x:x+textX,y:y+(iconSize-nameHeight)/2,width:nameWidth,height:nameHeight)
                 // A quiet rule makes the app heading readable across glass and solid surfaces.
-                body.rules.append((CGRect(x:x+7,y:y+header-3,width:max(0,w-14),height:1),hairline))
+                frameRules.append((CGRect(x:x+7,y:y+header-3,width:max(0,w-14),height:1),hairline))
                 for (i, target) in children.enumerated() {
                     let row = row(target, state: state, icons: icons); attachToBody(row)
                     row.frame = CGRect(x: x, y: y+header+CGFloat(i)*rowStride, width: w, height: rowHeight)
@@ -1354,14 +1375,14 @@ struct SwitcherDisplay: Equatable {
             }
             // Each app is a column of its own; a rule in the gutter keeps neighbours apart.
             for column in chunk.indices.dropFirst() {
-                body.rules.append((CGRect(x: CGFloat(column)*(w+12)-6, y: y, width: 1, height: maxHeight), hairline))
+                frameRules.append((CGRect(x: CGFloat(column)*(w+12)-6, y: y, width: 1, height: maxHeight), hairline))
             }
             y += maxHeight+16
         }
         return y
     }
     private func lattice(_ state: SelectionState, width: CGFloat, icons: [UUID: NSImage]) -> CGFloat {
-        let cells = state.latticeCells
+        let cells = frameLatticeCells
         let columns = max(1, min((cells.count+1)/2, Int(width/190))), w = (width-CGFloat(columns-1)*10)/CGFloat(columns)
         if state.query != nil {
             // Search results stay on the same tile grid instead of collapsing into a list.
@@ -1398,10 +1419,15 @@ struct SwitcherDisplay: Equatable {
                     button.navigationAction = .branch(cell.address)
                     button.isEnabled = cell.descendants.contains(where: \.available); button.alphaValue = button.isEnabled ? 1 : 0.4; button.frame = rect
                     if frameHighlight == .branch(cell.address) { button.highlight(tokens) }
-                    button.setAccessibilityHelp(cell.descendants.isEmpty ? nil : String(localized: "Press Return to open this group. Backspace returns to the previous level."))
+                    let help = cell.descendants.isEmpty ? nil : String(localized: "Press Return to open this group. Backspace returns to the previous level.")
+                    if button.accessibilityHelp() != help { button.setAccessibilityHelp(help) }
                     let inventory = cell.descendants.map { $0.address.uppercased() + "  " + $0.title }.joined(separator: "\n")
-                    button.toolTip = inventory.isEmpty ? detail : inventory
-                    button.setAccessibilityLabel(cell.address.uppercased() + ", " + detail + (inventory.isEmpty ? "" : "\n" + inventory)); button.setAccessibilityIdentifier("cell-\(cell.address)"); attachToBody(button)
+                    let tip = inventory.isEmpty ? detail : inventory
+                    if button.toolTip != tip { button.toolTip = tip }
+                    let spoken = cell.address.uppercased() + ", " + detail + (inventory.isEmpty ? "" : "\n" + inventory)
+                    if button.accessibilityLabel() != spoken { button.setAccessibilityLabel(spoken) }
+                    if button.accessibilityIdentifier() != "cell-\(cell.address)" { button.setAccessibilityIdentifier("cell-\(cell.address)") }
+                    attachToBody(button)
                 }
             }
             y += rowHeight + 10
@@ -1455,9 +1481,13 @@ struct SwitcherDisplay: Equatable {
         }
         heading(String(localized: "Apps"), x: 0, width: spine-8)
         for (i, app) in families.enumerated() {
-            let button = familyButtons[app.foldAddress] ?? ActionButton("") { [weak self] in self?.onKey?(.prefix(app.foldAddress),state.session) }
+            let button = familyButtons[app.foldAddress] ?? {
+                let button = ActionButton("") {}
+                button.setButtonType(.momentaryPushIn); button.isBordered = false; button.wantsLayer = true
+                button.layer?.cornerRadius = 8
+                return button
+            }()
             familyButtons[app.foldAddress] = button
-            button.title = ""
             button.onPress = { [weak self] in self?.onKey?(.prefix(app.foldAddress),state.session) }
             button.onHover = { [weak self] in self?.hover(.branch(app.foldAddress), session: state.session) }
             button.navigationAction = .branch(app.foldAddress)
@@ -1474,12 +1504,11 @@ struct SwitcherDisplay: Equatable {
                     }
                 }
             }
-            button.font = .systemFont(ofSize:13*settings.appearance.scale.factor)
+            let buttonFont = NSFont.systemFont(ofSize:13*settings.appearance.scale.factor)
+            if button.font != buttonFont { button.font = buttonFont }
             button.frame = CGRect(x: 0, y: headingHeight+CGFloat(i)*familyStride, width: familyWidth, height: familyHeight)
             let focused = frameHighlight == .branch(app.foldAddress)
             let selected = app.id == family?.id || focused
-            button.setButtonType(.momentaryPushIn); button.isBordered = false; button.wantsLayer = true
-            button.layer?.cornerRadius = 8
             button.layer?.backgroundColor = (selected ? NSColor(tokens.selection.mixed(with:tokens.surface,amount:focused ? 0.88 : 0.94)) : themeRowFill(tokens, card: false)).cgColor
             // Keep the containing app visible while the child owns the stronger focus ring.
             let strong = settings.appearance.strongOutlines || NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast
@@ -1487,18 +1516,27 @@ struct SwitcherDisplay: Equatable {
             button.layer?.borderWidth = strong ? 2 : selected ? 1 : 0
             button.isEnabled = (searching || !app.foldAddress.isEmpty) && availableOwners.contains(app.id.process)
             let itemCount = familyTargets[app.id.process]?.count ?? 0
-            button.setAccessibilityRole(.button); button.setAccessibilityLabel(String(localized: "\(app.foldAddress.uppercased()), \(app.app), \(itemCount) items")); button.setAccessibilityValue(selected ? String(localized: "Selected") : ""); button.setAccessibilityIdentifier("family-\(app.foldAddress)")
             let hasMinimized = frameMinimizedOwners.contains(app.id.process)
             let minimizedContext = hasMinimized ? String(localized: "Contains minimized windows") : ""
-            if hasMinimized { button.setAccessibilityLabel((button.accessibilityLabel() ?? app.app) + ", " + minimizedContext) }
-            button.toolTip = hasMinimized ? minimizedContext : nil
+            // Accessibility registration and tooltips are costly to rewrite; most frames only
+            // move the highlight, so these change only when their text does.
+            let spoken = String(localized: "\(app.foldAddress.uppercased()), \(app.app), \(itemCount) items") + (hasMinimized ? ", " + minimizedContext : "")
+            let value = selected ? String(localized: "Selected") : ""
+            button.setAccessibilityRole(.button)
+            if button.accessibilityLabel() != spoken { button.setAccessibilityLabel(spoken) }
+            if button.accessibilityValue() as? String != value { button.setAccessibilityValue(value) }
+            if button.accessibilityIdentifier() != "family-\(app.foldAddress)" { button.setAccessibilityIdentifier("family-\(app.foldAddress)") }
+            let tip = hasMinimized ? minimizedContext : nil
+            if button.toolTip != tip { button.toolTip = tip }
             attachToBody(button)
             let iconSize = stackedFamily ? min(28,max(20,familyWidth*0.3)) : familyHeight-16
             let icon = familyIcons[app.foldAddress] ?? NSImageView()
             familyIcons[app.foldAddress] = icon
-            icon.image = icons[app.id.process] ?? NSImage(systemSymbolName:"app",accessibilityDescription:nil)
+            let iconImage = icons[app.id.process] ?? Self.placeholderIcon
+            if icon.image !== iconImage { icon.image = iconImage }
             icon.imageScaling = .scaleProportionallyUpOrDown
-            button.addSubview(icon)
+            // Re-adding an attached subview detaches and reattaches it; only add it once.
+            if icon.superview !== button { button.addSubview(icon) }
             let address = familyAddresses[app.foldAddress] ?? makeKeyCapField()
             familyAddresses[app.foldAddress] = address
             address.stringValue = app.foldAddress.uppercased()
@@ -1519,8 +1557,8 @@ struct SwitcherDisplay: Equatable {
             badge.frame = CGRect(x: icon.isHidden ? 8 : icon.frame.maxX-12,
                                  y: icon.isHidden ? (button.isFlipped ? 8 : familyHeight-22)
                                     : (button.isFlipped ? icon.frame.maxY-12 : icon.frame.minY), width: 12, height: 12)
-            button.addSubview(badge)
-            button.addSubview(address)
+            if badge.superview !== button { button.addSubview(badge) }
+            if address.superview !== button { button.addSubview(address) }
             let textX = 8+iconSize+8
             let name = familyLabels[app.foldAddress] ?? NSTextField(labelWithString: "")
             familyLabels[app.foldAddress] = name
@@ -1533,7 +1571,7 @@ struct SwitcherDisplay: Equatable {
             name.frame = stackedFamily
                 ? CGRect(x: 8, y: 8, width: max(1,familyWidth-16), height: nameHeight)
                 : CGRect(x: textX, y: (familyHeight-nameHeight)/2, width: max(20,familyWidth-textX-8-keyWidth-8), height: nameHeight)
-            button.addSubview(name)
+            if name.superview !== button { button.addSubview(name) }
         }
         let liveFamilies = Set(families.map(\.foldAddress))
         familyButtons = familyButtons.filter { liveFamilies.contains($0.key) }
@@ -1546,7 +1584,7 @@ struct SwitcherDisplay: Equatable {
             let message = label(String(localized: "Choose an app to see its windows and tabs."), x: spine+8, y: headingHeight, width: width-spine-8)
             message.frame.size.height = 110 * settings.appearance.scale.factor
             let height = max(message.frame.maxY, headingHeight+CGFloat(families.count)*familyStride)
-            body.rules.append((CGRect(x: spine-2, y: 0, width: 1, height: max(height, scroll.contentSize.height)), hairline))
+            frameRules.append((CGRect(x: spine-2, y: 0, width: 1, height: max(height, scroll.contentSize.height)), hairline))
             return height
         }
         let children = (searching ? frameMatches : state.targets).filter { $0.groupOwner == family.id.process }
@@ -1564,11 +1602,11 @@ struct SwitcherDisplay: Equatable {
         }
         let height = headingHeight+max(CGFloat(families.count)*familyStride, CGFloat(children.count)*(childHeight+8))
         // The spine and the open app's windows are two panes; a rule between them says so.
-        body.rules.append((CGRect(x: spine-2, y: 0, width: 1, height: max(height, scroll.contentSize.height)), hairline))
+        frameRules.append((CGRect(x: spine-2, y: 0, width: 1, height: max(height, scroll.contentSize.height)), hairline))
         return height
     }
     private func relay(_ state: SelectionState, width: CGFloat, icons: [UUID: NSImage]) -> CGFloat {
-        let searching = state.query != nil, shown = searching ? frameMatches : state.displayTargets
+        let searching = state.query != nil, shown = searching ? frameMatches : frameDisplayTargets
         if searching {
             return grid(shown, width: width, y: 0, columns: max(1, Int(width/330)), state: state, icons: icons, outline: cardLine)
         }
@@ -1896,6 +1934,7 @@ private final class BranchTile: SessionButton {
     private let addressLabel = makeKeyCapField()
     private let detailLabel = NSTextField(wrappingLabelWithString: "")
     private var scale: Double = 1
+    private var styledScale: Double?
     init(address: String, detail: String, onPress: @escaping () -> Void) {
         super.init(frame: .zero); self.onPress = onPress
         title = ""; isBordered = false; wantsLayer = true
@@ -1909,8 +1948,8 @@ private final class BranchTile: SessionButton {
     }
     func update(address: String, detail: String, onPress: @escaping () -> Void) {
         self.onPress = onPress
-        addressLabel.stringValue = address; detailLabel.stringValue = detail
-        toolTip = address + " · " + detail
+        if addressLabel.stringValue != address { addressLabel.stringValue = address; needsLayout = true }
+        if detailLabel.stringValue != detail { detailLabel.stringValue = detail }
     }
     /// The same tint and outline a highlighted target row gets, so a branch reads as selected
     /// in the theme's colour rather than the system accent.
@@ -1925,9 +1964,12 @@ private final class BranchTile: SessionButton {
         // actually-highlighted tile (see the `highlightedAction` check after this call),
         // so unselected tiles no longer look pre-selected.
         layer?.borderColor = outline.cgColor; layer?.borderWidth = strong ? 2 : 1
-        addressLabel.font = keyCapFont(size:14*scale)
+        if styledScale != scale {
+            addressLabel.font = keyCapFont(size:14*scale); detailLabel.font = .systemFont(ofSize:12*scale)
+            styledScale = scale; needsLayout = true
+        }
         styleKeyCap(addressLabel, tokens: tokens, strong: strong)
-        detailLabel.font = .systemFont(ofSize:12*scale); detailLabel.textColor = NSColor(tokens.secondary)
+        detailLabel.textColor = NSColor(tokens.secondary)
     }
     required init?(coder: NSCoder) { fatalError("Programmatic views only") }
     override func layout() {

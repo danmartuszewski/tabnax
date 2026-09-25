@@ -130,13 +130,15 @@ public struct LabelSession: Sendable {
         pool.retain(live:Set(source.windows.map(\.id) + source.tabs.map(\.id) + source.apps.map { appIdentities[$0.id] ?? $0.id } + reserved))
         heads.retain(live:Set(source.apps.filter { !fixedIdentities.contains(appIdentities[$0.id] ?? $0.id) }.map(\.id) + reserved))
         let liveOwners = Set(source.apps.map(\.id.process))
+        // Grouped once rather than rescanning every window/tab for each owner's book.
+        let liveChildren = Dictionary(grouping: combined, by: \.groupOwner).mapValues { Set($0.map(\.id)) }
         for owner in children.keys {
             if !liveOwners.contains(owner) { children[owner] = nil }
-            else { children[owner]?.retain(live:Set(combined.filter { $0.groupOwner == owner }.map(\.id))) }
+            else { children[owner]?.retain(live:liveChildren[owner] ?? []) }
         }
         for owner in flatChildren.keys {
             if !liveOwners.contains(owner) { flatChildren[owner] = nil }
-            else { flatChildren[owner]?.retain(live:Set(combined.filter { $0.groupOwner == owner }.map(\.id))) }
+            else { flatChildren[owner]?.retain(live:liveChildren[owner] ?? []) }
         }
         pins = pins.filter { id,_ in combinedIDs.contains(id) }
         foldPins = foldPins.filter { id,_ in combinedIDs.contains(id) }

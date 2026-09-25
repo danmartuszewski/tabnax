@@ -1,5 +1,6 @@
 import Foundation
 import CoreGraphics
+import Synchronization
 
 public struct TargetID: Hashable, Sendable, Codable {
     public let process: UUID
@@ -44,8 +45,19 @@ public struct Target: Equatable, Sendable {
     /// Windows and apps are self-owning and leave this nil.
     public var owner: UUID?
     /// Cached until searchable metadata changes, keeping normalization off the keystroke path.
-    public private(set) var searchText: String
-    private var searchFields: [SearchField]
+    public var searchText: String { search.text }
+    private var search: SearchCache
+    /// Derived entirely from app/title/group, which equality already compares, so it always
+    /// compares equal: presenter change checks never re-walk every field's folded characters.
+    private struct SearchCache: Equatable, Sendable {
+        let text: String
+        let fields: [SearchField]
+        init(app: String, title: String, group: String) {
+            text = SearchText.fold(app + " " + title + " " + group)
+            fields = [app, title, group].map(SearchField.init)
+        }
+        static func == (_: Self, _: Self) -> Bool { true }
+    }
     public init(id: TargetID, app: String, title: String, address: String = "", minimized: Bool = false,
                 hidden: Bool = false, available: Bool = true, foldAddress: String = "", bounds: CGRect? = nil, onScreen: Bool = false, group: String = "", excluded: Bool = false, bundleID: String = "", isRunning: Bool = true, owner: UUID? = nil, elsewhere: Bool = false) {
         self.id = id; self.app = app; self.title = title; self.address = address
@@ -53,17 +65,17 @@ public struct Target: Equatable, Sendable {
         self.group = group; self.excluded = excluded
         self.foldAddress = foldAddress; self.bounds = bounds; self.onScreen = onScreen
         self.bundleID = bundleID; self.isRunning = isRunning; self.owner = owner; self.elsewhere = elsewhere
-        self.searchText = SearchText.fold(app + " " + title + " " + group)
-        self.searchFields = [app, title, group].map(SearchField.init)
+        self.search = SearchCache(app: app, title: title, group: group)
     }
     private mutating func rebuildSearchText() {
-        searchText = SearchText.fold(app + " " + title + " " + group)
-        searchFields = [app, title, group].map(SearchField.init)
+        search = SearchCache(app: app, title: title, group: group)
     }
-    fileprivate func searchScore(_ terms: [String]) -> Int? {
+    fileprivate func searchScore(_ terms: [SearchTerm]) -> Int? {
         var score = 0
         for term in terms {
-            guard let best = searchFields.compactMap({ $0.score(term) }).max() else { return nil }
+            var best: Int?
+            for field in search.fields { if let value = field.score(term) { best = max(best ?? value, value) } }
+            guard let best else { return nil }
             score += best
         }
         return score
@@ -82,6 +94,7 @@ public struct AddressBook: Sendable {
     /// Depends only on alphabet/policy, both immutable after init, so it is computed
     /// once here instead of rebuilding fresh Strings on every address(for:)/pin(:to:) call.
     public let vocabulary: [String]
+    private let vocabularySet: Set<String>
     private var assigned: [TargetID: String] = [:]
     // Keep the owner of a held code: a transient catalogue omission is not a new
     // window. Storage is bounded by the same finite vocabulary as `allocated`.
@@ -95,6 +108,7 @@ public struct AddressBook: Sendable {
         let a = alphabet.map(String.init)
         self.vocabulary = policy == .pairs ? a.flatMap { first in a.map { first + $0 } }
             : (0..<4).flatMap { depth in a.dropLast().map { String(repeating: a.last!, count: depth) + $0 } }
+        self.vocabularySet = Set(vocabulary)
     }
     /// Appends an unused letter beyond `alphabet` (searched from `z` down, so it lands on
     /// a letter nobody wants as an initial rather than squatting on `a`) so that filler —
@@ -123,7 +137,7 @@ public struct AddressBook: Sendable {
             assigned[id] = old; return old
         }
         guard allocated.count < capacity else { throw AlphabetError.exhausted }
-        let pool = vocabulary
+        let pool = vocabularySet
         var preferred: String?
         // Stability means retaining an assigned address, not choosing it by position.
         // Use the same name-first allocation in every layout, including saved `.stable`
@@ -139,11 +153,11 @@ public struct AddressBook: Sendable {
                 preferred = lowered.compactMap { $0.isLetter ? String($0) : nil }.first { pool.contains($0) && !allocated.contains($0) }
             }
         }
-        guard let code = preferred ?? pool.first(where: { !allocated.contains($0) }) else { throw AlphabetError.exhausted }
+        guard let code = preferred ?? vocabulary.first(where: { !allocated.contains($0) }) else { throw AlphabetError.exhausted }
         assigned[id] = code; allocated.insert(code); return code
     }
     public mutating func pin(_ id: TargetID, to code: String) throws {
-        guard vocabulary.contains(code) else { throw SettingsError.invalid("That label is not a complete label in this alphabet and policy.") }
+        guard vocabularySet.contains(code) else { throw SettingsError.invalid("That label is not a complete label in this alphabet and policy.") }
         if assigned[id] == code { return }
         guard !allocated.contains(code) else { throw SettingsError.invalid("That label is occupied or held for a closed window. Reset assignments to reclaim held labels.") }
         held[id] = nil; assigned[id] = code; allocated.insert(code)
@@ -190,25 +204,45 @@ public enum SelectionKey: Equatable, Sendable {
     /// Left (-1) or right (+1) arrow. Its meaning follows the mode's layout.
     case lateral(Int)
 }
+internal final class DerivedMemo: Sendable {
+    struct Values { var navigationItems: [NavigationItem]?; var displayMatches: [Target]?; var displayTargets: [Target]? }
+    let values = Mutex(Values())
+}
+/// Always equal: it only caches values derived from fields that equality already compares.
+internal struct DerivedCache: Equatable, Sendable {
+    let memo = DerivedMemo()
+    static func == (_: Self, _: Self) -> Bool { true }
+}
 public enum SelectionEffect: Equatable, Sendable { case none, changed, cancelled, selected(TargetID) }
 public struct SelectionState: Equatable, Sendable {
-    public private(set) var active = false
-    public private(set) var prefix = ""
+    public private(set) var active = false { didSet { derived = .init() } }
+    public private(set) var prefix = "" { didSet { derived = .init() } }
     public private(set) var cursor = 0
     public private(set) var pointerFocus: NavigationAction?
-    public private(set) var mode: DisplayMode = .shore
-    public private(set) var query: String?
+    public private(set) var mode: DisplayMode = .shore { didSet { derived = .init() } }
+    public private(set) var query: String? { didSet { derived = .init() } }
     /// Acknowledges native search edits even when publications coalesce or text repeats.
     public private(set) var queryRevision: UInt64 = 0
-    public private(set) var snapshot = CatalogueSnapshot()
+    public private(set) var snapshot = CatalogueSnapshot() { didSet { derived = .init() } }
     public init() {}
-    public private(set) var ordering: TraversalOrder = .stable
-    public private(set) var openingHistory = FocusHistory()
+    public private(set) var ordering: TraversalOrder = .stable { didSet { derived = .init() } }
+    public private(set) var openingHistory = FocusHistory() { didSet { derived = .init() } }
     /// Return, preview and group selection share the history captured on opening.
     public var focusHistory: FocusHistory { active ? openingHistory : snapshot.history }
     private var targetRanks: [TargetID: Int] = [:]
-    internal var ownerRanks: [UUID: Int] = [:]
-    internal var cellRanks: [String: Int] = [:]
+    internal var ownerRanks: [UUID: Int] = [:] { didSet { derived = .init() } }
+    internal var cellRanks: [String: Int] = [:] { didSet { derived = .init() } }
+    /// Memoized presentation/navigation lists. Every stored input they read resets it on
+    /// write (cursor and pointer focus are not inputs), so a copy that diverges gets a fresh
+    /// memo and never reads another state's results; identical copies may share one.
+    internal var derived = DerivedCache()
+    internal func memoized<T: Sendable>(_ key: WritableKeyPath<DerivedMemo.Values, T?>, _ compute: () -> T) -> T {
+        if let cached = derived.memo.values.withLock({ $0[keyPath: key] }) { return cached }
+        // Computed outside the lock: navigationItems itself reads memoized displayMatches.
+        let value = compute()
+        derived.memo.values.withLock { $0[keyPath: key] = value }
+        return value
+    }
     public mutating func configure(ordering: TraversalOrder) {
         guard !active else { return } // Settings take effect on the next opening.
         self.ordering = ordering
@@ -248,7 +282,7 @@ public struct SelectionState: Equatable, Sendable {
     }
     /// Derived from `snapshot` and `mode` only. Stored because nearly every accessor and the
     /// presenter read it several times per keystroke; both writers below keep it current.
-    public private(set) var targets: [Target] = []
+    public private(set) var targets: [Target] = [] { didSet { derived = .init() } }
     public var matches: [Target] {
         if query != nil { return searchMatches }
         if mode == .fold, let family = foldFamily {
@@ -259,12 +293,14 @@ public struct SelectionState: Equatable, Sendable {
     /// A closed assigned app stays a real, addressable target — its letter still opens it —
     /// but it has no window of its own, so the switcher never draws a tile for it until it
     /// actually runs. These are what a presenter should draw in place of `targets`/`matches`.
-    public var displayTargets: [Target] {
+    public var displayTargets: [Target] { memoized(\.displayTargets) { computeDisplayTargets() } }
+    private func computeDisplayTargets() -> [Target] {
         let visible = targets.filter(\.isRunning)
         if mode == .relay && ordering == .stable { return relayOrder(visible) }
         return [.shore, .lattice, .canopy].contains(mode) ? appGroupedOrder(visible) : visible
     }
-    public var displayMatches: [Target] {
+    public var displayMatches: [Target] { memoized(\.displayMatches) { computeDisplayMatches() } }
+    private func computeDisplayMatches() -> [Target] {
         let visible = matches.filter(\.isRunning)
         if query != nil {
             if hasSearchTerms { return [.shore, .canopy, .lattice, .fold].contains(mode) ? Self.groupedByOwner(visible) : visible }
@@ -277,14 +313,17 @@ public struct SelectionState: Equatable, Sendable {
         return [.shore, .lattice, .canopy].contains(mode) ? appGroupedOrder(visible) : visible
     }
     public private(set) var searchMemory: SearchMemory?
-    private var searchMatches: [Target] = []
-    public var hasSearchTerms: Bool { query.map { !SearchText.terms($0).isEmpty } ?? false }
+    private var searchMatches: [Target] = [] { didSet { derived = .init() } }
+    /// Every non-nil query assignment refreshes search, which keeps this current.
+    private var queryHasTerms = false { didSet { derived = .init() } }
+    public var hasSearchTerms: Bool { query != nil && queryHasTerms }
     public mutating func configureSearch(memory: SearchMemory?) {
         searchMemory = memory; refreshSearch()
     }
     private mutating func refreshSearch() {
-        guard let query else { searchMatches = []; return }
-        let terms = SearchText.terms(query)
+        guard let query else { searchMatches = []; queryHasTerms = false; return }
+        let terms = SearchText.terms(query).map(SearchTerm.init)
+        queryHasTerms = !terms.isEmpty
         guard !terms.isEmpty else { searchMatches = targets; return }
         // Stable ties follow catalogue group order in grouped layouts.
         let base = [.shore, .canopy, .lattice, .fold].contains(mode) ? appGroupedOrder(targets) : targets
@@ -446,8 +485,8 @@ public struct SelectionState: Equatable, Sendable {
             if !prefix.isEmpty { prefix = ""; cursor = 0; return .changed }
             cancel(); return .cancelled
         case .backspace: if !prefix.isEmpty { prefix.removeLast(); cursor = 0 }; return .changed
-        case .next: if navigationCount > 0 { cursor = (cursor + 1) % navigationCount }; return .changed
-        case .previous: if navigationCount > 0 { cursor = (cursor + navigationCount - 1) % navigationCount }; return .changed
+        case .next: let count = navigationCount; if count > 0 { cursor = (cursor + 1) % count }; return .changed
+        case .previous: let count = navigationCount; if count > 0 { cursor = (cursor + count - 1) % count }; return .changed
         case .enter:
             if mode == .relay && query == nil { return returnTarget.map { select($0.id) } ?? .none }
             guard let action = highlightedAction else { return .none }
@@ -521,11 +560,19 @@ public extension SelectionState {
         // Closed assigned apps are actionable launcher targets too. Keep their cells
         // so click, arrows and Enter agree with direct letter selection.
         let currentTargets = targets
+        // Bucket by the letter after `prefix` in one pass instead of rescanning every
+        // target and allocation per cell. Addresses are ASCII, so this matches hasPrefix.
+        var children: [Character: [Target]] = [:], heldLetters = Set<Character>()
+        for target in currentTargets where target.address.hasPrefix(prefix) {
+            if let letter = target.address.dropFirst(prefix.count).first { children[letter, default: []].append(target) }
+        }
+        for code in allocations where code.hasPrefix(prefix) {
+            if let letter = code.dropFirst(prefix.count).first { heldLetters.insert(letter) }
+        }
         let all = (Array(snapshot.alphabet) + extra).map { letter -> AddressCell in
-            let address = prefix + String(letter)
-            let children = currentTargets.filter { $0.address.hasPrefix(address) }
-            return AddressCell(address: address, target: children.first { $0.address == address },
-                               descendants: children.filter { $0.address != address }, held: allocations.contains { $0.hasPrefix(address) })
+            let address = prefix + String(letter), members = children[letter] ?? []
+            return AddressCell(address: address, target: members.first { $0.address == address },
+                               descendants: members.filter { $0.address != address }, held: heldLetters.contains(letter))
         }
         // Trim trailing empty cells so a handful of live targets doesn't render a full
         // alphabet grid of "Unassigned" placeholders. Keep held addresses and a small

@@ -88,14 +88,17 @@ enum TabUnavailableReason: Equatable { case filteredByRange, connectionUnhealthy
            app.processIdentifier != Foundation.ProcessInfo.processInfo.processIdentifier {
             activeBrowser = BrowserID.allCases.first { $0.bundleID == app.bundleIdentifier }
         }
+        // Assign once: every write to a @Published dictionary notifies observers, even an equal one.
+        var next = status
+        defer { if next != status { status = next } }
         for browser in BrowserID.allCases {
-            guard let installedURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier:browser.bundleID) else { status[browser] = "Not installed"; continue }
+            guard let installedURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier:browser.bundleID) else { next[browser] = "Not installed"; continue }
             if browserIcons[browser] == nil { browserIcons[browser] = NSWorkspace.shared.icon(forFile:installedURL.path) }
             if !Self.builtIn.contains(browser) {
-                status[browser] = bridgeError ?? (extensionConnections.values.contains { $0.0 == browser } ? "Connected through companion" : "Companion add-on required")
+                next[browser] = bridgeError ?? (extensionConnections.values.contains { $0.0 == browser } ? "Connected through companion" : "Companion add-on required")
                 continue
             }
-            guard let app = NSRunningApplication.runningApplications(withBundleIdentifier:browser.bundleID).first else { status[browser] = "Installed · not running"; connections[browser] = nil; continue }
+            guard let app = NSRunningApplication.runningApplications(withBundleIdentifier:browser.bundleID).first else { next[browser] = "Installed · not running"; connections[browser] = nil; continue }
             if connections[browser]?.pid != app.processIdentifier || connections[browser]?.launchDate != app.launchDate {
                 connections[browser] = Connection(launchDate:app.launchDate,pid:app.processIdentifier)
                 let previous = lastKnownLaunch[browser]
@@ -108,10 +111,10 @@ enum TabUnavailableReason: Equatable { case filteredByRange, connectionUnhealthy
                 lastKnownLaunch[browser] = (app.processIdentifier,app.launchDate)
             }
             if let cached = permissionCache[browser] {
-                status[browser] = cached == noErr ? "Available" : "Automation approval required"
+                next[browser] = cached == noErr ? "Available" : "Automation approval required"
                 if cached != noErr { connections[browser]?.healthy = false }
             } else {
-                status[browser] = "Checking automation approval…"
+                next[browser] = "Checking automation approval…"
             }
             refreshPermission(browser)
         }
@@ -334,17 +337,20 @@ enum TabUnavailableReason: Equatable { case filteredByRange, connectionUnhealthy
         guard created == noErr else { return OSStatus(created) }; defer { AEDisposeDesc(&target) }
         return AEDeterminePermissionToAutomateTarget(&target,AEEventClass(typeWildCard),AEEventID(typeWildCard),ask)
     }
-    nonisolated private static func execute(_ source:String) -> (NSAppleEventDescriptor?,String?) {
+    nonisolated private static let scripts = CompiledScripts()
+    /// Runs a cached compilation of `source`, or the handler `call` names inside it. Compiling
+    /// loads the browser's scripting dictionary, which costs more than a typical tab read.
+    nonisolated private static func execute(_ browser:BrowserID,pid:pid_t,focus:Bool,source:() -> String,call:NSAppleEventDescriptor? = nil) -> (NSAppleEventDescriptor?,String?) {
         var error: NSDictionary?
-        guard let script = NSAppleScript(source:source) else { return (nil,"Browser script could not compile") }
-        let result = script.executeAndReturnError(&error)
+        guard let script = scripts.take(browser,pid:pid,focus:focus) ?? NSAppleScript(source:source()) else { return (nil,"Browser script could not compile") }
+        let result = call.map { script.executeAppleEvent($0,error:&error) } ?? script.executeAndReturnError(&error)
+        if script.isCompiled { scripts.give(script,browser,pid:pid,focus:focus) }
         if let error { return (nil,error[NSAppleScript.errorMessage] as? String ?? "Browser unavailable") }
         return (result,nil)
     }
     nonisolated private static func read(_ browser:BrowserID) -> ScriptResult {
-        guard !NSRunningApplication.runningApplications(withBundleIdentifier:browser.bundleID).isEmpty else { return .init(error:"Browser is closed") }
-        let source = Self.queryScript(browser)
-        let (result,error) = execute(source)
+        guard let app = NSRunningApplication.runningApplications(withBundleIdentifier:browser.bundleID).first else { return .init(error:"Browser is closed") }
+        let (result,error) = execute(browser,pid:app.processIdentifier,focus:false,source:{ Self.queryScript(browser) })
         guard let result,error == nil else { return .init(error:error) }
         var tabs: [BrowserTabRecord] = [], seen = Set<String>()
         if result.numberOfItems > 0 { for i in 1...min(4000,result.numberOfItems) {
@@ -394,44 +400,73 @@ enum TabUnavailableReason: Equatable { case filteredByRange, connectionUnhealthy
     }
     nonisolated private static func literal(_ text:String) -> String { "\"" + text.replacingOccurrences(of:"\\",with:"\\\\").replacingOccurrences(of:"\"",with:"\\\"") + "\"" }
     nonisolated private static func focus(_ browser:BrowserID,tab:BrowserTabRecord) -> ScriptResult {
-        guard !NSRunningApplication.runningApplications(withBundleIdentifier:browser.bundleID).isEmpty else { return .init(error:"Browser is closed") }
-        let source = Self.focusScript(browser,tab:tab)
-        let (result,error) = execute(source); return .init(error:error,selected:result?.booleanValue ?? false)
+        guard let app = NSRunningApplication.runningApplications(withBundleIdentifier:browser.bundleID).first else { return .init(error:"Browser is closed") }
+        // Identities travel as handler parameters, so one compilation serves every selection.
+        let call = NSAppleEventDescriptor(eventClass:AEEventClass(kASAppleScriptSuite),eventID:AEEventID(kASSubroutineEvent),
+            targetDescriptor:.currentProcess(),returnID:AEReturnID(kAutoGenerateReturnID),transactionID:AETransactionID(kAnyTransactionID))
+        call.setDescriptor(NSAppleEventDescriptor(string:"focustab"),forKeyword:AEKeyword(keyASSubroutineName))
+        let parameters = NSAppleEventDescriptor.list()
+        parameters.insert(NSAppleEventDescriptor(string:tab.window),at:1); parameters.insert(NSAppleEventDescriptor(string:tab.id),at:2)
+        call.setDescriptor(parameters,forKeyword:keyDirectObject)
+        let (result,error) = execute(browser,pid:app.processIdentifier,focus:true,source:{ Self.focusHandler(browser) },call:call)
+        return .init(error:error,selected:result?.booleanValue ?? false)
     }
     nonisolated static func focusScript(_ browser:BrowserID,tab:BrowserTabRecord) -> String {
+        focusHandler(browser) + "\nreturn focusTab(\(literal(tab.window)),\(literal(tab.id)))\n"
+    }
+    nonisolated static func focusHandler(_ browser:BrowserID) -> String {
         let select = browser == .arc ? "select t" : "set active tab index of w to n"
         let privateCheck = browser == .arc ? "incognito of w is false" : "mode of w is \"normal\""
         return """
-        with timeout of 2 seconds
-            tell application id "\(browser.bundleID)"
-                set orderedWindows to {}
-                repeat with candidateWindow in windows
-                    if (id of candidateWindow as text) is \(literal(tab.window)) then
-                        set orderedWindows to {contents of candidateWindow} & orderedWindows
-                    else
-                        set end of orderedWindows to contents of candidateWindow
-                    end if
-                end repeat
-                repeat with w in orderedWindows
-                    if \(privateCheck) then
-                        set n to 0
-                        repeat with t in tabs of w
-                            set n to n + 1
-                            if (id of t as text) is \(literal(tab.id)) then
-                                \(select)
-                                set index of w to 1
-                                activate
-                                return ((id of active tab of w as text) is \(literal(tab.id))) and (index of w is 1)
-                            end if
-                        end repeat
-                    end if
-                end repeat
-                return false
-            end tell
-        end timeout
+        on focusTab(windowID, tabID)
+            with timeout of 2 seconds
+                tell application id "\(browser.bundleID)"
+                    set orderedWindows to {}
+                    repeat with candidateWindow in windows
+                        if (id of candidateWindow as text) is windowID then
+                            set orderedWindows to {contents of candidateWindow} & orderedWindows
+                        else
+                            set end of orderedWindows to contents of candidateWindow
+                        end if
+                    end repeat
+                    repeat with w in orderedWindows
+                        if \(privateCheck) then
+                            set n to 0
+                            repeat with t in tabs of w
+                                set n to n + 1
+                                if (id of t as text) is tabID then
+                                    \(select)
+                                    set index of w to 1
+                                    activate
+                                    return ((id of active tab of w as text) is tabID) and (index of w is 1)
+                                end if
+                            end repeat
+                        end if
+                    end repeat
+                    return false
+                end tell
+            end timeout
+        end focusTab
         """
     }
 
+}
+
+/// One compiled script per browser process and kind. A script is checked out while it runs,
+/// because an NSAppleScript instance must not execute on two threads at once; an overlapping
+/// call compiles its own. A relaunched browser gets fresh compilations.
+private final class CompiledScripts: @unchecked Sendable {
+    private struct Key: Hashable { let browser:BrowserID; let focus:Bool }
+    private let lock = NSLock()
+    private var idle: [Key:(pid_t,NSAppleScript)] = [:]
+    func take(_ browser:BrowserID,pid:pid_t,focus:Bool) -> NSAppleScript? {
+        lock.lock(); defer { lock.unlock() }
+        guard let (owner,script) = idle.removeValue(forKey:Key(browser:browser,focus:focus)), owner == pid else { return nil }
+        return script
+    }
+    func give(_ script:NSAppleScript,_ browser:BrowserID,pid:pid_t,focus:Bool) {
+        lock.lock(); idle[Key(browser:browser,focus:focus)] = (pid,script); lock.unlock()
+    }
 }
 
 #if DEBUG

@@ -34,7 +34,7 @@ public struct TitleRule: Codable, Equatable, Sendable, Identifiable {
         if match == .wildcard && tokens == nil { return "In wildcards, escape only *, ? or \\ with \\. A trailing \\ is invalid." }
         return nil
     }
-    private enum Token { case literal(Character), one, many }
+    fileprivate enum Token { case literal(Character), one, many }
     private var tokens: [Token]? {
         var result: [Token] = [], escaped = false
         for ch in pattern.lowercased() {
@@ -49,29 +49,40 @@ public struct TitleRule: Codable, Equatable, Sendable, Identifiable {
         return escaped ? nil : result
     }
     public func matches(title: String, bundleID: String) -> Bool {
-        guard validationError == nil, self.bundleID.isEmpty || self.bundleID == bundleID else { return false }
-        let title = title.lowercased(), pattern = pattern.lowercased()
-        switch match {
-        case .contains: return title.contains(pattern)
-        case .exact: return title == pattern
-        case .wildcard:
-            // Whole-title glob, O(title × pattern), with bounded pattern length and no regex backtracking.
-            let chars = Array(title)
-            var row = [Bool](repeating: false, count: chars.count + 1); row[0] = true
-            for token in tokens ?? [] {
-                var next = [Bool](repeating: false, count: row.count)
-                if case .many = token { next[0] = row[0] }
-                for i in chars.indices {
-                    switch token {
-                    case .many: next[i + 1] = row[i + 1] || next[i]
-                    case .one: next[i + 1] = row[i]
-                    case .literal(let ch): next[i + 1] = row[i] && chars[i] == ch
-                    }
-                }
-                row = next
+        matcher?.matches(lowercasedTitle: title.lowercased(), bundleID: bundleID) ?? false
+    }
+    /// Nil for invalid rules. Validation, lowercasing and tokenizing happen once here, so
+    /// filtering a snapshot doesn't repeat them for every target and rule.
+    var matcher: Matcher? { validationError == nil ? Matcher(bundleID: bundleID, pattern: pattern.lowercased(), match: match, tokens: tokens ?? []) : nil }
+    struct Matcher {
+        let bundleID: String, pattern: String, match: TitleMatch
+        fileprivate let tokens: [Token]
+        func matches(lowercasedTitle title: String, bundleID: String) -> Bool {
+            guard self.bundleID.isEmpty || self.bundleID == bundleID else { return false }
+            switch match {
+            case .contains: return title.contains(pattern)
+            case .exact: return title == pattern
+            case .wildcard: return TitleRule.glob(tokens, title)
             }
-            return row.last == true
         }
+    }
+    private static func glob(_ tokens: [Token], _ title: String) -> Bool {
+        // Whole-title glob, O(title × pattern), with bounded pattern length and no regex backtracking.
+        let chars = Array(title)
+        var row = [Bool](repeating: false, count: chars.count + 1); row[0] = true
+        for token in tokens {
+            var next = [Bool](repeating: false, count: row.count)
+            if case .many = token { next[0] = row[0] }
+            for i in chars.indices {
+                switch token {
+                case .many: next[i + 1] = row[i + 1] || next[i]
+                case .one: next[i + 1] = row[i]
+                case .literal(let ch): next[i + 1] = row[i] && chars[i] == ch
+                }
+            }
+            row = next
+        }
+        return row.last == true
     }
 }
 
@@ -111,9 +122,13 @@ public struct ExclusionPreferences: Codable, Equatable, Sendable {
     public func applying(to source: CatalogueSnapshot) -> CatalogueSnapshot {
         let excludedBundles = Set(apps.filter { AppRule.validBundleID($0.bundleID) }.map(\.bundleID))
         let owners = Dictionary(source.apps.map { ($0.id.process, $0.bundleID) }, uniquingKeysWith: { first, _ in first })
+        let matchers = titles.compactMap(\.matcher)
         func hidden(_ target: Target, title: Bool) -> Bool {
             let bundle = target.bundleID.isEmpty ? (owners[target.groupOwner] ?? "") : target.bundleID
-            return (!bundle.isEmpty && excludedBundles.contains(bundle)) || (title && titles.contains { $0.matches(title: target.title, bundleID: bundle) })
+            if !bundle.isEmpty && excludedBundles.contains(bundle) { return true }
+            guard title, !matchers.isEmpty else { return false }
+            let lowered = target.title.lowercased()
+            return matchers.contains { $0.matches(lowercasedTitle: lowered, bundleID: bundle) }
         }
         var result = source
         result.windows.removeAll { hidden($0, title: true) }
